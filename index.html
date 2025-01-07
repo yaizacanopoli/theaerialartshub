@@ -13,53 +13,54 @@
 
     <header>
         <div class="header-container">
-            <img class="logo">
-            <img class="nav-logo">
+            <div class="empty-element"></div>
+            <img class="logo" src="assets/logo.png" alt="The Aerial Arts Hub">
+            <img class="nav-logo" id="nav-logo" src="assets/menu.svg" alt="Open navigation menu">
         </div>
-        <nav class="mobile-menu">
-            <img class="closing-x">
+        <nav class="mobile-menu" id="mobile-menu">
+            <img class="closing-x" src="assets/close.svg" alt="Close the menu">
             <div class="nav-links">
-                <h2 class="nav-item"></h2>
-                <h2 class="nav-item"><img class="nav-link-arrow"></h2>
-                <h2 class="nav-item"><img class="nav-link-arrow"></h2>
-                <h2 class="nav-item"><img class="nav-link-arrow"></h2>
-                <h2 class="nav-item"></h2>
-                <h2 class="nav-item"></h2>
+                <h2 class="nav-item">Studio map</h2>
+                <h2 class="nav-item">Resources <img class="nav-link-arrow" src="assets/triangle-small-down.svg" alt="Expand"></h2>
+                <h2 class="nav-item">Shops <img class="nav-link-arrow" src="assets/triangle-small-down.svg" alt="Expand"></h2>
+                <h2 class="nav-item">Skills <img class="nav-link-arrow" src="assets/triangle-small-down.svg" alt="Expand"></h2>
+                <h2 class="nav-item">What's on</h2>
+                <h2 class="nav-item">About</h2>
             </div>
             <div class="nav-input">
-                <button class="sign-in-btn"></button>
+                <button class="sign-in-btn">Sign in</button>
                 <input type="search" class="search-bar">
             </div>
         </nav>
     </header>
 
     <main>
+        <h1 class="cards-category">What's on</h1>
         <div class="scroll-cards">
-            <h1 class="cards-category"></h1>
             <div class="card">
-                <img class="item-img">
+                <img class="item-img" src="assets/placeholder.jpg" alt="Item image">
                 <div class="card-info">
                     <div class="name-and-icon">
-                        <h2 class="item-name"></h2>
-                        <img class="heart-icon">
+                        <h2 class="item-name">Name of event</h2>
+                        <img class="heart-icon" src="assets/heart-outline.svg" alt="Like">
                     </div>
-                    <p class="item-text"></p>
+                    <p class="item-text">Date and location</p>
                     <div class="item-tags-group">
-                        <button class="item-tag"></button>
-                        <button class="item-tag"></button>
-                        <button class="item-tag"></button>
+                        <button class="item-tag">Tag</button>
+                        <button class="item-tag">Tag</button>
+                        <button class="item-tag">Tag</button>
                     </div>
                 </div>
             </div>
-            <img class="arrow-see-all">
+            <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
         </div>
 
         <!-- more scroll-cards here -->
 
+        <h1 class="cards-category">Studios around the world</h1>
         <div class="map-card">
-            <h1 class="cards-category"></h1>
             <div class="card">
-                <img class="item-img">
+                <img class="item-img" src="assets/placeholder.jpg">
             </div>
         </div>
 
@@ -67,11 +68,11 @@
 
     <footer>
         <div class="footer-links-group">
-            <p class="footer-link"></p>
-            <p class="footer-link"></p>
-            <p class="footer-link"></p>
+            <p class="footer-link">Home</p>
+            <p class="footer-link">About</p>
+            <p class="footer-link">Sign in</p>
         </div>
-        <img class="arrow-up">
+        <img class="arrow-up" src="assets/chevron-up.svg" alt="Back to the top">
     </footer>
 
     <script src="script.js"></script>
