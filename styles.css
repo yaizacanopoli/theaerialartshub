@@ -47,6 +47,11 @@ header {
     padding: 1.5rem;
 }
 
+.arrow-back {
+    width: 1rem;
+    align-self: start;
+}
+
 .logo {
     position: absolute;
     top: 1.5rem;

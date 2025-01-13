@@ -4,12 +4,10 @@ const closingX = document.querySelector("#closing-x");
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
 const heartIcon = document.querySelectorAll("#heart-icon");
+const arrowBack = document.querySelectorAll("#arrow-back");
 const footer = document.querySelector("footer");
 
-// doesn't seem to work, need to test once live
-window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-  }
+// for mobile menu
 
 navLogo.addEventListener("click", () => {
         mobileMenu.style.display = "flex";
@@ -23,8 +21,10 @@ closingX.addEventListener ("click", () => {
     main.style.display = "flex";
     footer.style.display = "flex";
 
-    // memorise scroll position
+    // look into memorising scroll position
 })
+
+// for home page
 
 heartIcon.forEach(icon => {
     icon.addEventListener("click", () => {
