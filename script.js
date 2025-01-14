@@ -1,6 +1,9 @@
 const navLogo = document.querySelector("#nav-logo");
 const mobileMenu = document.querySelector("#mobile-menu");
 const closingX = document.querySelector("#closing-x");
+const navLinkArrow = document.querySelectorAll("#nav-link-arrow");
+const dropdownContainer = document.querySelectorAll("#dropdown-container");
+
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
 const heartIcon = document.querySelectorAll("#heart-icon");
@@ -20,8 +23,20 @@ closingX.addEventListener ("click", () => {
     headerContainer.style.display = "flex";
     main.style.display = "flex";
     footer.style.display = "flex";
+})
 
-    // look into memorising scroll position
+navLinkArrow.forEach(arrow => {
+    arrow.addEventListener("click", () => {
+        const thisDropdown = arrow.nextElementSibling;
+        if (arrow.src.endsWith("assets/triangle-down.svg")) {
+            arrow.src = "assets/triangle-up.svg";
+            thisDropdown.style.display = "flex";
+
+        } else {
+            arrow.src = "assets/triangle-down.svg";
+            thisDropdown.style.display = "none";
+        }
+    })
 })
 
 // for home page

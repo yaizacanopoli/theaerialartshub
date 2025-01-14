@@ -98,6 +98,7 @@ header {
     display: flex;
     justify-content: end;
     gap: 0.3rem;
+    flex-wrap: wrap;
 }
 
 .nav-item {
@@ -107,7 +108,20 @@ header {
 .nav-link-arrow {
     width: 1rem;
     height: auto;
-    margin-top: 0.7rem;
+    margin-top: 0.5rem;
+}
+
+.dropdown-container {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: end;
+    margin: 1.2rem 1.2rem 0 0;
+    gap: 0.5rem;
+}
+
+.dropdown-item {
+    font-size: 1.2rem;
 }
 
 .nav-input {
@@ -137,12 +151,15 @@ header {
     width: 30ch;
     font-size: 1.5rem;
     padding-right: 3.2rem;
+    margin-bottom: 1rem;
 }
 
 .search-bar:focus,
 .search-bar:active {
     outline: none;
 }
+
+/* main section starts */
 
 main {
     display: flex;
@@ -226,6 +243,8 @@ main {
     margin-left: 0.5rem;
 }
 
+/* footer starts */
+
 footer {
     display: flex;
     justify-content: space-between;
@@ -245,4 +264,33 @@ footer {
 .arrow-up {
     width: 2rem;
     margin-right: 2rem;
+}
+
+/* for the about page */
+
+.about-item-img {
+    width: calc(100% - 3rem);
+    height: 35vh;
+    margin: 0 0 2rem 0;
+    border-radius: 10px;
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: calc(100% - 3rem);
+}
+
+.about-h2 {
+    margin-top: 1.5rem;
+}
+
+.underlined {
+    text-decoration: 4px solid #C3D5F0 underline;
+    margin-bottom: -0.5rem;
+}
+
+.about-footer {
+    margin-top: 4rem;
 }
