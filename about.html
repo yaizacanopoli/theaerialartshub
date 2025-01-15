@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | The Aerial Arts Hub</title>
-    <link rel="stylesheet" href="styles.css"></link>
+    <link rel="stylesheet" href="styles.css">
+    </link>
 </head>
+
 <body>
-    
+
     <header id="header">
         <div class="header-container" id="header-container">
             <div class="arrow-back" id="arrow-back">
@@ -26,29 +28,57 @@
             <img class="closing-x" id="closing-x" src="assets/close.svg" alt="Close the menu">
             <div class="nav-links">
                 <div class="nav-item-div">
-                    <h2 class="nav-item">Studio map</h2>
+                    <h2 class="nav-item"><a href="studiomap.html">Studio map</a></h2>
                 </div>
                 <div class="nav-item-div">
                     <h2 class="nav-item">Resources</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <div class="dropdown-container" id="dropdown-container">
+                        <p class="dropdown-item"><a href="studios.html">Studios</a></p>
+                        <p class="dropdown-item"><a href="coaches.html">Coaches</a></p>
+                        <p class="dropdown-item"><a href="performers.html">Performers</a></p>
+                        <p class="dropdown-item"><a href="collectives.html">Troupes and collectives</a></p>
+                        <p class="dropdown-item"><a href="retreats.html">Retreats</a></p>
+                        <p class="dropdown-item"><a href="competitions.html">Competitions</a></p>
+                        <p class="dropdown-item"><a href="festivals.html">Festivals</a></p>
+                        <p class="dropdown-item"><a href="health.html">Physio and flexy</a></p>
+                        <p class="dropdown-item"><a href="photography.html">Photography and video</a></p>
+                        <p class="dropdown-item"><a href="otherresources.html">Other resources</a></p>
+                        <p class="dropdown-item"><a href="allresources.html">See all</a></p>
+                    </div>
                 </div>
                 <div class="nav-item-div">
                     <h2 class="nav-item">Shops</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <div class="dropdown-container" id="dropdown-container">
+                        <p class="dropdown-item"><a href="clothing.html">Clothing</a></p>
+                        <p class="dropdown-item"><a href="heels.html">Heels</a></p>
+                        <p class="dropdown-item"><a href="equipment.html">Equipment</a></p>
+                    </div>
                 </div>
                 <div class="nav-item-div">
                     <h2 class="nav-item">Skills</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <div class="dropdown-container" id="dropdown-container">
+                        <p class="dropdown-item"><a href="hoop.html">Hoop/lyra</a></p>
+                        <p class="dropdown-item"><a href="silks.html">Silks</a></p>
+                        <p class="dropdown-item"><a href="trapeze.html">Trapeze</a></p>
+                        <p class="dropdown-item"><a href="hammock.html">Hammock/sling</a></p>
+                        <p class="dropdown-item"><a href="pole.html">Pole</a></p>
+                        <p class="dropdown-item"><a href="straps.html">Straps + rope</a></p>
+                        <p class="dropdown-item"><a href="otherskills.html">Others</a></p>
+                        <p class="dropdown-item"><a href="allskills.html">See all</a></p>
+                    </div>
                 </div>
                 <div class="nav-item-div">
-                    <h2 class="nav-item">What's on</h2>
+                    <h2 class="nav-item"><a href="events.html">What's on</a></h2>
                 </div>
                 <div class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html">About</a></h2>
                 </div>
             </div>
             <div class="nav-input">
-                <button class="sign-in-btn">Sign in</button>
+                <button class="sign-in-btn"><a href="signin.html">Sign in</a></button>
                 <input type="search" class="search-bar">
             </div>
         </nav>
@@ -67,8 +97,10 @@
             <h2 class="about-h2">Follow our journey</h2>
             <p class="about-p">The Aerial Arts Hub is a passion project of amateur aerialist and self-taught
                 developer Yaiza Canopoli. She has been chronicling her journey developing it in a
-                newsletter—you can subscribe over at theaerialartshub.substack.com. You can also follow
-                The Aerial Arts Hub on Instagram.
+                newsletter—you can subscribe over at <a href="https://theaerialartshub.substack.com/" target="_blank"
+                    class="text-link">theaerialartshub.substack.com</a>. You can also follow
+                The Aerial Arts Hub on <a href="https://www.instagram.com/theaerialartshub/" target="_blank"
+                    class="text-link">Instagram</a>.
             </p>
             <p class="about-p">If you enjoy using the platform and want to support it, you can consider becoming
                 a paid subscriber to the newsletter. 💖
@@ -92,11 +124,12 @@
         <div class="footer-links-group">
             <p class="footer-link"><a href="index.html">Home</a></p>
             <p class="footer-link"><a href="#header">About</a></p>
-            <p class="footer-link">Sign in</p>
+            <p class="footer-link"><a href="signin.html">Sign in</a></p>
         </div>
         <a href="#header"><img class="arrow-up" src="assets/chevron-up.svg" alt="Back to the top"></a>
     </footer>
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -220,6 +220,7 @@ main {
 
 .heart-icon {
     width: 1.5rem;
+    height: 1.5rem;
 }
 
 .item-tags-group {
@@ -235,6 +236,11 @@ main {
     font-size: 0.5rem;
     padding: 0.3rem 1.2rem;
     text-align: center;
+}
+
+.arrow-see-all-container {
+    display: flex;
+    align-items: center;
 }
 
 .arrow-see-all {
@@ -289,6 +295,10 @@ footer {
 .underlined {
     text-decoration: 4px solid #C3D5F0 underline;
     margin-bottom: -0.5rem;
+}
+
+.text-link {
+    text-decoration: underline;
 }
 
 .about-footer {
