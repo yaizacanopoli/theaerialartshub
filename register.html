@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aerial trapeze skills | The Aerial Arts Hub</title>
+    <title>Sign in | The Aerial Arts Hub</title>
     <link rel="stylesheet" href="styles.css">
     </link>
 </head>
 
-<body>
+<body class="sign-in-body">
     <header id="header">
         <div class="header-container" id="header-container">
             <div class="arrow-back" id="arrow-back">
@@ -84,9 +84,24 @@
 
     </header>
 
-    <main id="main"></main>
+    <main id="sign-in-main">
+        <div class="sign-in-container">
+            <form class="sign-in-form" action="">
+                <div class="input-fields">
+                    <input type="text" class="username-input" placeholder="Username">
+                    <input type="email" class="email-input" placeholder="Email address">
+                    <input type="password" class="password-input" placeholder="Password">
+                    <input type="password" class="password-repeat" placeholder="Repeat password">
+                </div>
+                <div class="sign-in-buttons">
+                    <button class="register-btn"><a href="register.html">Register</a></button>
+                    <button class="sign-in-btn"><a href="signin.html">Sign in</a></button>
+                </div>
+            </form>
+        </div>
+    </main>
 
-    <footer>
+    <footer class="sign-in-footer">
         <div class="footer-links-group">
             <p class="footer-link"><a href="index.html">Home</a></p>
             <p class="footer-link"><a href="about.html">About</a></p>

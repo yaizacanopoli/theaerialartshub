@@ -143,20 +143,23 @@ header {
 }
 
 .search-bar {
-    background-image: url(assets/magnify.svg);
-    background-repeat: no-repeat;
-    background-position: 98%;
     border-radius: 15px;
+    border: 1px solid black;
     height: 2.5rem;
     width: 30ch;
     font-size: 1.5rem;
     padding-right: 3.2rem;
+    padding-left: 1rem;
     margin-bottom: 1rem;
 }
 
 .search-bar:focus,
 .search-bar:active {
     outline: none;
+    background-image: url(assets/magnify.svg);
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-size: 2rem;
 }
 
 /* main section starts */
@@ -173,8 +176,10 @@ main {
     gap: 1rem;
     width: 100%;
     overflow-x: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
     margin-top: 1rem;
     padding-bottom: 2rem;
     margin-bottom: 1rem;
@@ -183,7 +188,7 @@ main {
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scroll-cards::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .card {
     display: flex;
@@ -263,7 +268,7 @@ footer {
 }
 
 /* figure out smooth scroll and link animations */
-.footer-links-group > p {
+.footer-links-group>p {
     font-size: 0.8rem;
 }
 
@@ -303,4 +308,82 @@ footer {
 
 .about-footer {
     margin-top: 4rem;
+}
+
+/* for sign-in and register pages */
+
+.sign-in-body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sign-in-container {
+    display: flex;
+    align-items: center;
+    height: 50vh;
+}
+
+.sign-in-form {
+    display: flex;
+    width: calc(100% - 3rem);
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.input-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.username-input,
+.password-input,
+.email-input,
+.password-repeat {
+    border-radius: 15px;
+    border: 1px solid black;
+    height: 2.5rem;
+    width: 28ch;
+    font-size: 1.2rem;
+    padding-left: 1rem;
+}
+
+.username-input:focus,
+.username-input:active,
+.password-input:focus,
+.password-input:active,
+.email-input:focus,
+.email-input:active,
+.password-repeat:focus,
+.password-repeat:active {
+    outline: none;
+}
+
+.sign-in-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.sign-in-form .sign-in-btn,
+.register-btn {
+    width: max-content;
+    padding: 0.5rem 2rem;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.register-btn {
+    background-color: #F2F2F2;
+}
+
+.sign-in-footer {
+    margin-top: auto;
 }
