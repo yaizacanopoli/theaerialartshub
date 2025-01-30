@@ -76,6 +76,7 @@ header {
     background-color: white;
     z-index: 1;
     overflow-y: scroll;
+    background-color: white;
 }
 
 .closing-x {
@@ -112,12 +113,15 @@ header {
 }
 
 .dropdown-container {
-    display: none;
+    visibility: hidden;
+    display: flex;
     flex-basis: 100%;
     flex-direction: column;
     align-items: end;
-    margin: 1.2rem 1.2rem 0 0;
     gap: 0.5rem;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease-in-out;
 }
 
 .dropdown-item {
@@ -142,24 +146,36 @@ header {
     font-weight: bold;
 }
 
+.search-items, .map-search-items, .events-search-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.search-items {
+    margin-bottom: 1rem;
+}
+
 .search-bar {
     border-radius: 15px;
     border: 1px solid black;
     height: 2.5rem;
     width: 30ch;
     font-size: 1.5rem;
-    padding-right: 3.2rem;
+    padding: 0 1rem;
     padding-left: 1rem;
-    margin-bottom: 1rem;
 }
 
 .search-bar:focus,
 .search-bar:active {
     outline: none;
-    background-image: url(assets/magnify.svg);
-    background-repeat: no-repeat;
-    background-position: 98%;
-    background-size: 2rem;
+}
+
+.search-icon, .map-search-icon {
+    display: none;
+    height: 1.8rem;
+    width: auto;
 }
 
 /* main section starts */
@@ -167,8 +183,11 @@ header {
 main {
     display: flex;
     flex-direction: column;
-    margin-left: 3rem;
     margin-top: 9rem;
+}
+
+.main-left-margin {
+    margin-left: 3rem;
 }
 
 .scroll-cards {
@@ -206,6 +225,7 @@ main {
 .item-img {
     border-radius: 10px;
     height: 30vh;
+    width: 55vw;
 }
 
 .card-info {
@@ -321,6 +341,7 @@ footer {
 .sign-in-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 50vh;
 }
 
@@ -386,4 +407,144 @@ footer {
 
 .sign-in-footer {
     margin-top: auto;
+}
+
+/* for studio map page + events page */
+
+.map-main {
+    align-items: center;
+}
+
+.map-main > h1,
+.events-top > h1 {
+    margin-bottom: 1.5rem;
+}
+
+.map-main .search-bar,
+.events-main .search-bar {
+    width: 25ch;
+}
+
+.map-search-items,
+.events-search-items {
+    margin-bottom: 1.5rem;
+}
+
+.map-placeholder-img {
+    width: calc(100% - 6rem);
+    height: 35vh;
+    margin: 0 0 2rem 0;
+    border-radius: 5px;
+}
+
+.blue-background, .found-studio-item {
+    background-color: #C3D5F0;
+    width: 100%;
+    padding: 2rem 3rem;
+    display: flex;
+}
+
+.blue-background {
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.popular-locations-header {
+    margin-bottom: .5rem;
+}
+
+.popular-location-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.popular-location-number {
+    font-weight: normal;
+}
+
+.found-studios-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+.found-studios-container:last-child {
+    margin-bottom: 2rem;
+}
+
+.found-studio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-studio-found-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.map-studio-name-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.map-studio-found-text h2 {
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.avatar-circle {
+    height: 4rem;
+    width: 4rem;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* for events page lineup */
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 1rem 1.5rem 3rem;
+}
+
+.events-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.events-lineup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.event-item {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.event-item-img {
+    border-radius: 10px;
+    height: 35vh;
+}
+
+.event-info-box {
+    background-color: #C3D5F0;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.event-title-icon {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
 }
