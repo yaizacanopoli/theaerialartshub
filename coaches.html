@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aerial and pole coaches | The Aerial Arts Hub</title>
+    <title>Find aerial and pole coaches | The Aerial Arts Hub</title>
     <link rel="stylesheet" href="styles.css">
     </link>
 </head>
@@ -30,7 +30,7 @@
                     <h2 class="nav-item"><a href="studiomap.html">Studio map</a></h2>
                 </div>
                 <div class="nav-item-div">
-                    <h2 class="nav-item">Resources</h2>
+                    <h2 class="nav-item" id="nav-item">Resources</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     <div class="dropdown-container" id="dropdown-container">
                         <p class="dropdown-item"><a href="studios.html">Studios</a></p>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="nav-item-div">
-                    <h2 class="nav-item">Shops</h2>
+                    <h2 class="nav-item" id="nav-item">Shops</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     <div class="dropdown-container" id="dropdown-container">
                         <p class="dropdown-item"><a href="clothing.html">Clothing</a></p>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="nav-item-div">
-                    <h2 class="nav-item">Skills</h2>
+                    <h2 class="nav-item" id="nav-item">Skills</h2>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     <div class="dropdown-container" id="dropdown-container">
                         <p class="dropdown-item"><a href="hoop.html">Hoop/lyra</a></p>
@@ -65,7 +65,7 @@
                         <p class="dropdown-item"><a href="hammock.html">Hammock/sling</a></p>
                         <p class="dropdown-item"><a href="pole.html">Pole</a></p>
                         <p class="dropdown-item"><a href="straps.html">Straps + rope</a></p>
-                        <p class="dropdown-item"><a href="otherskills.html">Others</a></p>
+                        <p class="dropdown-item"><a href="otherskills.html">Specialty</a></p>
                         <p class="dropdown-item"><a href="allskills.html">See all</a></p>
                     </div>
                 </div>
@@ -78,13 +78,101 @@
             </div>
             <div class="nav-input">
                 <button class="sign-in-btn"><a href="signin.html">Sign in</a></button>
-                <input type="search" class="search-bar" placeholder="Search...">
+                <div class="search-items">
+                    <input type="search" class="search-bar" id="nav-search-bar" placeholder="Search...">
+                    <img src="assets/magnify.svg" class="search-icon" id="search-icon">
+                </div>
             </div>
         </nav>
 
     </header>
 
-    <main id="main"></main>
+    <main id="main lineup-main" class="lineup-main">
+        <div class="lineup-top">
+            <h1 class="lineup-h1">Find a coach</h1>
+            <div class="lineup-search-items">
+                <input type="search" class="search-bar" id="lineup-search-bar" placeholder="Search...">
+                <img src="assets/magnify.svg" class="search-icon" id="lineup-search-icon">
+            </div>
+        </div>
+        <div class="lineup-container" id="lineup-container">
+            <h1>Featured coaches</h1>
+            <div class="lineup-lineup">
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+                <div class="lineup-item">
+                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+                    <div class="lineup-info-box">
+                        <div class="lineup-title-icon">
+                            <h3 class="lineup-title">Name of coach</h3>
+                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
+                        </div>
+                        <p class="lineup-info-text">City, country</p>
+                        <p class="lineup-info-text">Other info</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
 
     <footer>
         <div class="footer-links-group">
