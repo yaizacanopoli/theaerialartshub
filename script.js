@@ -22,6 +22,8 @@ const mapSearchIcon = document.querySelector("#map-search-icon");
 
 const lineupSearchBar = document.querySelector("#lineup-search-bar");
 const lineupSearchIcon = document.querySelector("#lineup-search-icon");
+const lineupContainer = document.querySelector("#lineup-container");
+const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 
 // for mobile menu
 
@@ -111,10 +113,6 @@ if (mapSearchBar) {
         mapSearchBar.style.width = "25ch";
     })
 
-    
-
-
-
     mapSearchBar.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
             console.log("Enter pressed");
@@ -199,4 +197,85 @@ if (lineupSearchBar) {
         lineupSearchIcon.style.display = "none";
         lineupSearchBar.style.width = "25ch";
     })
+
+    lineupSearchBar.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+            console.log("Enter pressed");
+            featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
+            const filterMenu =
+            `<div class="filter-menu">
+                <h4>Filter by:</h4>
+                <div class="filter-selector">
+                    <p class="filter-apparatus" id="filter-apparatus">Apparatus</p>
+                    <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+                </div>
+                <div class="filter-selector">
+                    <p class="filter-features" id="filter-features">Features</p>
+                    <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+                </div>
+            </div>`;
+            featuredLineupHeader.insertAdjacentHTML("afterend", filterMenu);
+
+            const filterApparatus = document.querySelector("#filter-apparatus");
+            const filterFeatures = document.querySelector("#filter-features");
+            const filterArrow = document.querySelectorAll("#filter-arrow");
+
+
+
+            // work on the stuff below, doesn't work properly rn
+
+
+
+            const filterExpanded = `<h1>Expanded menu</h1>`;
+
+            filterApparatus.addEventListener("click", () => {
+                    const thisArrow = filterApparatus.nextElementSibling;
+                    if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                        thisArrow.src = "assets/triangle-up.svg";
+                        featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
+                        filterExpanded.style.visibility = "visible";
+                        filterExpanded.style.height = filterExpanded.scrollHeight + "px";
+            
+                    } else {
+                        thisArrow.src = "assets/triangle-down.svg";
+                        filterExpanded.style.visibility = "hidden";
+                        filterExpanded.style.height = "0";
+                    }
+                })
+
+                filterFeatures.addEventListener("click", () => {
+                    const thisArrow = filterFeatures.nextElementSibling;
+                    if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                        thisArrow.src = "assets/triangle-up.svg";
+                        featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
+                        filterExpanded.style.visibility = "visible";
+                        filterExpanded.style.height = filterExpanded.scrollHeight + "px";
+            
+                    } else {
+                        thisArrow.src = "assets/triangle-down.svg";
+                        filterExpanded.style.visibility = "hidden";
+                        filterExpanded.style.height = "0";
+                    }
+                })
+
+                filterArrow.forEach(arrow => {
+                    arrow.addEventListener("click", () => {
+                        const thisDropdown = filterExpanded;
+                        if (arrow.src.endsWith("assets/triangle-down.svg")) {
+                            arrow.src = "assets/triangle-up.svg";
+                            featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
+                            thisDropdown.style.visibility = "visible";
+                            thisDropdown.style.height = thisDropdown.scrollHeight + "px";
+                
+                        } else {
+                            arrow.src = "assets/triangle-down.svg";
+                            thisDropdown.style.visibility = "hidden";
+                            thisDropdown.style.height = "0";
+                        }
+                    })
+                })
+
+            }
+        })
+            
 }
