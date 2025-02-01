@@ -80,12 +80,12 @@ navLinkArrow.forEach(arrow => {
 
 navSearchBar.addEventListener("focus", () => {
     searchIcon.style.display = "inline-block";
-    navSearchBar.style.width = "28ch";
+    navSearchBar.style.width = "72vw";
 })
 
 navSearchBar.addEventListener("blur", () => {
     searchIcon.style.display = "none";
-    navSearchBar.style.width = "30ch";
+    navSearchBar.style.width = "80vw";
 })
 
 // heart icons (home page and resources)
@@ -105,12 +105,12 @@ heartIcon.forEach(icon => {
 if (mapSearchBar) {
     mapSearchBar.addEventListener("focus", () => {
         mapSearchIcon.style.display = "inline-block";
-        mapSearchBar.style.width = "23ch";
+        mapSearchBar.style.width = "72vw";
     })
     
     mapSearchBar.addEventListener("blur", () => {
         mapSearchIcon.style.display = "none";
-        mapSearchBar.style.width = "25ch";
+        mapSearchBar.style.width = "80vw";
     })
 
     mapSearchBar.addEventListener("keyup", (e) => {
@@ -190,12 +190,12 @@ if (mapSearchBar) {
 if (lineupSearchBar) {
     lineupSearchBar.addEventListener("focus", () => {
         lineupSearchIcon.style.display = "inline-block";
-        lineupSearchBar.style.width = "23ch";
+        lineupSearchBar.style.width = "72vw";
     })
     
     lineupSearchBar.addEventListener("blur", () => {
         lineupSearchIcon.style.display = "none";
-        lineupSearchBar.style.width = "25ch";
+        lineupSearchBar.style.width = "80vw";
     })
 
     lineupSearchBar.addEventListener("keyup", (e) => {
