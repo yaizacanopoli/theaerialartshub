@@ -534,9 +534,14 @@ footer {
 .lineup-title-icon {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin-bottom: 0.5rem;
-    gap: 0.5rem;
+    gap: 0.3rem;
+}
+
+.lineup-title {
+    overflow-wrap: anywhere;
+    hyphens: auto;
 }
 
 .lineup-title-icon > .heart-icon {
@@ -548,7 +553,12 @@ footer {
 
 .filter-menu {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.2rem;
+}
+
+.filter-expanded {
+    flex-basis: 100%;
 }
 
 .filter-selector {
@@ -560,5 +570,5 @@ footer {
 .filter-arrow {
     width: 0.6rem;
     height: 0.6rem;
-    margin-top: 0.3rem;
+    margin-top: 0.2rem;
 }

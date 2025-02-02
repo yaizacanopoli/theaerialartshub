@@ -25,6 +25,8 @@ const lineupSearchIcon = document.querySelector("#lineup-search-icon");
 const lineupContainer = document.querySelector("#lineup-container");
 const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 
+const filterMenu = document.querySelector("#filter-menu");
+
 // for mobile menu
 
 navLogo.addEventListener("click", () => {
@@ -107,7 +109,7 @@ if (mapSearchBar) {
         mapSearchIcon.style.display = "inline-block";
         mapSearchBar.style.width = "72vw";
     })
-    
+
     mapSearchBar.addEventListener("blur", () => {
         mapSearchIcon.style.display = "none";
         mapSearchBar.style.width = "80vw";
@@ -115,7 +117,6 @@ if (mapSearchBar) {
 
     mapSearchBar.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
-            console.log("Enter pressed");
             foundStudiosContainer.innerHTML = "";
             foundStudiosContainer.style.display = "grid";
             foundStudiosContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 2fr))";
@@ -174,7 +175,7 @@ if (mapSearchBar) {
             foundStudiosContainer.insertAdjacentHTML("afterbegin", "<h1>Search results</h1>");
         }
     })
-    
+
     foundStudiosContainer.addEventListener("click", e => {
         if (e.target.classList.contains("heart-icon")) {
             if (e.target.src.endsWith("assets/heart-outline.svg")) {
@@ -193,7 +194,7 @@ if (lineupSearchBar) {
         lineupSearchIcon.style.display = "inline-block";
         lineupSearchBar.style.width = "72vw";
     })
-    
+
     lineupSearchBar.addEventListener("blur", () => {
         lineupSearchIcon.style.display = "none";
         lineupSearchBar.style.width = "80vw";
@@ -202,81 +203,149 @@ if (lineupSearchBar) {
     lineupSearchBar.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
             console.log("Enter pressed");
+            featuredLineupHeader.innerHTML = "";
+            filterMenu.innerHTML = "";
             featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-            const filterMenu =
-            `<div class="filter-menu">
-                <h4>Filter by:</h4>
-                <div class="filter-selector">
-                    <p class="filter-apparatus" id="filter-apparatus">Apparatus</p>
-                    <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
-                </div>
-                <div class="filter-selector">
-                    <p class="filter-features" id="filter-features">Features</p>
-                    <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
-                </div>
-            </div>`;
-            featuredLineupHeader.insertAdjacentHTML("afterend", filterMenu);
+            filterMenu.innerHTML +=
+                `<h4>Filter by:</h4>
+            <div class="filter-selector">
+                <p class="filter-one" id="filter-one"></p>
+                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+            </div>
+            <div class="filter-selector">
+                <p class="filter-two" id="filter-two"></p>
+                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+            </div>
+            <div class="filter-selector">
+                <p class="filter-three" id="filter-three"></p>
+                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+            </div>
+            <div class="filter-expanded" id="filter-expanded"></div>`;
 
-            const filterApparatus = document.querySelector("#filter-apparatus");
-            const filterFeatures = document.querySelector("#filter-features");
+            const filterExpanded = document.querySelector("#filter-expanded");
+            const filterOne = document.querySelector("#filter-one");
+            const filterTwo = document.querySelector("#filter-two");
+            const filterThree = document.querySelector("#filter-three");
             const filterArrow = document.querySelectorAll("#filter-arrow");
 
-
-
-            // work on the stuff below, doesn't work properly rn
-
-
-
-            const filterExpanded = `<h1>Expanded menu</h1>`;
-
-            filterApparatus.addEventListener("click", () => {
-                    const thisArrow = filterApparatus.nextElementSibling;
-                    if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
-                        thisArrow.src = "assets/triangle-up.svg";
-                        featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
-                        filterExpanded.style.visibility = "visible";
-                        filterExpanded.style.height = filterExpanded.scrollHeight + "px";
-            
-                    } else {
-                        thisArrow.src = "assets/triangle-down.svg";
-                        filterExpanded.style.visibility = "hidden";
-                        filterExpanded.style.height = "0";
-                    }
-                })
-
-                filterFeatures.addEventListener("click", () => {
-                    const thisArrow = filterFeatures.nextElementSibling;
-                    if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
-                        thisArrow.src = "assets/triangle-up.svg";
-                        featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
-                        filterExpanded.style.visibility = "visible";
-                        filterExpanded.style.height = filterExpanded.scrollHeight + "px";
-            
-                    } else {
-                        thisArrow.src = "assets/triangle-down.svg";
-                        filterExpanded.style.visibility = "hidden";
-                        filterExpanded.style.height = "0";
-                    }
-                })
-
-                filterArrow.forEach(arrow => {
-                    arrow.addEventListener("click", () => {
-                        const thisDropdown = filterExpanded;
-                        if (arrow.src.endsWith("assets/triangle-down.svg")) {
-                            arrow.src = "assets/triangle-up.svg";
-                            featuredLineupHeader.insertAdjacentHTML("afterend", filterExpanded);
-                            thisDropdown.style.visibility = "visible";
-                            thisDropdown.style.height = thisDropdown.scrollHeight + "px";
-                
-                        } else {
-                            arrow.src = "assets/triangle-down.svg";
-                            thisDropdown.style.visibility = "hidden";
-                            thisDropdown.style.height = "0";
-                        }
-                    })
-                })
-
+            const pagePath = window.location.pathname;
+            switch (true) {
+                case pagePath.includes("studios.html"):
+                case pagePath.includes("coaches.html"):
+                case pagePath.includes("performers.html"):
+                case pagePath.includes("collectives.html"):
+                case pagePath.includes("retreats.html"):
+                    filterOne.textContent = "Apparatus";
+                    filterTwo.textContent = "Features";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("competitions.html"):
+                    filterOne.textContent = "Apparatus";
+                    filterTwo.textContent = "Location";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("festivals.html"):
+                    filterOne.textContent = "Date";
+                    filterTwo.textContent = "Location";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("health.html"):
+                case pagePath.includes("photography.html"):
+                case pagePath.includes("clothing.html"):
+                case pagePath.includes("heels.html"):
+                case pagePath.includes("equipment.html"):
+                    filterOne.textContent = "Type";
+                    filterTwo.textContent = "Location";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("otherresources.html"):
+                    filterOne.textContent = "Type";
+                    filterTwo.textContent = "";
+                    filterTwo.nextElementSibling.style.display = "none";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("hoop.html"):
+                case pagePath.includes("silks.html"):
+                case pagePath.includes("trapeze.html"):
+                case pagePath.includes("hammock.html"):
+                case pagePath.includes("pole.html"):
+                case pagePath.includes("straps.html"):
+                case pagePath.includes("otherskills.html"):
+                    filterOne.textContent = "Level";
+                    filterTwo.textContent = "Type";
+                    filterThree.textContent = "";
+                    filterThree.nextElementSibling.style.display = "none";
+                    break;
+                case pagePath.includes("events.html"):
+                    filterOne.textContent = "Type";
+                    filterTwo.textContent = "Date";
+                    filterThree.textContent = "Location";
+                    break;
+                default:
+                    filterOne.textContent = "Filter one";
+                    filterTwo.textContent = "Filter two";
+                    filterThree.textContent = "Filter three";
             }
-        })
-            
+
+            filterOne.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                const thisArrow = filterOne.nextElementSibling;
+                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                    thisArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+
+                } else {
+                    thisArrow.src = "assets/triangle-down.svg";
+                    filterExpanded.innerHTML = "";
+                }
+            })
+
+            filterTwo.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                const thisArrow = filterTwo.nextElementSibling;
+                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                    thisArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+
+                } else {
+                    thisArrow.src = "assets/triangle-down.svg";
+                    filterExpanded.innerHTML = "";
+                }
+            })
+
+            filterThree.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                const thisArrow = filterThree.nextElementSibling;
+                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                    thisArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+
+                } else {
+                    thisArrow.src = "assets/triangle-down.svg";
+                    filterExpanded.innerHTML = "";
+                }
+            })
+
+            filterArrow.forEach(arrow => {
+                arrow.addEventListener("click", () => {
+                    filterExpanded.innerHTML = "";
+                    if (arrow.src.endsWith("assets/triangle-down.svg")) {
+                        arrow.src = "assets/triangle-up.svg";
+                        filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+
+                    } else {
+                        arrow.src = "assets/triangle-down.svg";
+                        filterExpanded.innerHTML = "";
+                    }
+                })
+            })
+
+        }
+    })
+
 }
