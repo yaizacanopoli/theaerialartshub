@@ -117,11 +117,11 @@ if (mapSearchBar) {
         if (e.key === "Enter") {
             console.log("Enter pressed");
             foundStudiosContainer.innerHTML = "";
-            foundStudiosContainer.style.flexWrap = "wrap";
-            foundStudiosContainer.style.flexDirection = "row";
-            foundStudiosContainer.style.justifyContent = "center";
-            foundStudiosContainer.style.width = "94%";
-            foundStudiosContainer.style.marginTop = "1rem";
+            foundStudiosContainer.style.display = "grid";
+            foundStudiosContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 2fr))";
+            foundStudiosContainer.style.gap = "1rem";
+            foundStudiosContainer.style.width = "calc(100% - 3rem)";
+            foundStudiosContainer.style.marginBottom = "2rem";
             foundStudiosContainer.innerHTML +=
                 `<div class="lineup-item">
                     <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
@@ -171,6 +171,7 @@ if (mapSearchBar) {
                     </div>
                 </div>
             `
+            foundStudiosContainer.insertAdjacentHTML("afterbegin", "<h1>Search results</h1>");
         }
     })
     
