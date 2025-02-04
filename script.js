@@ -2,6 +2,7 @@ const navLogo = document.querySelector("#nav-logo");
 const mobileMenu = document.querySelector("#mobile-menu");
 const closingX = document.querySelector("#closing-x");
 const navItem = document.querySelectorAll("#nav-item");
+const navItemH2 = document.querySelectorAll("#nav-item > h2");
 const navLinkArrow = document.querySelectorAll("#nav-link-arrow");
 const dropdownContainer = document.querySelectorAll("#dropdown-container");
 const navSearchBar = document.querySelector("#nav-search-bar");
@@ -10,11 +11,11 @@ const searchIcon = document.querySelector("#search-icon");
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
 const heartIcon = document.querySelectorAll(".heart-icon");
+const heartIconImg = document.querySelectorAll(".heart-icon > img");
 const arrowBack = document.querySelectorAll("#arrow-back");
 const footer = document.querySelector("footer");
 
 const mapMain = document.querySelector("#map-main");
-const mapImage = document.querySelector("#map-placeholder-img");
 const foundStudiosContainer = document.querySelector("#found-studios-container");
 const blueBackground = document.querySelector("#blue-background");
 const mapSearchBar = document.querySelector("#map-search-bar");
@@ -62,6 +63,27 @@ navItem.forEach(item => {
     })
 })
 
+navItemH2.forEach(item => {
+    item.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            const thisArrow = item.nextElementSibling;
+            const thisDropdown = thisArrow.nextElementSibling;
+            if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
+                thisArrow.src = "assets/triangle-up.svg";
+                thisDropdown.style.visibility = "visible";
+                thisDropdown.style.height = thisDropdown.scrollHeight + "px";
+                thisDropdown.style.margin = "1.2rem 1.2rem 0 0";
+
+            } else {
+                thisArrow.src = "assets/triangle-down.svg";
+                thisDropdown.style.visibility = "hidden";
+                thisDropdown.style.height = "0";
+                thisDropdown.style.margin = "0";
+            }
+        }
+    })
+})
+
 navLinkArrow.forEach(arrow => {
     arrow.addEventListener("click", () => {
         const thisDropdown = arrow.nextElementSibling;
@@ -82,17 +104,17 @@ navLinkArrow.forEach(arrow => {
 
 navSearchBar.addEventListener("focus", () => {
     searchIcon.style.display = "inline-block";
-    navSearchBar.style.width = "72vw";
+    navSearchBar.style.width = "min(72vw, 475px)";
 })
 
 navSearchBar.addEventListener("blur", () => {
     searchIcon.style.display = "none";
-    navSearchBar.style.width = "80vw";
+    navSearchBar.style.width = "min(80vw, 500px)";
 })
 
-// heart icons (home page and resources)
+// heart icons
 
-heartIcon.forEach(icon => {
+heartIconImg.forEach(icon => {
     icon.addEventListener("click", () => {
         if (icon.src.endsWith("assets/heart-outline.svg")) {
             icon.src = "assets/heart.svg"
@@ -102,27 +124,38 @@ heartIcon.forEach(icon => {
     })
 })
 
+heartIcon.forEach(icon => {
+    icon.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            if (icon.firstChild.src.endsWith("assets/heart-outline.svg")) {
+                icon.firstChild.src = "assets/heart.svg"
+            } else {
+                icon.firstChild.src = "assets/heart-outline.svg"
+            }
+        }
+    })
+})
+
 // for studio map page
 
 if (mapSearchBar) {
     mapSearchBar.addEventListener("focus", () => {
         mapSearchIcon.style.display = "inline-block";
-        mapSearchBar.style.width = "72vw";
+        mapSearchBar.style.width = "min(72vw, 475px)";
     })
 
     mapSearchBar.addEventListener("blur", () => {
         mapSearchIcon.style.display = "none";
-        mapSearchBar.style.width = "80vw";
+        mapSearchBar.style.width = "min(80vw, 500px)";
     })
 
     mapSearchBar.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
             foundStudiosContainer.innerHTML = "";
             foundStudiosContainer.style.display = "grid";
-            foundStudiosContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 2fr))";
+            foundStudiosContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(200px, 1fr))";
             foundStudiosContainer.style.gap = "1rem";
             foundStudiosContainer.style.width = "calc(100% - 3rem)";
-            foundStudiosContainer.style.marginBottom = "2rem";
             foundStudiosContainer.innerHTML +=
                 `<div class="lineup-item">
                     <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
@@ -192,12 +225,12 @@ if (mapSearchBar) {
 if (lineupSearchBar) {
     lineupSearchBar.addEventListener("focus", () => {
         lineupSearchIcon.style.display = "inline-block";
-        lineupSearchBar.style.width = "72vw";
+        lineupSearchBar.style.width = "min(72vw, 475px)";
     })
 
     lineupSearchBar.addEventListener("blur", () => {
         lineupSearchIcon.style.display = "none";
-        lineupSearchBar.style.width = "80vw";
+        lineupSearchBar.style.width = "min(80vw, 500px)";
     })
 
     lineupSearchBar.addEventListener("keyup", (e) => {
@@ -209,16 +242,16 @@ if (lineupSearchBar) {
             filterMenu.innerHTML +=
                 `<h4>Filter by:</h4>
             <div class="filter-selector">
-                <p class="filter-one" id="filter-one"></p>
-                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+                <button class="filter-one" id="filter-one"></button>
+                <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
             </div>
             <div class="filter-selector">
-                <p class="filter-two" id="filter-two"></p>
-                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+                <button class="filter-two" id="filter-two"></button>
+                <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
             </div>
             <div class="filter-selector">
-                <p class="filter-three" id="filter-three"></p>
-                <img src="assets/triangle-down.svg" class="filter-arrow" id="filter-arrow">
+                <button class="filter-three" id="filter-three"></button>
+                <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
             </div>
             <div class="filter-expanded" id="filter-expanded"></div>`;
 
@@ -237,19 +270,19 @@ if (lineupSearchBar) {
                 case pagePath.includes("retreats.html"):
                     filterOne.textContent = "Apparatus";
                     filterTwo.textContent = "Features";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("competitions.html"):
                     filterOne.textContent = "Apparatus";
                     filterTwo.textContent = "Location";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("festivals.html"):
                     filterOne.textContent = "Date";
                     filterTwo.textContent = "Location";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("health.html"):
@@ -259,14 +292,14 @@ if (lineupSearchBar) {
                 case pagePath.includes("equipment.html"):
                     filterOne.textContent = "Type";
                     filterTwo.textContent = "Location";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("otherresources.html"):
                     filterOne.textContent = "Type";
-                    filterTwo.textContent = "";
+                    filterTwo.style.display = "none";
                     filterTwo.nextElementSibling.style.display = "none";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("hoop.html"):
@@ -278,7 +311,7 @@ if (lineupSearchBar) {
                 case pagePath.includes("otherskills.html"):
                     filterOne.textContent = "Level";
                     filterTwo.textContent = "Type";
-                    filterThree.textContent = "";
+                    filterThree.style.display = "none";
                     filterThree.nextElementSibling.style.display = "none";
                     break;
                 case pagePath.includes("events.html"):
@@ -292,58 +325,101 @@ if (lineupSearchBar) {
                     filterThree.textContent = "Filter three";
             }
 
+            const firstArrow = filterOne.nextElementSibling;
+            const secondArrow = filterTwo.nextElementSibling;
+            const thirdArrow = filterThree.nextElementSibling;
+
             filterOne.addEventListener("click", () => {
                 filterExpanded.innerHTML = "";
-                const thisArrow = filterOne.nextElementSibling;
-                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
-                    thisArrow.src = "assets/triangle-up.svg";
+                if (firstArrow.src.endsWith("assets/triangle-down.svg")) {
+                    firstArrow.src = "assets/triangle-up.svg";
                     filterExpanded.innerHTML = `<p>Expanded menu</p>`;
-
+                    filterExpanded.style.marginBottom = "1rem";
+                    secondArrow.src = "assets/triangle-down.svg";
+                    thirdArrow.src = "assets/triangle-down.svg";
                 } else {
-                    thisArrow.src = "assets/triangle-down.svg";
+                    firstArrow.src = "assets/triangle-down.svg";
                     filterExpanded.innerHTML = "";
+                    filterExpanded.style.marginBottom = "0";
+                }
+            })
+
+            firstArrow.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                if (firstArrow.src.endsWith("assets/triangle-down.svg")) {
+                    firstArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+                    filterExpanded.style.marginBottom = "1rem";
+                    secondArrow.src = "assets/triangle-down.svg";
+                    thirdArrow.src = "assets/triangle-down.svg";
+                } else {
+                    firstArrow.src = "assets/triangle-down.svg";
+                    filterExpanded.innerHTML = "";
+                    filterExpanded.style.marginBottom = "0";
                 }
             })
 
             filterTwo.addEventListener("click", () => {
                 filterExpanded.innerHTML = "";
-                const thisArrow = filterTwo.nextElementSibling;
-                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
-                    thisArrow.src = "assets/triangle-up.svg";
+                if (secondArrow.src.endsWith("assets/triangle-down.svg")) {
+                    secondArrow.src = "assets/triangle-up.svg";
                     filterExpanded.innerHTML = `<p>Expanded menu</p>`;
-
+                    filterExpanded.style.marginBottom = "1rem";
+                    firstArrow.src = "assets/triangle-down.svg";
+                    thirdArrow.src = "assets/triangle-down.svg";
                 } else {
-                    thisArrow.src = "assets/triangle-down.svg";
+                    secondArrow.src = "assets/triangle-down.svg";
                     filterExpanded.innerHTML = "";
+                    filterExpanded.style.marginBottom = "0";
+                }
+            })
+
+            secondArrow.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                if (secondArrow.src.endsWith("assets/triangle-down.svg")) {
+                    secondArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+                    filterExpanded.style.marginBottom = "1rem";
+                    firstArrow.src = "assets/triangle-down.svg";
+                    thirdArrow.src = "assets/triangle-down.svg";
+                } else {
+                    secondArrow.src = "assets/triangle-down.svg";
+                    filterExpanded.innerHTML = "";
+                    filterExpanded.style.marginBottom = "0";
                 }
             })
 
             filterThree.addEventListener("click", () => {
                 filterExpanded.innerHTML = "";
-                const thisArrow = filterThree.nextElementSibling;
-                if (thisArrow.src.endsWith("assets/triangle-down.svg")) {
-                    thisArrow.src = "assets/triangle-up.svg";
+                if (thirdArrow.src.endsWith("assets/triangle-down.svg")) {
+                    thirdArrow.src = "assets/triangle-up.svg";
                     filterExpanded.innerHTML = `<p>Expanded menu</p>`;
-
+                    filterExpanded.style.marginBottom = "1rem";
+                    firstArrow.src = "assets/triangle-down.svg";
+                    secondArrow.src = "assets/triangle-down.svg";
                 } else {
-                    thisArrow.src = "assets/triangle-down.svg";
+                    thirdArrow.src = "assets/triangle-down.svg";
                     filterExpanded.innerHTML = "";
+                    filterExpanded.style.marginBottom = "0";
                 }
             })
 
-            filterArrow.forEach(arrow => {
-                arrow.addEventListener("click", () => {
+            thirdArrow.addEventListener("click", () => {
+                filterExpanded.innerHTML = "";
+                if (thirdArrow.src.endsWith("assets/triangle-down.svg")) {
+                    thirdArrow.src = "assets/triangle-up.svg";
+                    filterExpanded.innerHTML = `<p>Expanded menu</p>`;
+                    filterExpanded.style.marginBottom = "1rem";
+                    firstArrow.src = "assets/triangle-down.svg";
+                    secondArrow.src = "assets/triangle-down.svg";
+                } else {
+                    thirdArrow.src = "assets/triangle-down.svg";
                     filterExpanded.innerHTML = "";
-                    if (arrow.src.endsWith("assets/triangle-down.svg")) {
-                        arrow.src = "assets/triangle-up.svg";
-                        filterExpanded.innerHTML = `<p>Expanded menu</p>`;
-
-                    } else {
-                        arrow.src = "assets/triangle-down.svg";
-                        filterExpanded.innerHTML = "";
-                    }
-                })
+                    filterExpanded.style.marginBottom = "0";
+                }
             })
+
+
 
         }
     })
