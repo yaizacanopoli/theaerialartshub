@@ -18,8 +18,8 @@ const footer = document.querySelector("footer");
 const mapMain = document.querySelector("#map-main");
 const foundStudiosContainer = document.querySelector("#found-studios-container");
 const blueBackground = document.querySelector("#blue-background");
-const mapSearchBar = document.querySelector("#map-search-bar");
 const mapSearchIcon = document.querySelector("#map-search-icon");
+const mapCardItemImg = document.querySelector("#map-card-item-img");
 
 const lineupSearchBar = document.querySelector("#lineup-search-bar");
 const lineupSearchIcon = document.querySelector("#lineup-search-icon");
@@ -136,90 +136,6 @@ heartIcon.forEach(icon => {
     })
 })
 
-// for studio map page
-
-if (mapSearchBar) {
-    mapSearchBar.addEventListener("focus", () => {
-        mapSearchIcon.style.display = "inline-block";
-        mapSearchBar.style.width = "min(72vw, 475px)";
-    })
-
-    mapSearchBar.addEventListener("blur", () => {
-        mapSearchIcon.style.display = "none";
-        mapSearchBar.style.width = "min(80vw, 500px)";
-    })
-
-    mapSearchBar.addEventListener("keyup", (e) => {
-        if (e.key === "Enter") {
-            foundStudiosContainer.innerHTML = "";
-            foundStudiosContainer.style.display = "grid";
-            foundStudiosContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(200px, 1fr))";
-            foundStudiosContainer.style.gap = "1rem";
-            foundStudiosContainer.style.width = "calc(100% - 3rem)";
-            foundStudiosContainer.innerHTML +=
-                `<div class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h3 class="lineup-title">Name of studio</h3>
-                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </div>
-    
-            <div class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h3 class="lineup-title">Name of studio</h3>
-                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </div>
-    
-            <div class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h3 class="lineup-title">Name of studio</h3>
-                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </div>
-    
-            <div class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for studio image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h3 class="lineup-title">Name of studio</h3>
-                            <img class="heart-icon" id="heart-icon" src="assets/heart-outline.svg" alt="Like">
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </div>
-            `
-            foundStudiosContainer.insertAdjacentHTML("afterbegin", "<h1>Search results</h1>");
-        }
-    })
-
-    foundStudiosContainer.addEventListener("click", e => {
-        if (e.target.classList.contains("heart-icon")) {
-            if (e.target.src.endsWith("assets/heart-outline.svg")) {
-                e.target.src = "assets/heart.svg"
-            } else {
-                e.target.src = "assets/heart-outline.svg"
-            }
-        }
-    });
-}
-
 // for lineup pages
 
 if (lineupSearchBar) {
@@ -235,7 +151,6 @@ if (lineupSearchBar) {
 
     lineupSearchBar.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
-            console.log("Enter pressed");
             featuredLineupHeader.innerHTML = "";
             filterMenu.innerHTML = "";
             featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
@@ -254,6 +169,10 @@ if (lineupSearchBar) {
                 <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
             </div>
             <div class="filter-expanded" id="filter-expanded"></div>`;
+
+            if (mapCardItemImg) {
+                mapCardItemImg.scrollIntoView({behavior: "smooth", block: "end"});
+            }
 
             const filterExpanded = document.querySelector("#filter-expanded");
             const filterOne = document.querySelector("#filter-one");
