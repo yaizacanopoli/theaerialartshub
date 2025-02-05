@@ -139,11 +139,11 @@ header {
     border: none;
 }
 
-.nav-item > h2 {
+.nav-item>h2 {
     font-size: calc(1.2rem + 1.3vw);
 }
 
-.nav-item-div > *:hover {
+.nav-item-div>*:hover {
     cursor: pointer;
 }
 
@@ -279,18 +279,47 @@ main {
     scroll-snap-align: start;
 }
 
-.map-card-item-img {
-    width: calc(100% - calc(1.5rem + 1vw));
-    aspect-ratio: 16 / 9;
-    max-height: 75vh;
-    border-radius: 5px;
-    margin-top: 1rem;
-    scroll-margin-bottom: 80vh;
+.map-h1 {
+    margin-bottom: 1rem;
 }
 
-.map-main .map-card-item-img {
+.map-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(100% - calc(1.5rem + 1vw));
+    border-radius: 5px;
+    background-color: #C1D4EF;
+    gap: 1rem;
+}
+
+.map-card {
+    flex-grow: 1;
+}
+
+.index-map-text {
+    flex: 2;
+    align-self: center;
+    min-width: 30ch;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    font-size: calc(0.8rem + 0.6vw);
+}
+
+.index-map-img {
+    border-radius: 2px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+}
+
+.map-card-item-img {
     margin-bottom: 2rem;
     width: calc(100% - calc(3rem + 2vw));
+    scroll-margin-bottom: 80vh;
+    aspect-ratio: 16 / 9;
+    max-height: 80vh;
 }
 
 .item-img {
@@ -400,7 +429,6 @@ footer {
 /* for the about page */
 
 .about-main {
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     width: calc(100% - calc(3rem + 2vw));
@@ -626,12 +654,12 @@ footer {
     gap: 0.2rem;
 }
 
-.filter-selector > * {
+.filter-selector>* {
     background: none;
     border: none;
 }
 
-.filter-selector > *:hover {
+.filter-selector>*:hover {
     cursor: pointer;
 }
 
