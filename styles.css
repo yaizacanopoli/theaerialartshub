@@ -50,6 +50,7 @@ img:focus-visible {
 header {
     position: relative;
     scroll-margin-top: 10rem;
+    z-index: 1;
 }
 
 .header-container {
@@ -58,7 +59,6 @@ header {
     background-color: white;
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
     width: 100%;
     padding: 1.5rem calc(1.5rem + 1vw);
     gap: 0.5rem;
@@ -95,6 +95,10 @@ header {
     cursor: pointer;
 }
 
+.desktop-menu {
+    display: none;
+}
+
 .mobile-menu {
     display: none;
     flex-direction: column;
@@ -103,7 +107,6 @@ header {
     background-color: white;
     z-index: 1;
     overflow-y: scroll;
-    background-color: white;
 }
 
 .closing-x {
@@ -118,6 +121,10 @@ header {
 .closing-x:hover {
     cursor: pointer;
     transform: scale(1.05);
+}
+
+li {
+    list-style: none;
 }
 
 .nav-links {
@@ -156,7 +163,7 @@ h2.nav-item:hover {
 }
 
 .nav-link-arrow {
-    width: 1rem;
+    width: 0.9rem;
     height: auto;
     margin-top: 0.5rem;
 }
@@ -236,6 +243,92 @@ h2.nav-item:hover {
     height: 1.8rem;
     margin-top: -0.5rem;
     width: auto;
+}
+
+@media (min-width: 890px) {
+
+    main {
+        padding-top: 4rem;
+    }
+
+    .nav-logo {
+        display: none;
+    }
+
+    .desktop-menu {
+        position: fixed;
+        margin-top: -4rem;
+        display: flex;
+        width: 100%;
+        padding: 1.5rem calc(1.5rem + 1vw);
+        background-color: white;
+        overflow-x: hidden;
+    }
+
+    .closing-x {
+        display: none;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin: 0 0.3rem;
+    }
+
+    .nav-item-div {
+        justify-content: center;
+        width: fit-content;
+    }
+
+    .nav-item {
+        font-size: calc(1rem + 0.5vw);
+        display: flex;
+        gap: 0.2rem;
+    }
+
+    li {
+        margin-right: calc(1rem + 0.3vw);
+    }
+
+    .nav-item>h2 {
+        font-size: calc(1rem + 0.5vw);
+    }
+
+    .nav-link-arrow {
+        width: 0.7rem;
+    }
+
+    .dropdown-container {
+        display: none;
+    }
+
+    .dropdown-item {
+        font-size: calc(1rem + 0.1vw);
+        flex-basis: 100%;
+    }
+
+    .nav-input {
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .desktop-menu .sign-in-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: calc(1rem + 0.3vw);
+        margin-left: auto;
+    }
+
+    .desktop-menu .search-bar {
+        display: none;
+    }
+
+    .desktop-menu .search-icon {
+        display: block;
+        height: 1.5rem;
+        margin-top: 0.05rem;
+    }
 }
 
 /* main section starts */
@@ -638,14 +731,10 @@ footer {
 /* for filter menu */
 
 .filter-menu {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-}
-
-.filter-expanded {
-    flex-basis: 100%;
-    margin-top: -0.5rem;
 }
 
 .filter-selector {
