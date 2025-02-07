@@ -36,7 +36,7 @@ function toggleMobileMenu() {
     }
 }
 
-function toggleDropdown(arrow, dropdown) {
+function toggleMobileDropdown(arrow, dropdown) {
     if (arrow.src.endsWith("assets/triangle-down.svg")) {
         arrow.src = "assets/triangle-up.svg";
         dropdown.style.visibility = "visible";
@@ -48,6 +48,24 @@ function toggleDropdown(arrow, dropdown) {
         dropdown.style.visibility = "hidden";
         dropdown.style.height = "0";
         dropdown.style.margin = "0";
+    }
+}
+
+function toggleDesktopDropdown(arrow, dropdown) {
+    if (arrow.src.endsWith("assets/triangle-down.svg")) {
+        arrow.src = "assets/triangle-up.svg";
+        dropdown.style.display = "flex";
+        dropdown.style.visibility = "visible";
+        dropdown.style.height = "fit-content";
+        dropdown.style.width = "max-content";
+        dropdown.style.padding = "1.2rem 1.2rem 1rem 0";
+
+    } else {
+        arrow.src = "assets/triangle-down.svg";
+        dropdown.style.visibility = "hidden";
+        dropdown.style.display = "none";
+        dropdown.style.height = "0";
+        dropdown.style.padding = "0";
     }
 }
 
@@ -64,13 +82,17 @@ function toggleLikeState(icon) {
 document.addEventListener("click", e => {
     if (e.target.matches("#nav-logo > img") || e.target.matches("#closing-x > img")) {
         toggleMobileMenu();
-    } else if (e.target.matches("#nav-item > h2")) {
+    } else if (e.target.matches("#mobile-menu #nav-item > h2")) {
         const thisArrow = e.target.parentElement.nextElementSibling;
         const thisDropdown = thisArrow.nextElementSibling;
-        toggleDropdown(thisArrow, thisDropdown);
+        toggleMobileDropdown(thisArrow, thisDropdown);
     } else if (e.target.matches("#nav-link-arrow")) {
         const thisDropdown = e.target.nextElementSibling;
-        toggleDropdown(e.target, thisDropdown);
+        toggleMobileDropdown(e.target, thisDropdown);
+    } else if (e.target.matches("#desktop-menu #nav-item > h2")) {
+        const thisArrow = e.target.nextElementSibling;
+        const thisDropdown = thisArrow.parentElement.nextElementSibling;
+        toggleDesktopDropdown(thisArrow, thisDropdown);
     } else if (e.target.matches(".heart-icon > img")) {
         toggleLikeState(e.target)
     }
@@ -120,14 +142,17 @@ function generateFilters() {
             <div class="filter-selector">
                 <button class="filter-one" id="filter-one"></button>
                 <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
+                <div class="filter-expanded" id="filter-expanded-one"></div>
             </div>
             <div class="filter-selector">
                 <button class="filter-two" id="filter-two"></button>
                 <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
+                <div class="filter-expanded" id="filter-expanded-two"></div>
             </div>
             <div class="filter-selector">
                 <button class="filter-three" id="filter-three"></button>
                 <img class="filter-arrow" id="filter-arrow" src="assets/triangle-down.svg">
+                <div class="filter-expanded" id="filter-expanded-three"></div>
             </div>`
 }
 
