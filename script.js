@@ -52,20 +52,28 @@ function toggleMobileDropdown(arrow, dropdown) {
 }
 
 function toggleDesktopDropdown(arrow, dropdown) {
+
+    const allDropdowns = document.querySelectorAll("#desktop-dropdown-container");
+    allDropdowns.forEach(otherDropdown => {
+        if (otherDropdown !== dropdown) {
+            otherDropdown.style.display = "none";
+        }
+    })
+
+    const allArrows = document.querySelectorAll("#desktop-menu #nav-link-arrow");
+    allArrows.forEach(otherArrow => {
+        if (otherArrow !== arrow) {
+            otherArrow.src = "assets/triangle-down.svg";
+        }
+    })
+
     if (arrow.src.endsWith("assets/triangle-down.svg")) {
         arrow.src = "assets/triangle-up.svg";
         dropdown.style.display = "flex";
-        dropdown.style.visibility = "visible";
-        dropdown.style.height = "fit-content";
-        dropdown.style.width = "max-content";
-        dropdown.style.padding = "1.2rem 1.2rem 1rem 0";
 
     } else {
         arrow.src = "assets/triangle-down.svg";
-        dropdown.style.visibility = "hidden";
         dropdown.style.display = "none";
-        dropdown.style.height = "0";
-        dropdown.style.padding = "0";
     }
 }
 
@@ -86,11 +94,15 @@ document.addEventListener("click", e => {
         const thisArrow = e.target.parentElement.nextElementSibling;
         const thisDropdown = thisArrow.nextElementSibling;
         toggleMobileDropdown(thisArrow, thisDropdown);
-    } else if (e.target.matches("#nav-link-arrow")) {
+    } else if (e.target.matches("#mobile-menu #nav-link-arrow")) {
         const thisDropdown = e.target.nextElementSibling;
         toggleMobileDropdown(e.target, thisDropdown);
     } else if (e.target.matches("#desktop-menu #nav-item > h2")) {
         const thisArrow = e.target.nextElementSibling;
+        const thisDropdown = thisArrow.parentElement.nextElementSibling;
+        toggleDesktopDropdown(thisArrow, thisDropdown);
+    } else if (e.target.matches("#desktop-menu #nav-link-arrow")) {
+        const thisArrow = e.target;
         const thisDropdown = thisArrow.parentElement.nextElementSibling;
         toggleDesktopDropdown(thisArrow, thisDropdown);
     } else if (e.target.matches(".heart-icon > img")) {
@@ -196,7 +208,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
     allExpandedMenus.forEach((otherMenu) => {
         otherMenu.style.display = "none";
     });
-        filterExpanded.style.display = "flex";
+    filterExpanded.style.display = "flex";
 
     allArrows.forEach((otherArrow) => {
         if (otherArrow !== arrow) {
@@ -212,6 +224,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
     } else {
         arrow.src = "assets/triangle-down.svg";
         filterExpanded.innerHTML = "";
+        filterExpanded.style.marginBottom = "0";
     }
 }
 
@@ -232,14 +245,14 @@ function configureFilterButtons() {
         filterExpanded.className = `filter-expanded-${index}`;
         filterExpanded.id = `filter-expanded-${index}`;
         filter.parentElement.parentElement.appendChild(filterExpanded);
-        
+
         filterExpanded.style.flexBasis = "100%";
         filterExpanded.style.marginBottom = "1rem";
         filterExpanded.style.display = "none";
-        
+
         const filterOptions = determineFilterOptions();
         applyFilterOptions(filterOne, filterTwo, filterThree, filterOptions);
-        
+
         setupFilterToggle(filter, filterExpanded, filterOptions[index]);
     });
 }
