@@ -332,14 +332,19 @@ h2.nav-item:hover {
     }
 
     .desktop-menu .search-bar {
-        display: none;
+        position: absolute;
+        right: calc(1.5rem + 1vw);
+        height: 2.5rem;
+        width: min(40vw, 450px);
+        font-size: calc(1rem + 0.8vw);
+        top: -3.5rem;
     }
 
     .desktop-menu .search-icon {
         display: block;
         height: auto;
         width: 1.6rem;
-        margin-top: -0.2rem;
+        margin-top: -0.1rem;
         margin-left: -0.8rem;
         background: none;
         border: none;
@@ -424,7 +429,7 @@ main {
 
 .map-card-item-img {
     width: calc(100% - calc(3rem + 2vw));
-    scroll-margin-bottom: 80vh;
+    scroll-margin-bottom: 50vh;
     aspect-ratio: 16 / 9;
     max-height: 80vh;
     margin-bottom: 1.5rem;
@@ -569,24 +574,22 @@ footer {
 
 /* for sign-in and register pages */
 
-.sign-in-body {
+.sign-in-register-main {
+    height: calc(100vh - 20rem);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
+    justify-content: center;
 }
 
 .sign-in-container {
     display: flex;
-    align-items: center;
     justify-content: center;
+    height: 100%;
 }
 
 .sign-in-form {
     display: flex;
     width: calc(100% - 3rem);
     flex-direction: column;
-    align-items: space-between;
     justify-content: center;
     gap: 1rem;
 }
@@ -645,6 +648,19 @@ footer {
 
 .register-btn:hover {
     transform: scale(1.03);
+}
+
+.coming-soon-text {
+    font-size: calc(0.8rem + 0.2vw);
+    text-align: center;
+    height: 0;
+    margin-top: 1rem;
+}
+
+.sign-in-footer {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - calc(3rem + 2vw));
 }
 
 /* for studio map page + lineup pages */

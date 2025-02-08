@@ -97,16 +97,30 @@ document.addEventListener("click", e => {
     } else if (e.target.matches("#mobile-menu #nav-link-arrow")) {
         const thisDropdown = e.target.nextElementSibling;
         toggleMobileDropdown(e.target, thisDropdown);
-    } else if (e.target.matches("#desktop-menu #nav-item > h2")) {
+    } else if (e.target.matches(".heart-icon > img")) {
+        toggleLikeState(e.target)
+    } else if (e.target.matches("#sign-in-main .sign-in-btn") || e.target.matches("#register-main .register-btn")) {
+        e.preventDefault();
+        const comingSoonText = document.querySelector(".coming-soon-text");
+        comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
+    } 
+})
+
+
+
+document.addEventListener("mouseover", e => {
+    if (e.target.matches("#desktop-menu #nav-item > h2")) {
         const thisArrow = e.target.nextElementSibling;
         const thisDropdown = thisArrow.parentElement.nextElementSibling;
         toggleDesktopDropdown(thisArrow, thisDropdown);
-    } else if (e.target.matches("#desktop-menu #nav-link-arrow")) {
-        const thisArrow = e.target;
-        const thisDropdown = thisArrow.parentElement.nextElementSibling;
+    }
+})
+
+document.addEventListener("mouseout", e => {
+    if (e.target.matches("#desktop-dropdown-container")) {
+        const thisArrow = e.target.parentElement.firstChild.firstChild.nextElementSibling;
+        const thisDropdown = e.target;
         toggleDesktopDropdown(thisArrow, thisDropdown);
-    } else if (e.target.matches(".heart-icon > img")) {
-        toggleLikeState(e.target)
     }
 })
 
@@ -114,7 +128,7 @@ document.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         if (e.target.matches("#nav-logo") || e.target.matches("#closing-x")) {
             toggleMobileMenu();
-        } else if (e.target.matches("#nav-item > h2")) {
+        } else if (e.target.matches("#desktop-menu #nav-item > h2")) {
             const thisArrow = e.target.nextElementSibling;
             const thisDropdown = thisArrow.nextElementSibling;
             toggleDropdown(thisArrow, thisDropdown);
