@@ -13,11 +13,9 @@
 
     <header id="header">
         <div class="header-container" id="header-container">
-            <div class="arrow-back" id="arrow-back">
-                <a href="javascript:window.history.back();">
-                    <img class="arrow-back-img" id="arrow-back-img" src="assets/chevron-left.svg" alt="Back">
-                </a>
-            </div>
+            <button class="arrow-back" id="arrow-back">
+                <img class="arrow-back-img" id="arrow-back-img" src="assets/chevron-left.svg" alt="Back">
+            </button>
             <a href="index.html" aria-label="Home page"><img class="logo" src="assets/logo.jpg"
                     alt="The Aerial Arts Hub"></a>
             <button class="nav-logo" id="nav-logo"><img src="assets/menu.svg" alt="Open navigation menu"></button>
@@ -94,12 +92,12 @@
                 <li class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html" aria-label="About page">About</a></h2>
                 </li>
-                <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a>
-                <div class="search-items">
-                    <img src="assets/magnify.svg" class="search-icon" id="search-icon" alt="Search icon">
-                </div>
+                <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a>  
             </ul>
-            <input type="search" class="search-bar" id="nav-search-bar" placeholder="Search...">
+            <div class="desktop-nav-search-items">
+                <input type="search" class="search-bar" id="desktop-search-bar" placeholder="Search...">
+                <img src="assets/magnify.svg" class="search-icon" id="desktop-search-icon" alt="Search icon">
+            </div>
         </nav>
 
         <!-- mobile menu -->

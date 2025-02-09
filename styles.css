@@ -72,9 +72,12 @@ header {
     width: 0.6rem;
     flex-shrink: 0;
     transition: .2s ease-in-out 0s;
+    background: none;
+    border: none;
 }
 
 .arrow-back:hover {
+    cursor: pointer;
     transform: scale(1.1);
 }
 
@@ -163,7 +166,7 @@ h2.nav-item:hover {
 }
 
 .nav-link-arrow {
-    width: 0.9rem;
+    width: 0.8rem;
     height: auto;
     margin-top: 0.5rem;
 }
@@ -331,21 +334,25 @@ h2.nav-item:hover {
         margin-top: -0.5rem;
     }
 
-    .desktop-menu .search-bar {
+    .desktop-nav-search-items {
         position: absolute;
+        display: flex;
+        gap: 0.5rem;
         right: calc(1.5rem + 1vw);
+        top: -3.6rem;
+    }
+
+    .desktop-menu .search-bar {
         height: 2.5rem;
         width: min(40vw, 450px);
         font-size: calc(1rem + 0.8vw);
-        top: -3.5rem;
     }
 
     .desktop-menu .search-icon {
-        display: block;
+        display: none;
         height: auto;
-        width: 1.6rem;
-        margin-top: -0.1rem;
-        margin-left: -0.8rem;
+        width: 1.7rem;
+        margin-top: -0.6rem;
         background: none;
         border: none;
     }
@@ -407,6 +414,10 @@ main {
 
 .map-card {
     flex-grow: 1;
+}
+
+.map-card:focus {
+    outline: 1px solid black;
 }
 
 .index-map-text {
@@ -496,7 +507,7 @@ main {
 .arrow-see-all-container {
     display: flex;
     align-items: center;
-    margin-right: calc(1.5rem + 1vw);
+    padding-right: calc(1.5rem + 1vw);
     margin-left: 0.5rem;
 }
 

@@ -5,7 +5,6 @@ const navItem = document.querySelectorAll("#nav-item");
 const navItemH2 = document.querySelectorAll("#nav-item > h2");
 const navLinkArrow = document.querySelectorAll("#nav-link-arrow");
 const navSearchBar = document.querySelector("#nav-search-bar");
-const searchIcon = document.querySelector("#search-icon");
 
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
@@ -15,7 +14,6 @@ const footer = document.querySelector("footer");
 
 const mapCardItemImg = document.querySelector("#map-card-item-img");
 const lineupSearchBar = document.querySelector("#lineup-search-bar");
-const lineupSearchIcon = document.querySelector("#lineup-search-icon");
 const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 
 const filterMenu = document.querySelector("#filter-menu");
@@ -103,10 +101,15 @@ document.addEventListener("click", e => {
         e.preventDefault();
         const comingSoonText = document.querySelector(".coming-soon-text");
         comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
+    } else if (e.target.matches("#arrow-back > img")) {
+        if (window.history.length > 1) {
+            window.history.back();
+            mobileMenu.style.display = "none";
+        } else {
+            window.location.href = "index.html";
+        }
     } 
 })
-
-
 
 document.addEventListener("mouseover", e => {
     if (e.target.matches("#desktop-menu #nav-item > h2")) {
@@ -128,10 +131,14 @@ document.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         if (e.target.matches("#nav-logo") || e.target.matches("#closing-x")) {
             toggleMobileMenu();
-        } else if (e.target.matches("#desktop-menu #nav-item > h2")) {
+        } else if (e.target.matches("#mobile-menu #nav-item")) {
             const thisArrow = e.target.nextElementSibling;
             const thisDropdown = thisArrow.nextElementSibling;
-            toggleDropdown(thisArrow, thisDropdown);
+            toggleMobileDropdown(thisArrow, thisDropdown);
+        } else if (e.target.matches("#desktop-menu #nav-item")) {
+            const thisArrow = e.target.children[1];
+            const thisDropdown = thisArrow.parentElement.nextElementSibling;
+            toggleDesktopDropdown(thisArrow, thisDropdown);
         } else if (e.target.matches(".heart-icon")) {
             toggleLikeState(e.target.firstChild);
         } else if (e.target === lineupSearchBar) {
@@ -144,6 +151,8 @@ document.addEventListener("focusin", e => {
     if (e.target.matches("#nav-search-bar") || e.target === lineupSearchBar) {
         e.target.nextElementSibling.style.display = "inline-block";
         e.target.style.width = "min(72vw, 475px)";
+    } else if (e.target.matches("#desktop-search-bar")) {
+        e.target.nextElementSibling.style.display = "inline-block";
     }
 })
 
@@ -151,6 +160,8 @@ document.addEventListener("focusout", e => {
     if (e.target.matches("#nav-search-bar") || e.target === lineupSearchBar) {
         e.target.nextElementSibling.style.display = "none";
         e.target.style.width = "min(80vw, 500px)";
+    } else if (e.target.matches("#desktop-search-bar")) {
+        e.target.nextElementSibling.style.display = "none";
     }
 })
 
@@ -184,20 +195,32 @@ function generateFilters() {
 
 function determineFilterOptions() {
     const pagePath = window.location.pathname;
-    if (["studios.html", "studiomap.html", "coaches.html", "performers.html", "collectives.html", "retreats.html"].some(page => pagePath.includes(page))) {
-        return ["Apparatus", "Features", null];
-    } else if (pagePath.includes("competitions.html")) {
-        return ["Apparatus", "Location", null];
+    if (["studios.html", "studiomap.html"].some(page => pagePath.includes(page))) {
+        return ["Apparatus", "Features", "Location"];
+    } else if (pagePath.includes("coaches.html")) {
+        return ["Apparatus", "Details", "Style"];
+    } else if (["performers.html", "collectives.html"].some(page => pagePath.includes(page))) {
+        return ["Apparatus", "Identifiers", "Style"];
+    } else if (["competitions.html", "retreats.html"].some(page => pagePath.includes(page))) {
+        return ["Apparatus", "When", "Location"];
     } else if (pagePath.includes("festivals.html")) {
-        return ["Date", "Location", null];
-    } else if (["health.html", "photography.html", "clothing.html", "heels.html", "equipment.html"].some(page => pagePath.includes(page))) {
+        return ["When", "Location", null];
+    } else if (pagePath.includes("health.html")) {
         return ["Type", "Location", null];
+    } else if (pagePath.includes("equipment.html")) {
+        return ["Equipment type", "Location", null];
+    } else if (pagePath.includes("clothing.html")) {
+        return ["Clothing type", "Location", null];
+    } else if (pagePath.includes("heels.html")) {
+        return ["Heel style", "Location", null];
+    } else if (pagePath.includes("photography.html")) {
+        return ["Kind", "Location", null];
     } else if (pagePath.includes("otherresources.html")) {
-        return ["Type", null, null];
+        return ["Category", null, null];
     } else if (["hoop.html", "silks.html", "trapeze.html", "hammock.html", "pole.html", "straps.html", "otherskills.html"].some(page => pagePath.includes(page))) {
-        return ["Level", "Type", null];
+        return ["Move type", "Level", null];
     } else if (pagePath.includes("events.html")) {
-        return ["Type", "Date", "Location"];
+        return ["Event type", "When", "Location"];
     } else {
         return ["Filter one", "Filter two", "Filter three"];
     }
@@ -234,7 +257,30 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
 
     if (isExpanded) {
         arrow.src = "assets/triangle-up.svg";
-        filterExpanded.innerHTML = `<p>Expanded menu for ${filterKey}</p>`;
+
+        const filterContent = {
+            "Apparatus": "<form><input type='checkbox'>Hoop/lyra</input><input type='checkbox'>Silks</input> <input type='checkbox'>Trapeze</input> <input type='checkbox'>Hammock/sling</input> <input type='checkbox'>Pole</input> <input type='checkbox'>Straps + rope</input> <input type='checkbox'>Specialty apparatus</input></form>",
+            "Features": "<form><input type='checkbox'>Accessible</input> <input type='checkbox'>Gender-inclusive</input> <input type='checkbox'>Queer-friendly</input> <input type='checkbox'>POC-owned</input> <input type='checkbox'>Sex work-positive</input> <input type='checkbox'>Open training</input></form>",
+            "Location": "<form><input type='checkbox'>Europe</input> <input type='checkbox'>USA</input> <input type='checkbox'>Latin America</input> <input type='checkbox'>Asia</input> <input type='checkbox'>Oceania</input> <input type='checkbox'>Africa</input></form>",
+            "When": "<form><input type='checkbox'>This week</input> <input type='checkbox'>This month</input> <input type='checkbox'>This year</input> <input type='checkbox'>Next year</input> <input type='checkbox'>Other dates</input></form>",
+            "Level": "<form><input type='checkbox'>Intro</input> <input type='checkbox'>Beginner</input> <input type='checkbox'>Intermediate</input> <input type='checkbox'>Advanced</input></form>",
+            "Identifiers": "<form><input type='checkbox'>Queer</input> <input type='checkbox'>POC</input> <input type='checkbox'>Disabled</input> <input type='checkbox'>Sex work-positive</input>",
+            "Details": "<form><input type='checkbox'>Queer</input> <input type='checkbox'>POC</input> <input type='checkbox'>Disabled</input> <input type='checkbox'>Sex work-positive</input> <input type='checkbox'>Certified</input> <input type='checkbox'>Online</input></form>",
+            "Style": "<form><input type='checkbox'>Classic</input> <input type='checkbox'>Sensual</input> <input type='checkbox'>Dynamic</input> <input type='checkbox'>Lyrical</input> <input type='checkbox'>Comedic</input>",
+            "Type": "<form><input type='checkbox'>Physiotherapy</input> <input type='checkbox'>Flexibility</input> <input type='checkbox'>Mental health</input> <input type='checkbox'>Other health resources</input>",
+            "Kind": "<form><input type='checkbox'>Photography</input> <input type='checkbox'>Videography</input>",
+            "Category": "<form><input type='checkbox'>Art</input> <input type='checkbox'>Games</input> <input type='checkbox'>Music</input> <input type='checkbox'>Communities</input>",
+            "Clothing type": "<form><input type='checkbox'>Aerial</input> <input type='checkbox'>Pole</input> <input type='checkbox'>Performance</input> <input type='checkbox'>Custom</input>",
+            "Heel style": "<form><input type='checkbox'>Sandals</input> <input type='checkbox'>Boots</input> <input type='checkbox'>Specialty</input> <input type='checkbox'>Custom</input>",
+            "Equipment type": "<form><input type='checkbox'>Rigs</input> <input type='checkbox'>Accessories</input> <input type='checkbox'>Grip</input> <input type='checkbox'>Custom</input>",
+            "Move type": "<form><input type='checkbox'>Dynamic</input> <input type='checkbox'>Balance</input> <input type='checkbox'>Invert</input> <input type='checkbox'>Bendy</input> <input type='checkbox'>Spin</input> <input type='checkbox'>Conditioning</input> <input type='checkbox'>Mount</input> <input type='checkbox'>Dance</input>",
+            "Event type": "<form><input type='checkbox'>Workshop</input> <input type='checkbox'>Performance</input> <input type='checkbox'>Seminar</input> <input type='checkbox'>Retreat</input> <input type='checkbox'>Festival</input> <input type='checkbox'>Competition</input> <input type='checkbox'>Health</input> <input type='checkbox'>Open call</input> <input type='checkbox'>Arts</input> <input type='checkbox'>Social</input> <input type='checkbox'>Online</input>",
+        };
+
+        filterExpanded.innerHTML = filterContent[filterKey] || `<p>Expanded menu for ${filterKey}</p>`;
+        // filterExpanded.innerHTML = `<p>Expanded menu for ${filterKey}</p>`;
+
+
     } else {
         arrow.src = "assets/triangle-down.svg";
         filterExpanded.innerHTML = "";
