@@ -794,7 +794,7 @@ footer {
     align-items: center;
     gap: 0.2rem;
     margin-left: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .filter-selector>* {
@@ -811,4 +811,14 @@ footer {
     width: 0.6rem;
     height: 0.6rem;
     margin-top: 0.1rem;
+}
+
+input[type="checkbox"] {
+    accent-color: black;
+    margin-right: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+input[type="checkbox"]:not(:first-of-type) {
+    margin-left: 1rem;
 }
