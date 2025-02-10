@@ -101,12 +101,6 @@ document.addEventListener("click", e => {
     } else if (e.target.matches("#arrow-back > img")) {
         if (window.history.length > 1) {
             window.history.back();
-
-            mobileMenu.style.display = "none";
-            headerContainer.style.display = "flex";
-            main.style.display = "flex";
-            footer.style.display = "flex";
-
         } else {
             window.location.href = "index.html";
         }
