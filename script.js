@@ -38,7 +38,7 @@ function toggleMobileMenu() {
         footer.style.display = "none";
 
         sessionStorage.setItem("menuOpen", "true");
-        history.pushState({ menuOpen: true }, "", window.location.href);
+        history.replaceState({ menuOpen: true }, "", window.location.href);
     } else {
         mobileMenu.style.display = "none";
         headerContainer.style.display = "flex";
@@ -46,9 +46,7 @@ function toggleMobileMenu() {
         footer.style.display = "flex";
 
         sessionStorage.setItem("menuOpen", "false");
-        if (window.history.state && window.history.state.menuOpen) {
-            history.back();
-        }
+        history.replaceState(null, "", window.location.href);
     }
 }
 
@@ -62,7 +60,7 @@ function toggleMobileDropdown(arrow, dropdown) {
         dropdown.style.margin = "1.2rem 1.2rem 0 0";
 
         sessionStorage.setItem("menuOpen", "true");
-        history.pushState({ menuOpen: true }, "", window.location.href);
+        history.replaceState({ menuOpen: true }, "", window.location.href);
 
     } else {
         arrow.src = "assets/triangle-down.svg";
@@ -71,9 +69,7 @@ function toggleMobileDropdown(arrow, dropdown) {
         dropdown.style.margin = "0";
 
         sessionStorage.setItem("menuOpen", "false");
-        if (window.history.state && window.history.state.menuOpen) {
-            history.back();
-        }
+        history.replaceState(null, "", window.location.href);
     }
 }
 
@@ -99,15 +95,13 @@ function toggleDesktopDropdown(arrow, dropdown) {
         dropdown.style.display = "flex";
 
         sessionStorage.setItem("menuOpen", "true");
-        history.pushState({ menuOpen: true }, "", window.location.href);
+        history.replaceState({ menuOpen: true }, "", window.location.href);
     } else {
         arrow.src = "assets/triangle-down.svg";
         dropdown.style.display = "none";
 
         sessionStorage.setItem("menuOpen", "false");
-        if (window.history.state && window.history.state.menuOpen) {
-            history.back();
-        }
+        history.replaceState(null, "", window.location.href);
     }
 }
 
