@@ -20,36 +20,65 @@ const filterMenu = document.querySelector("#filter-menu");
 
 // toggle states
 
+window.addEventListener("load", () => {
+    const isMenuOpen = sessionStorage.getItem("menuOpen") === "true";
+
+    if (isMenuOpen) {
+        sessionStorage.setItem("menuOpen", "false");
+    }
+});
+
 function toggleMobileMenu() {
+    const isMenuOpen = sessionStorage.getItem("menuOpen") === "true";
+
     if (mobileMenu.style.display !== "flex") {
         mobileMenu.style.display = "flex";
         headerContainer.style.display = "none";
         main.style.display = "none";
         footer.style.display = "none";
+
+        sessionStorage.setItem("menuOpen", "true");
+        history.pushState({ menuOpen: true }, "", window.location.href);
     } else {
         mobileMenu.style.display = "none";
         headerContainer.style.display = "flex";
         main.style.display = "flex";
         footer.style.display = "flex";
+
+        sessionStorage.setItem("menuOpen", "false");
+        if (window.history.state && window.history.state.menuOpen) {
+            history.back();
+        }
     }
 }
 
 function toggleMobileDropdown(arrow, dropdown) {
+    const isMenuOpen = sessionStorage.getItem("menuOpen") === "true";
+
     if (arrow.src.endsWith("assets/triangle-down.svg")) {
         arrow.src = "assets/triangle-up.svg";
         dropdown.style.visibility = "visible";
         dropdown.style.height = dropdown.scrollHeight + "px";
         dropdown.style.margin = "1.2rem 1.2rem 0 0";
 
+        sessionStorage.setItem("menuOpen", "true");
+        history.pushState({ menuOpen: true }, "", window.location.href);
+
     } else {
         arrow.src = "assets/triangle-down.svg";
         dropdown.style.visibility = "hidden";
         dropdown.style.height = "0";
         dropdown.style.margin = "0";
+
+        sessionStorage.setItem("menuOpen", "false");
+        if (window.history.state && window.history.state.menuOpen) {
+            history.back();
+        }
     }
 }
 
 function toggleDesktopDropdown(arrow, dropdown) {
+    const isMenuOpen = sessionStorage.getItem("menuOpen") === "true";
 
     const allDropdowns = document.querySelectorAll("#desktop-dropdown-container");
     allDropdowns.forEach(otherDropdown => {
@@ -69,9 +98,16 @@ function toggleDesktopDropdown(arrow, dropdown) {
         arrow.src = "assets/triangle-up.svg";
         dropdown.style.display = "flex";
 
+        sessionStorage.setItem("menuOpen", "true");
+        history.pushState({ menuOpen: true }, "", window.location.href);
     } else {
         arrow.src = "assets/triangle-down.svg";
         dropdown.style.display = "none";
+
+        sessionStorage.setItem("menuOpen", "false");
+        if (window.history.state && window.history.state.menuOpen) {
+            history.back();
+        }
     }
 }
 
@@ -104,7 +140,6 @@ document.addEventListener("click", e => {
     } else if (e.target.matches("#arrow-back > img")) {
         if (window.history.length > 1) {
             window.history.back();
-            mobileMenu.style.display = "none";
         } else {
             window.location.href = "index.html";
         }
@@ -143,6 +178,12 @@ document.addEventListener("keydown", e => {
             toggleLikeState(e.target.firstChild);
         } else if (e.target === lineupSearchBar) {
             setUpFilters();
+        } else if (e.target.matches("#arrow-back")) {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "index.html";
+            }
         }
     }
 })
