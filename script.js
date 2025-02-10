@@ -85,15 +85,12 @@ function toggleLikeState(icon) {
 
 document.addEventListener("click", e => {
     if (e.target.matches("#nav-logo > img") || e.target.matches("#closing-x > img")) {
-        e.preventDefault();
         toggleMobileMenu();
     } else if (e.target.matches("#mobile-menu #nav-item > h2")) {
-        e.preventDefault();
         const thisArrow = e.target.parentElement.nextElementSibling;
         const thisDropdown = thisArrow.nextElementSibling;
         toggleMobileDropdown(thisArrow, thisDropdown);
     } else if (e.target.matches("#mobile-menu #nav-link-arrow")) {
-        e.preventDefault();
         const thisDropdown = e.target.nextElementSibling;
         toggleMobileDropdown(e.target, thisDropdown);
     } else if (e.target.matches(".heart-icon > img")) {
@@ -105,6 +102,11 @@ document.addEventListener("click", e => {
         if (window.history.length > 1) {
             window.history.back();
 
+            mobileMenu.style.display = "none";
+            headerContainer.style.display = "flex";
+            main.style.display = "flex";
+            footer.style.display = "flex";
+
         } else {
             window.location.href = "index.html";
         }
@@ -113,7 +115,6 @@ document.addEventListener("click", e => {
 
 document.addEventListener("mouseover", e => {
     if (e.target.matches("#desktop-menu #nav-item > h2")) {
-        e.preventDefault();
         const thisArrow = e.target.nextElementSibling;
         const thisDropdown = thisArrow.parentElement.nextElementSibling;
         toggleDesktopDropdown(thisArrow, thisDropdown);
@@ -122,7 +123,6 @@ document.addEventListener("mouseover", e => {
 
 document.addEventListener("mouseout", e => {
     if (e.target.matches("#desktop-dropdown-container")) {
-        e.preventDefault();
         const thisArrow = e.target.parentElement.firstChild.firstChild.nextElementSibling;
         const thisDropdown = e.target;
         toggleDesktopDropdown(thisArrow, thisDropdown);
@@ -132,15 +132,12 @@ document.addEventListener("mouseout", e => {
 document.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         if (e.target.matches("#nav-logo") || e.target.matches("#closing-x")) {
-            e.preventDefault();
             toggleMobileMenu();
         } else if (e.target.matches("#mobile-menu #nav-item")) {
-            e.preventDefault();
             const thisArrow = e.target.nextElementSibling;
             const thisDropdown = thisArrow.nextElementSibling;
             toggleMobileDropdown(thisArrow, thisDropdown);
         } else if (e.target.matches("#desktop-menu #nav-item")) {
-            e.preventDefault();
             const thisArrow = e.target.children[1];
             const thisDropdown = thisArrow.parentElement.nextElementSibling;
             toggleDesktopDropdown(thisArrow, thisDropdown);
