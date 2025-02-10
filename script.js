@@ -18,6 +18,8 @@ const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 
 const filterMenu = document.querySelector("#filter-menu");
 
+const dropdownItem = document.querySelectorAll("#dropdown-item");
+
 // toggle states
 
 function toggleMobileMenu() {
@@ -98,6 +100,16 @@ document.addEventListener("click", e => {
     } else if (e.target.matches("#sign-in-main .sign-in-btn") || e.target.matches("#register-main .register-btn")) {
         const comingSoonText = document.querySelector(".coming-soon-text");
         comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
+    } else if (e.target === dropdownItem) {
+        mobileMenu.style.display = "none";
+        headerContainer.style.display = "flex";
+        main.style.display = "flex";
+        footer.style.display = "flex";
+        
+        const allDropdowns = document.querySelectorAll("#desktop-dropdown-container");
+        allDropdowns.forEach(dropdown => {
+            dropdown.style.display = "none";
+        })
     } else if (e.target.matches("#arrow-back > img")) {
         if (window.history.length > 1) {
             window.history.back();
