@@ -787,14 +787,14 @@ footer {
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .filter-selector {
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    margin-left: 1rem;
-    margin-bottom: 1.5rem;
 }
 
 .filter-selector>* {
@@ -814,6 +814,7 @@ footer {
 }
 
 .filter-container {
+    width: 95%;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
