@@ -813,12 +813,19 @@ footer {
     margin-top: 0.1rem;
 }
 
-input[type="checkbox"] {
-    accent-color: black;
-    margin-right: 0.2rem;
-    margin-bottom: 1rem;
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-input[type="checkbox"]:not(:first-of-type) {
-    margin-left: 1rem;
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+input[type="checkbox"] {
+    accent-color: black;
+    border-radius: 5px;
 }

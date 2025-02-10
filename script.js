@@ -108,7 +108,7 @@ document.addEventListener("click", e => {
         } else {
             window.location.href = "index.html";
         }
-    } 
+    }
 })
 
 document.addEventListener("mouseover", e => {
@@ -259,32 +259,56 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         arrow.src = "assets/triangle-up.svg";
 
         const filterContent = {
-            "Apparatus": "<form><input type='checkbox'>Hoop/lyra</input><input type='checkbox'>Silks</input> <input type='checkbox'>Trapeze</input> <input type='checkbox'>Hammock/sling</input> <input type='checkbox'>Pole</input> <input type='checkbox'>Straps + rope</input> <input type='checkbox'>Specialty apparatus</input></form>",
-            "Features": "<form><input type='checkbox'>Accessible</input> <input type='checkbox'>Gender-inclusive</input> <input type='checkbox'>Queer-friendly</input> <input type='checkbox'>POC-owned</input> <input type='checkbox'>Sex work-positive</input> <input type='checkbox'>Open training</input></form>",
-            "Location": "<form><input type='checkbox'>Europe</input> <input type='checkbox'>USA</input> <input type='checkbox'>Latin America</input> <input type='checkbox'>Asia</input> <input type='checkbox'>Oceania</input> <input type='checkbox'>Africa</input></form>",
-            "When": "<form><input type='checkbox'>This week</input> <input type='checkbox'>This month</input> <input type='checkbox'>This year</input> <input type='checkbox'>Next year</input> <input type='checkbox'>Other dates</input></form>",
-            "Level": "<form><input type='checkbox'>Intro</input> <input type='checkbox'>Beginner</input> <input type='checkbox'>Intermediate</input> <input type='checkbox'>Advanced</input></form>",
-            "Identifiers": "<form><input type='checkbox'>Queer</input> <input type='checkbox'>POC</input> <input type='checkbox'>Disabled</input> <input type='checkbox'>Sex work-positive</input>",
-            "Details": "<form><input type='checkbox'>Queer</input> <input type='checkbox'>POC</input> <input type='checkbox'>Disabled</input> <input type='checkbox'>Sex work-positive</input> <input type='checkbox'>Certified</input> <input type='checkbox'>Online</input></form>",
-            "Style": "<form><input type='checkbox'>Classic</input> <input type='checkbox'>Sensual</input> <input type='checkbox'>Dynamic</input> <input type='checkbox'>Lyrical</input> <input type='checkbox'>Comedic</input>",
-            "Type": "<form><input type='checkbox'>Physiotherapy</input> <input type='checkbox'>Flexibility</input> <input type='checkbox'>Mental health</input> <input type='checkbox'>Other health resources</input>",
-            "Kind": "<form><input type='checkbox'>Photography</input> <input type='checkbox'>Videography</input>",
-            "Category": "<form><input type='checkbox'>Art</input> <input type='checkbox'>Games</input> <input type='checkbox'>Music</input> <input type='checkbox'>Communities</input>",
-            "Clothing type": "<form><input type='checkbox'>Aerial</input> <input type='checkbox'>Pole</input> <input type='checkbox'>Performance</input> <input type='checkbox'>Custom</input>",
-            "Heel style": "<form><input type='checkbox'>Sandals</input> <input type='checkbox'>Boots</input> <input type='checkbox'>Specialty</input> <input type='checkbox'>Custom</input>",
-            "Equipment type": "<form><input type='checkbox'>Rigs</input> <input type='checkbox'>Accessories</input> <input type='checkbox'>Grip</input> <input type='checkbox'>Custom</input>",
-            "Move type": "<form><input type='checkbox'>Dynamic</input> <input type='checkbox'>Balance</input> <input type='checkbox'>Invert</input> <input type='checkbox'>Bendy</input> <input type='checkbox'>Spin</input> <input type='checkbox'>Conditioning</input> <input type='checkbox'>Mount</input> <input type='checkbox'>Dance</input>",
-            "Event type": "<form><input type='checkbox'>Workshop</input> <input type='checkbox'>Performance</input> <input type='checkbox'>Seminar</input> <input type='checkbox'>Retreat</input> <input type='checkbox'>Festival</input> <input type='checkbox'>Competition</input> <input type='checkbox'>Health</input> <input type='checkbox'>Open call</input> <input type='checkbox'>Arts</input> <input type='checkbox'>Social</input> <input type='checkbox'>Online</input>",
+            "Apparatus": ["Hoop/lyra", "Silks", "Trapeze", "Hammock/sling", "Pole, Straps + rope", "Specialty apparatus"],
+            "Features": ["Accessible", "Gender-inclusive", "Queer-friendly", "POC-owned", "Sex work-positive", "Open training"],
+            "Location": ["Europe", "USA", "Latin America", "Asia", "Oceania", "Africa"],
+            "When": ["This week", "This month", "This year", "Next year", "Other dates"],
+            "Level": ["Intro", "Beginner", "Intermediate", "Advanced"],
+            "Identifiers": ["Queer", "POC", "Disabled", "Sex work-positive"],
+            "Details": ["Queer", "POC", "Disabled", "Sex work-positive", "Certified", "Online"],
+            "Style": ["Classic", "Sensual", "Dynamic", "Lyrical", "Comedic"],
+            "Type": ["Physiotherapy", "Flexibility", "Mental health", "Other health resources"],
+            "Kind": ["Photography", "Videography"],
+            "Category": ["Art", "Games", "Music", "Communities"],
+            "Clothing type": ["Aerial", "Pole", "Performance", "Custom"],
+            "Heel style": ["Sandals", "Boots", "Specialty", "Custom"],
+            "Equipment type": ["Rigs", "Accessories", "Grip", "Custom"],
+            "Move type": ["Dynamic", "Balance", "Invert", "Bendy", "Spin", "Conditioning", "Mount", "Dance"],
+            "Event type": ["Workshop", "Performance", "Seminar", "Retreat", "Festival", "Competition", "Health", "Open call", "Arts", "Social", "Online"],
         };
 
-        filterExpanded.innerHTML = filterContent[filterKey] || `<p>Expanded menu for ${filterKey}</p>`;
-        // filterExpanded.innerHTML = `<p>Expanded menu for ${filterKey}</p>`;
+        function generateFilterContent(filterKey, filterExpanded) {
+            filterExpanded.innerHTML = "";
+            const expandedFilterContainer = document.createElement("div");
+            expandedFilterContainer.classList.add("filter-container");
 
+            if (filterContent[filterKey]) {
+                filterContent[filterKey].forEach(option => {
+                    const label = document.createElement("label");
+                    label.classList.add("filter-item");
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.value = option;
+                    checkbox.name = filterKey;
+
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(option));
+                    expandedFilterContainer.appendChild(label);
+                });
+            } else {
+                expandedFilterContainer.innerHTML = `<p>No options available</p>`;
+            }
+
+            filterExpanded.appendChild(expandedFilterContainer);
+        }
+
+        filterExpanded.style.display = "block";
+        generateFilterContent(filterKey, filterExpanded);
 
     } else {
         arrow.src = "assets/triangle-down.svg";
-        filterExpanded.innerHTML = "";
-        filterExpanded.style.marginBottom = "0";
+        filterExpanded.style.display = "none";
     }
 }
 
