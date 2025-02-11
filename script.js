@@ -83,7 +83,7 @@ function toggleLikeState(icon) {
 
 // event listeners
 
-document.addEventListener("load", () => {
+window.addEventListener("load", () => {
     mobileMenu.style.display = "none";
     headerContainer.style.display = "flex";
     main.style.display = "flex";
