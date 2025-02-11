@@ -354,9 +354,6 @@ window.addEventListener("pageshow", e => {
     const allDesktopDropdowns = document.querySelectorAll("#desktop-dropdown-container");
     allDesktopDropdowns.forEach(dropdown => dropdown.style.display = "none");
 
-    if (e.persisted) {
-        console.log("Persisted")
-    } else {
-        console.log("Not persisted")
-    }
+    const allArrows = document.querySelectorAll("#desktop-menu #nav-link-arrow");
+    allArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
 });
