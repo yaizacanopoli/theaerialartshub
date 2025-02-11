@@ -351,6 +351,9 @@ window.addEventListener("pageshow", e => {
     main.style.display = "flex";
     footer.style.display = "flex";
 
+    const allDesktopDropdowns = document.querySelectorAll("#desktop-dropdown-container");
+    allDesktopDropdowns.forEach(dropdown => dropdown.style.display = "none");
+
     if (e.persisted) {
         console.log("Persisted")
     } else {
