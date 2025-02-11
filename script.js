@@ -83,11 +83,17 @@ function toggleLikeState(icon) {
 
 // event listeners
 
-window.addEventListener("pageshow", () => {
+window.addEventListener("pageshow", e => {
     mobileMenu.style.display = "none";
-        headerContainer.style.display = "flex";
-        main.style.display = "flex";
-        footer.style.display = "flex";
+    headerContainer.style.display = "flex";
+    main.style.display = "flex";
+    footer.style.display = "flex";
+
+    if (e.persisted) {
+        console.log("Persisted")
+    } else {
+        console.log("Not persisted")
+    }
 });
 
 document.addEventListener("click", e => {
