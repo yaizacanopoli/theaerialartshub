@@ -83,6 +83,13 @@ function toggleLikeState(icon) {
 
 // event listeners
 
+window.addEventListener("pageshow", () => {
+    mobileMenu.style.display = "none";
+        headerContainer.style.display = "flex";
+        main.style.display = "flex";
+        footer.style.display = "flex";
+});
+
 document.addEventListener("click", e => {
     if (e.target.matches("#nav-logo > img") || e.target.matches("#closing-x > img")) {
         toggleMobileMenu();
@@ -99,10 +106,6 @@ document.addEventListener("click", e => {
         const comingSoonText = document.querySelector(".coming-soon-text");
         comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
     } else if (e.target.matches("#arrow-back > img")) {
-        mobileMenu.style.display = "none";
-        headerContainer.style.display = "flex";
-        main.style.display = "flex";
-        footer.style.display = "flex";
         if (window.history.length > 1) {
             window.history.back();
         } else {
