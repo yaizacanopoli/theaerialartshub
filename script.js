@@ -83,19 +83,6 @@ function toggleLikeState(icon) {
 
 // event listeners
 
-window.addEventListener("pageshow", e => {
-    mobileMenu.style.display = "none";
-    headerContainer.style.display = "flex";
-    main.style.display = "flex";
-    footer.style.display = "flex";
-
-    if (e.persisted) {
-        console.log("Persisted")
-    } else {
-        console.log("Not persisted")
-    }
-});
-
 document.addEventListener("click", e => {
     if (e.target.matches("#nav-logo > img") || e.target.matches("#closing-x > img")) {
         toggleMobileMenu();
@@ -355,3 +342,18 @@ function configureFilterButtons() {
         setupFilterToggle(filter, filterExpanded, filterOptions[index]);
     });
 }
+
+// menu state for back button
+
+window.addEventListener("pageshow", e => {
+    mobileMenu.style.display = "none";
+    headerContainer.style.display = "flex";
+    main.style.display = "flex";
+    footer.style.display = "flex";
+
+    if (e.persisted) {
+        console.log("Persisted")
+    } else {
+        console.log("Not persisted")
+    }
+});
