@@ -18,8 +18,6 @@ const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 
 const filterMenu = document.querySelector("#filter-menu");
 
-const dropdownItem = document.querySelectorAll("#dropdown-item");
-
 // toggle states
 
 function toggleMobileMenu() {
@@ -83,7 +81,14 @@ function toggleLikeState(icon) {
     }
 }
 
-// event delegation
+// event listeners
+
+document.addEventListener("load", () => {
+    mobileMenu.style.display = "none";
+    headerContainer.style.display = "flex";
+    main.style.display = "flex";
+    footer.style.display = "flex";
+})
 
 document.addEventListener("click", e => {
     if (e.target.matches("#nav-logo > img") || e.target.matches("#closing-x > img")) {

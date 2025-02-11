@@ -250,7 +250,12 @@ h2.nav-item:hover {
 @media (min-width: 1050px) {
 
     main {
+        display: flex;
         padding-top: 4rem;
+    }
+
+    .header-container {
+        display: flex;
     }
 
     .nav-logo {
@@ -265,6 +270,10 @@ h2.nav-item:hover {
         padding: 1.5rem calc(1.5rem + 1vw);
         background-color: white;
         overflow: visible;
+    }
+
+    .mobile-menu {
+        display: none;
     }
 
     .closing-x {
@@ -355,6 +364,10 @@ h2.nav-item:hover {
         margin-top: -0.6rem;
         background: none;
         border: none;
+    }
+
+    footer {
+        display: flex;
     }
 }
 
