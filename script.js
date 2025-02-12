@@ -27,6 +27,13 @@ function toggleMobileMenu() {
         main.style.display = "none";
         footer.style.display = "none";
 
+        const mobileArrows = document.querySelectorAll("#mobile-menu #nav-link-arrow");
+        const mobileDropDowns = document.querySelectorAll("#mobile-menu #dropdown-container");
+        mobileArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
+        mobileDropDowns.forEach(dropdown => dropdown.style.visibility = "hidden");
+        mobileDropDowns.forEach(dropdown => dropdown.style.height = "0");
+        mobileDropDowns.forEach(dropdown => dropdown.style.margin = "0");
+
     } else {
         mobileMenu.style.display = "none";
         headerContainer.style.display = "flex";
@@ -354,6 +361,6 @@ window.addEventListener("pageshow", e => {
     const allDesktopDropdowns = document.querySelectorAll("#desktop-dropdown-container");
     allDesktopDropdowns.forEach(dropdown => dropdown.style.display = "none");
 
-    const allArrows = document.querySelectorAll("#desktop-menu #nav-link-arrow");
-    allArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
+    const allDesktopArrows = document.querySelectorAll("#desktop-menu #nav-link-arrow");
+    allDesktopArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
 });
