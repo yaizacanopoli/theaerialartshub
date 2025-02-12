@@ -27,13 +27,6 @@ function toggleMobileMenu() {
         main.style.display = "none";
         footer.style.display = "none";
 
-        const mobileArrows = document.querySelectorAll("#mobile-menu #nav-link-arrow");
-        const mobileDropDowns = document.querySelectorAll("#mobile-menu #dropdown-container");
-        mobileArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
-        mobileDropDowns.forEach(dropdown => dropdown.style.visibility = "hidden");
-        mobileDropDowns.forEach(dropdown => dropdown.style.height = "0");
-        mobileDropDowns.forEach(dropdown => dropdown.style.margin = "0");
-
     } else {
         mobileMenu.style.display = "none";
         headerContainer.style.display = "flex";
@@ -357,6 +350,13 @@ window.addEventListener("pageshow", e => {
     headerContainer.style.display = "flex";
     main.style.display = "flex";
     footer.style.display = "flex";
+
+    const mobileArrows = document.querySelectorAll("#mobile-menu #nav-link-arrow");
+    const mobileDropDowns = document.querySelectorAll("#mobile-menu #dropdown-container");
+    mobileArrows.forEach(arrow => arrow.src = "assets/triangle-down.svg");
+    mobileDropDowns.forEach(dropdown => dropdown.style.visibility = "hidden");
+    mobileDropDowns.forEach(dropdown => dropdown.style.height = "0");
+    mobileDropDowns.forEach(dropdown => dropdown.style.margin = "0");
 
     const allDesktopDropdowns = document.querySelectorAll("#desktop-dropdown-container");
     allDesktopDropdowns.forEach(dropdown => dropdown.style.display = "none");
