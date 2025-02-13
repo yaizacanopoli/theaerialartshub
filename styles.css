@@ -477,6 +477,7 @@ main {
 }
 
 .item-img {
+    min-height: 20vh;
     max-height: 45vh;
     border-radius: 10px;
     flex-grow: 1;
