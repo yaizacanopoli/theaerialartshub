@@ -8,6 +8,7 @@ const navSearchBar = document.querySelector("#nav-search-bar");
 
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
+const aboutMain = document.querySelector("#about-main");
 const heartIcon = document.querySelectorAll(".heart-icon");
 const heartIconImg = document.querySelectorAll(".heart-icon > img");
 const footer = document.querySelector("footer");
@@ -31,6 +32,7 @@ function toggleMobileMenu() {
         mobileMenu.style.display = "none";
         headerContainer.style.display = "flex";
         main.style.display = "flex";
+        aboutMain.style.display = "grid";
         footer.style.display = "flex";
     }
 }
@@ -96,6 +98,7 @@ document.addEventListener("click", e => {
     } else if (e.target.matches(".heart-icon > img")) {
         toggleLikeState(e.target)
     } else if (e.target.matches("#sign-in-main .sign-in-btn") || e.target.matches("#register-main .register-btn")) {
+        e.preventDefault();
         const comingSoonText = document.querySelector(".coming-soon-text");
         comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
     } else if (e.target.matches("#arrow-back > img")) {
@@ -349,6 +352,7 @@ window.addEventListener("pageshow", e => {
     mobileMenu.style.display = "none";
     headerContainer.style.display = "flex";
     main.style.display = "flex";
+    if (aboutMain) aboutMain.style.display = "grid";
     footer.style.display = "flex";
 
     const mobileArrows = document.querySelectorAll("#mobile-menu #nav-link-arrow");

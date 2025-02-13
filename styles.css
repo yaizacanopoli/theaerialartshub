@@ -40,7 +40,11 @@ h1 {
 }
 
 .cards-category:hover {
-    text-decoration: 4px solid #C3D5F0 underline;
+    /* text-decoration: 4px solid #C3D5F0 underline; */
+    text-decoration-thickness: 4px;
+    text-decoration-style: solid;
+    text-decoration-line: underline;
+    text-decoration-color: #C3D5F0;
 }
 
 img:focus-visible {
@@ -158,7 +162,11 @@ li {
 }
 
 h2.nav-item:hover {
-    text-decoration: 4px solid #C3D5F0 underline;
+    /* text-decoration: 4px solid #C3D5F0 underline; */
+    text-decoration-thickness: 4px;
+    text-decoration-style: solid;
+    text-decoration-line: underline;
+    text-decoration-color: #C3D5F0;
 }
 
 .nav-item:active {
@@ -188,7 +196,11 @@ h2.nav-item:hover {
 }
 
 .dropdown-item:hover {
-    text-decoration: 4px solid #C3D5F0 underline;
+    /* text-decoration: 4px solid #C3D5F0 underline; */
+    text-decoration-thickness: 4px;
+    text-decoration-style: solid;
+    text-decoration-line: underline;
+    text-decoration-color: #C3D5F0;
 }
 
 .nav-input {
@@ -252,6 +264,10 @@ h2.nav-item:hover {
     main {
         display: flex;
         padding-top: 4rem;
+    }
+
+    .about-main {
+        display: grid;
     }
 
     .header-container {
@@ -552,7 +568,11 @@ footer {
 }
 
 .footer-links-group>p:hover {
-    text-decoration: 4px solid #C3D5F0 underline;
+    /* text-decoration: 4px solid #C3D5F0 underline; */
+    text-decoration-thickness: 4px;
+    text-decoration-style: solid;
+    text-decoration-line: underline;
+    text-decoration-color: #C3D5F0;
 }
 
 .arrow-up {
@@ -588,7 +608,11 @@ footer {
 }
 
 .underlined {
-    text-decoration: 4px solid #C3D5F0 underline;
+    /* text-decoration: 4px solid #C3D5F0 underline; */
+    text-decoration-thickness: 4px;
+    text-decoration-style: solid;
+    text-decoration-line: underline;
+    text-decoration-color: #C3D5F0;
     margin-bottom: -0.5rem;
 }
 
