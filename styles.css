@@ -64,7 +64,7 @@ header {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 1.5rem calc(1.5rem + 1vw);
+    padding: 1.5rem calc(1.5rem + 1vw) 2rem calc(1.5rem + 1vw);
     gap: 0.5rem;
 }
 
@@ -220,6 +220,7 @@ h2.nav-item:hover {
     font-size: calc(1rem + 0.8vw);
     font-weight: bold;
     transition: .2s ease-in-out 0s;
+    box-shadow: 3px 3px #949596;
 }
 
 .sign-in-btn:hover {
@@ -263,7 +264,7 @@ h2.nav-item:hover {
 
     main {
         display: flex;
-        padding-top: 4rem;
+        padding-top: 5.5rem;
     }
 
     .about-main {
@@ -280,11 +281,11 @@ h2.nav-item:hover {
 
     .desktop-menu {
         position: fixed;
-        margin-top: -4rem;
+        margin-top: -3rem;
         display: flex;
         width: 100%;
-        padding: 1.5rem calc(1.5rem + 1vw);
-        background-color: white;
+        padding: 1rem calc(1.5rem + 1vw);
+        background-color: #C3D5F0;
         overflow: visible;
     }
 
@@ -298,7 +299,7 @@ h2.nav-item:hover {
 
     .nav-links {
         flex-direction: row;
-        align-items: start;
+        align-items: center;
         width: 100%;
         margin: 0 0.3rem;
         gap: 2rem;
@@ -311,7 +312,7 @@ h2.nav-item:hover {
     }
 
     .nav-item {
-        font-size: calc(1rem + 0.5vw);
+        font-size: calc(0.8rem + 0.5vw);
         display: flex;
         gap: 0.2rem;
         z-index: 100;
@@ -323,7 +324,7 @@ h2.nav-item:hover {
     }
 
     .nav-item>h2 {
-        font-size: calc(1rem + 0.5vw);
+        font-size: calc(0.8rem + 0.5vw);
     }
 
     .nav-link-arrow {
@@ -344,6 +345,7 @@ h2.nav-item:hover {
         overflow: visible;
         transition: height 0.5s ease-in-out;
         padding: 1rem 3rem 1rem 1rem;
+        box-shadow: 3px 3px #C1D4EF;
         border: 0.1rem solid #C1D4EF;
         border-radius: 10px;
     }
@@ -354,9 +356,11 @@ h2.nav-item:hover {
 
     .desktop-menu .sign-in-btn {
         padding: 0.5rem 1.2rem;
-        font-size: calc(1rem + 0.3vw);
+        font-size: calc(0.8rem + 0.5vw);
         margin-left: auto;
-        margin-top: -0.5rem;
+        margin-top: 0;
+        background-color: white;
+        box-shadow: 3px 3px #949596;
     }
 
     .desktop-nav-search-items {
@@ -364,7 +368,7 @@ h2.nav-item:hover {
         display: flex;
         gap: 0.5rem;
         right: calc(1.5rem + 1vw);
-        top: -3.6rem;
+        top: -4.4rem;
     }
 
     .desktop-menu .search-bar {
@@ -527,6 +531,7 @@ main {
     padding: 0.3rem 1.1rem;
     text-align: center;
     transition: .2s ease-in-out 0s;
+    box-shadow: 1.5px 1.5px #949596;
 }
 
 .item-tag:hover {
@@ -589,7 +594,7 @@ footer {
 
 .about-main {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     width: calc(100% - calc(3rem + 2vw));
     gap: 2rem;
 }
@@ -678,17 +683,18 @@ footer {
 .sign-in-buttons {
     display: flex;
     justify-content: center;
-    gap: calc(1rem + 0.5vw);
+    gap: calc(1rem + 1vw);
 }
 
 .sign-in-form .sign-in-btn,
 .register-btn {
-    width: max-content;
-    padding: 0.5rem 2rem;
+    width: fit-content;
+    padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 15px;
-    font-size: calc(1rem + 0.6vw);
+    font-size: calc(0.9rem + 0.5vw);
     font-weight: bold;
+    box-shadow: 3px 3px #949596;
 }
 
 .register-btn {
