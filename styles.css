@@ -677,10 +677,6 @@ footer {
 
 /* for sign-in and register pages */
 
-label {
-    align-self: start;
-}
-
 .sign-in-register-main {
     height: calc(100vh - 15rem);
     display: flex;
@@ -706,7 +702,7 @@ label {
 .input-fields {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     gap: 0.5rem;
 }
