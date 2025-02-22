@@ -677,8 +677,12 @@ footer {
 
 /* for sign-in and register pages */
 
+label {
+    align-self: start;
+}
+
 .sign-in-register-main {
-    height: calc(100vh - 20rem);
+    height: calc(100vh - 15rem);
     display: flex;
     justify-content: center;
 }
@@ -686,15 +690,17 @@ footer {
 .sign-in-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 100%;
+    width: 100%;
 }
 
 .sign-in-form {
     display: flex;
-    width: calc(100% - 3rem);
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
+    align-items: start;
 }
 
 .input-fields {
@@ -715,6 +721,7 @@ footer {
     width: 28ch;
     font-size: calc(1rem + 0.5vw);
     padding-left: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .username-input:focus,
@@ -730,17 +737,17 @@ footer {
 
 .sign-in-buttons {
     display: flex;
-    justify-content: center;
-    gap: calc(1rem + 1vw);
+    justify-content: start;
+    gap: 1rem;
 }
 
 .sign-in-form .sign-in-btn,
 .register-btn {
-    width: fit-content;
+    width: max-content;
     padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 15px;
-    font-size: calc(0.9rem + 0.5vw);
+    font-size: 1.2rem;
     font-weight: bold;
     box-shadow: 3px 3px #949596;
 }

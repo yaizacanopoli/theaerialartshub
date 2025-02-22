@@ -203,10 +203,14 @@
         <div class="sign-in-container">
             <form class="sign-in-form" action="">
                 <div class="input-fields">
-                    <input type="text" class="username-input" placeholder="Username">
-                    <input type="email" class="email-input" placeholder="Email address">
-                    <input type="password" class="password-input" placeholder="Password">
-                    <input type="password" class="password-repeat" placeholder="Repeat password">
+                    <label for="username-input">Username:</label>
+                    <input type="text" class="username-input" id="username-input" name="username-input" placeholder="Username">
+                    <label for="email-input">Email address:</label>
+                    <input type="email" class="email-input" name="email-input" placeholder="Email address">
+                    <label for="password-input">Password:</label>
+                    <input type="password" class="password-input" id="password-input" name="password-input" placeholder="Password">
+                    <label for="password-repeat">Repeat password:</label>
+                    <input type="password" class="password-repeat" id="password-repeat" name="password-repeat" placeholder="Repeat password">
                 </div>
                 <div class="sign-in-buttons">
                     <a href="register.html" aria-label="Register" class="register-btn">Register</a>
