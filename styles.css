@@ -678,7 +678,7 @@ footer {
 /* for sign-in and register pages */
 
 .sign-in-register-main {
-    height: calc(100vh - 15rem);
+    height: calc(100vh - 14rem);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -774,16 +774,9 @@ footer {
 }
 
 .coming-soon-text {
-    font-size: calc(0.8rem + 0.2vw);
-    text-align: center;
+    font-size: calc(0.6rem + 0.2vw);
     height: 0;
-    margin-top: 1rem;
-}
-
-.sign-in-footer {
-    position: absolute;
-    bottom: 0;
-    width: calc(100% - calc(3rem + 2vw));
+    margin: 1rem 0;
 }
 
 /* for studio map page + lineup pages */
