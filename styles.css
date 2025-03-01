@@ -511,6 +511,11 @@ main {
     font-size: calc(0.8rem + 0.6vw);
 }
 
+.map-text-bottom {
+    font-size: 1rem;
+    font-style: italic;
+}
+
 .index-map-img {
     border-radius: 2px;
     width: 100%;
@@ -866,6 +871,10 @@ footer {
     align-items: start;
     margin-bottom: 0.5rem;
     gap: 0.5rem;
+}
+
+.lineup-title {
+    font-size: 1.2rem;
 }
 
 .lineup-title,
