@@ -667,6 +667,10 @@ footer {
     gap: 0.5rem;
 }
 
+.about-h2:not(:first-child) {
+    margin-top: 1rem;
+}
+
 .underlined {
     /* text-decoration: 4px solid #C3D5F0 underline; */
     text-decoration-thickness: 4px;
