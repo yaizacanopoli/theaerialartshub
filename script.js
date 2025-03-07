@@ -222,8 +222,8 @@ function determineFilterOptions() {
         return ["Kind", "Location", null];
     } else if (pagePath.includes("otherresources.html")) {
         return ["Category", null, null];
-    } else if (["hoop.html", "silks.html", "trapeze.html", "hammock.html", "pole.html", "straps.html", "otherskills.html"].some(page => pagePath.includes(page))) {
-        return ["Move type", "Level", null];
+    } else if (["hoop.html", "silks.html", "trapeze.html", "hammock.html", "pole.html", "straps.html", "rope.html", "hairhang.html", "otherskills.html"].some(page => pagePath.includes(page))) {
+        return ["Resource type", null, null];
     } else if (pagePath.includes("events.html")) {
         return ["Event type", "When", "Location"];
     } else {
@@ -264,11 +264,10 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         arrow.src = "assets/triangle-up.svg";
 
         const filterContent = {
-            "Apparatus": ["Hoop/lyra", "Silks", "Trapeze", "Hammock/sling", "Pole, Straps + rope", "Specialty apparatus"],
+            "Apparatus": ["Hoop/lyra", "Silks", "Trapeze", "Hammock/sling", "Pole", "Straps", "Rope", "Specialty apparatus"],
             "Features": ["Accessible", "Gender-inclusive", "Queer-friendly", "POC-owned", "Sex work-positive", "Open training"],
             "Location": ["Europe", "USA", "Latin America", "Asia", "Oceania", "Africa"],
             "When": ["This week", "This month", "This year", "Next year", "Other dates"],
-            "Level": ["Intro", "Beginner", "Intermediate", "Advanced"],
             "Identifiers": ["Queer", "POC", "Disabled", "Sex work-positive"],
             "Details": ["Queer", "POC", "Disabled", "Sex work-positive", "Certified", "Online"],
             "Style": ["Classic", "Sensual", "Dynamic", "Lyrical", "Comedic"],
@@ -278,8 +277,8 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
             "Clothing type": ["Aerial", "Pole", "Performance", "Custom"],
             "Heel style": ["Sandals", "Boots", "Specialty", "Custom"],
             "Equipment type": ["Rigs", "Accessories", "Grip", "Custom"],
-            "Move type": ["Dynamic", "Balance", "Invert", "Bendy", "Spin", "Conditioning", "Mount", "Dance"],
             "Event type": ["Workshop", "Performance", "Seminar", "Retreat", "Festival", "Competition", "Health", "Open call", "Arts", "Social", "Online"],
+            "Resource type": ["Videos", "Skill directories", "Online platforms", "Apps", "Books", "Free", "Paid"],
         };
 
         function generateFilterContent(filterKey, filterExpanded) {
