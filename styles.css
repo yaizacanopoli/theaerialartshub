@@ -215,20 +215,24 @@ h2.nav-item:hover {
     gap: 1.2rem;
 }
 
-.sign-in-btn {
+.sign-in-btn, .load-more-btn {
     width: max-content;
     padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 15px;
     background-color: #C3D5F0;
-    font-size: calc(1rem + 0.8vw);
     font-weight: bold;
     transition: .2s ease-in-out 0s;
     box-shadow: 3px 3px #949596;
 }
 
-.sign-in-btn:hover {
+.sign-in-btn {
+    font-size: calc(1rem + 0.8vw);
+}
+
+.sign-in-btn:hover, .load-more-btn:hover {
     transform: scale(1.03);
+    cursor: pointer;
 }
 
 .search-items,
@@ -861,6 +865,7 @@ footer {
 .lineup-item-img {
     border-radius: 10px;
     height: min(40vh, 250px);
+    flex-grow: 1;
 }
 
 .lineup-info-box {
@@ -897,6 +902,13 @@ footer {
 .lineup-title-icon>.heart-icon {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+.load-more-btn {
+    display: none;
+    font-size: calc(0.5rem + 0.8vw);
+    margin: 3rem 0 1rem 0;
+    align-self: center;
 }
 
 /* for filter menu */

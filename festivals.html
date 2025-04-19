@@ -206,87 +206,15 @@
             <h1 class="lineup-h1">Find a festival</h1>
             <div class="lineup-search-items">
                 <input type="search" class="search-bar" id="lineup-search-bar" placeholder="Search...">
-                <img src="assets/magnify.svg" class="search-icon" id="lineup-search-icon" alt="Search icon">
+                <input type="image" src="assets/magnify.svg" class="search-icon" id="lineup-search-icon" alt="Search">
             </div>
         </section>
         <section class="lineup-container" id="lineup-container">
-            <h1>Featured festivals</h1>
+            <h1>All festivals</h1>
             <div class="filter-menu" id="filter-menu"></div>
-            <div class="lineup-lineup">
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-                <article class="lineup-item">
-                    <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-                    <div class="lineup-info-box">
-                        <div class="lineup-title-icon">
-                            <h2 class="lineup-title">Name of festival</h2>
-                            <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                        </div>
-                        <p class="lineup-info-text">City, country</p>
-                        <p class="lineup-info-text">Other info</p>
-                    </div>
-                </article>
-
-            </div>
+            <div class="lineup-lineup" id="lineup-lineup"></div>
         </section>
+        <button class="load-more-btn" id="load-more-btn">Load more</button>
     </main>
 
     <footer>
@@ -298,6 +226,7 @@
         <a href="#header" aria-label="Back to top"><img class="arrow-up" src="assets/chevron-up.svg" alt="Back to the top"></a>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 
