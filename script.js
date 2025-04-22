@@ -39,9 +39,9 @@ async function searchStudios(term) {
 
   const { data, error, count } = await supabase
     .from("studios")
-    .select("name,address", { count: "exact" })
+    .select("name,address,city,country", { count: "exact" })
     .range(rangeStart, rangeEnd)
-    .ilike("name", `%${term}%`)
+    .or(`name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`)
     .order("name", { ascending: true });
   if (error || count === 0) {
     featuredLineup.textContent = "No studios were found";
@@ -55,8 +55,7 @@ async function searchStudios(term) {
                     <h2 class="lineup-title">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">City, country</p>
-                <p class="lineup-info-text">Other info</p>
+                <p class="lineup-info-text">${item.city}, ${item.country}</p>
             </div>
         </article>`;
     });
