@@ -36,15 +36,27 @@ let totalResults = 0;
 async function searchStudios(term) {
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
+  const pagePath = window.location.pathname;
+  const fileName = pagePath.split("/").pop();
+  const baseName = fileName.replace(/\.[^/.]+$/, "");
+
+  const tableMap = {
+    studios: "studios",
+    studiomap: "studios",
+    coaches: "coaches",
+    events: "events"
+  };
+
+  const tableName = tableMap[baseName];
 
   const { data, error, count } = await supabase
-    .from("studios")
+    .from(tableName)
     .select("name,address,city,country", { count: "exact" })
     .range(rangeStart, rangeEnd)
     .or(`name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`)
     .order("name", { ascending: true });
   if (error || count === 0) {
-    featuredLineup.textContent = "No studios were found";
+    featuredLineup.textContent = "No results were found";
   } else {
     totalResults = count;
     data.forEach((item) => {
