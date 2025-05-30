@@ -1,4 +1,5 @@
 const navLogo = document.querySelector("#nav-logo");
+const desktopMenu = document.querySelector("#desktop-menu");
 const mobileMenu = document.querySelector("#mobile-menu");
 const closingX = document.querySelector("#closing-x");
 const navItem = document.querySelectorAll("#nav-item");
@@ -13,10 +14,15 @@ const heartIcon = document.querySelectorAll(".heart-icon");
 const heartIconImg = document.querySelectorAll(".heart-icon > img");
 const footer = document.querySelector("footer");
 
+const scrollCards = document.querySelectorAll(".scroll-cards");
+const articleCard = document.querySelectorAll(".scroll-cards > .card");
 const mapCardItemImg = document.querySelector("#map-card-item-img");
 const lineupSearchBar = document.querySelector("#lineup-search-bar");
 const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 const featuredLineup = document.querySelector("#lineup-lineup");
+const lineupTitle = document.querySelectorAll("#lineup-title");
+const lineupItemModal = document.querySelector("#lineup-item-modal");
+const notModal = document.querySelector("#not-modal");
 
 const filterMenu = document.querySelector("#filter-menu");
 const loadMoreBtn = document.querySelector("#load-more-btn");
@@ -44,7 +50,7 @@ async function searchStudios(term) {
     studios: "studios",
     studiomap: "studios",
     coaches: "coaches",
-    events: "events"
+    events: "events",
   };
 
   const tableName = tableMap[baseName];
@@ -53,7 +59,9 @@ async function searchStudios(term) {
     .from(tableName)
     .select("name,address,city,country", { count: "exact" })
     .range(rangeStart, rangeEnd)
-    .or(`name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`)
+    .or(
+      `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
+    )
     .order("name", { ascending: true });
   if (error || count === 0) {
     featuredLineup.textContent = "No results were found";
@@ -61,10 +69,10 @@ async function searchStudios(term) {
     totalResults = count;
     data.forEach((item) => {
       featuredLineup.innerHTML += `<article class="lineup-item">
-            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for event image">
+            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${item.city}, ${item.country}</p>
@@ -79,11 +87,96 @@ async function searchStudios(term) {
     } else {
       loadMoreBtn.style.display = "block";
     }
+
+    document.addEventListener("click", (e) => {
+      if (e.target.matches(".lineup-title")) {
+        const modalItemName = e.target.dataset.name;
+        const modalItemCity = e.target.dataset.city;
+        const modalItemCountry = e.target.dataset.country;
+        const modalItemAddress = e.target.dataset.address;
+
+        lineupItemModal.style.display = "flex";
+        lineupItemModal.innerHTML = `<article class="lineup-item">
+              <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+              <div class="lineup-info-box">
+                  <div class="lineup-title-icon">
+                      <h2 class="modal-title" id="modal-title">${modalItemName}</h2>
+                      <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
+                  </div>
+                  <p class="modal-info-text">${modalItemCity}, ${modalItemCountry}</p>
+                  <p class="modal-info-text">${modalItemAddress}</p>
+              </div>
+        </article>`;
+
+        notModal.classList.add("disabled-click-hover");
+        headerContainer.classList.add("disabled-click-hover");
+        desktopMenu.classList.add("disabled-click-hover");
+        mobileMenu.classList.add("disabled-click-hover");
+        notModal.style.opacity = "0.3";
+        
+        // make sure clicking outside closes the modal
+      } else if (!e.target.contains(".lineup-item")) {
+        lineupItemModal.style.display = "none";
+        notModal.style.opacity = "1";
+        notModal.classList.remove("disabled-click-hover");
+        headerContainer.classList.remove("disabled-click-hover");
+        desktopMenu.classList.remove("disabled-click-hover");
+        mobileMenu.classList.remove("disabled-click-hover");
+      }
+    });
   }
 }
 
 if (lineupSearchBar) {
   searchStudios("");
+}
+
+// supabase for home page
+
+async function loadStudios(category) {
+  // pass the ID of each article card in as the category argument
+  const selectedScrollCards = document.querySelector(`#scroll-cards-${category}`)
+
+  const { data, error, count } = await supabase
+    .from(category)
+    .select("name,address,city,country", { count: "exact" })
+    .range(0, 8)
+    .order("name", { ascending: true });
+  if (error || count === 0) {
+    selectedScrollCards.textContent = "No results were found";
+  } else {
+    totalResults = count;
+    data.forEach((item) => {
+      selectedScrollCards.innerHTML += `<article class="lineup-item">
+            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+            <div class="card-info">
+                <div class="lineup-title-icon">
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}">${item.name}</h2>
+                    <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
+                </div>
+                <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <div class="item-tags-group">
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+            </div>
+            </div>
+        </article>`;
+            
+    });
+
+    selectedScrollCards.innerHTML += `<div class="arrow-see-all-container">
+                <a href="studios.html" aria-label="Aerial and pole studios">
+                    <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
+                </a>
+            </div>`
+  }
+}
+
+if (scrollCards) {
+  loadStudios("events");
+  loadStudios("studios");
+  loadStudios("clothing");
 }
 
 // toggle states
