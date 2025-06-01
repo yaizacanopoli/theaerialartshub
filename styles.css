@@ -929,9 +929,10 @@ footer {
 .lineup-item-modal {
     display: none;
     position: fixed;
+    align-self: center;
     z-index: 1;
     margin: 0 auto;
-    max-width: 40ch;
+    max-width: min(80vw, 40ch);
 }
 
 /* for filter menu */

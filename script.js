@@ -6,6 +6,7 @@ const navItem = document.querySelectorAll("#nav-item");
 const navItemH2 = document.querySelectorAll("#nav-item > h2");
 const navLinkArrow = document.querySelectorAll("#nav-link-arrow");
 const navSearchBar = document.querySelector("#nav-search-bar");
+const desktopSearchBar = document.querySelector("#desktop-search-bar");
 
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
@@ -39,36 +40,51 @@ const resultsPerPage = 12;
 let currentOffset = 0;
 let totalResults = 0;
 
-async function searchStudios(term) {
+async function searchDatabase(term) {
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
   const pagePath = window.location.pathname;
   const fileName = pagePath.split("/").pop();
   const baseName = fileName.replace(/\.[^/.]+$/, "");
 
-  const tableMap = {
-    studios: "studios",
-    studiomap: "studios",
-    coaches: "coaches",
-    events: "events",
-  };
+  let combinedAllResults = [];
 
-  const tableName = tableMap[baseName];
+  if (baseName === "results") {
+    if (combinedAllResults.length === 0) {
+      const tables = ["studios", "coaches", "events"];
 
-  const { data, error, count } = await supabase
-    .from(tableName)
-    .select("name,address,city,country", { count: "exact" })
-    .range(rangeStart, rangeEnd)
-    .or(
-      `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
-    )
-    .order("name", { ascending: true });
-  if (error || count === 0) {
-    featuredLineup.textContent = "No results were found";
-  } else {
-    totalResults = count;
-    data.forEach((item) => {
-      featuredLineup.innerHTML += `<article class="lineup-item">
+      for (const table of tables) {
+        const { data, error } = await supabase
+          .from(table)
+          .select("name,address,city,country", { count: "exact" })
+          .or(
+            `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
+          )
+          .order("name", { ascending: true });
+
+        if (error) {
+          console.error(`Error querying ${table}:`, error.message);
+          continue;
+        }
+
+        combinedAllResults = combinedAllResults.concat(
+          data.map((item) => ({
+            ...item,
+            source: table, // optionally tag where it came from
+          }))
+        );
+      }
+      totalResults = combinedAllResults.length;
+    }
+
+    const paginatedResults = combinedAllResults.slice(rangeStart, rangeEnd + 1);
+
+    if (paginatedResults.length === 0) {
+      featuredLineup.textContent = "No results were found";
+      loadMoreBtn.style.display = "none";
+    } else {
+      paginatedResults.forEach((item) => {
+        featuredLineup.innerHTML += `<article class="lineup-item">
             <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
@@ -78,80 +94,90 @@ async function searchStudios(term) {
                 <p class="lineup-info-text">${item.city}, ${item.country}</p>
             </div>
         </article>`;
-    });
+      });
 
-    setUpFilters();
-
-    if (currentOffset + resultsPerPage >= totalResults) {
-      loadMoreBtn.style.display = "none";
-    } else {
-      loadMoreBtn.style.display = "block";
+      setUpFilters();
     }
 
-    document.addEventListener("click", (e) => {
-      if (e.target.matches(".lineup-title")) {
-        const modalItemName = e.target.dataset.name;
-        const modalItemCity = e.target.dataset.city;
-        const modalItemCountry = e.target.dataset.country;
-        const modalItemAddress = e.target.dataset.address;
+  } else {
+    const tableMap = {
+      studios: "studios",
+      studiomap: "studios",
+      coaches: "coaches",
+      events: "events",
+      results: "studios",
+    };
 
-        lineupItemModal.style.display = "flex";
-        lineupItemModal.innerHTML = `<article class="lineup-item">
-              <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
-              <div class="lineup-info-box">
-                  <div class="lineup-title-icon">
-                      <h2 class="modal-title" id="modal-title">${modalItemName}</h2>
-                      <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
-                  </div>
-                  <p class="modal-info-text">${modalItemCity}, ${modalItemCountry}</p>
-                  <p class="modal-info-text">${modalItemAddress}</p>
-              </div>
+    const tableName = tableMap[baseName];
+
+    const { data, error, count } = await supabase
+      .from(tableName)
+      .select("name,address,city,country", { count: "exact" })
+      .range(rangeStart, rangeEnd)
+      .or(
+        `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
+      )
+      .order("name", { ascending: true });
+    if (error || count === 0) {
+      totalResults = 0;
+      featuredLineup.textContent = "No results were found";
+      filterMenu.style.display = "none";
+      loadMoreBtn.style.display = "none";
+    } else {
+      totalResults = count;
+      filterMenu.style.display = "flex";
+      data.forEach((item) => {
+        featuredLineup.innerHTML += `<article class="lineup-item">
+            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+            <div class="lineup-info-box">
+                <div class="lineup-title-icon">
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
+                    <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
+                </div>
+                <p class="lineup-info-text">${item.city}, ${item.country}</p>
+            </div>
         </article>`;
+      });
 
-        notModal.classList.add("disabled-click-hover");
-        headerContainer.classList.add("disabled-click-hover");
-        desktopMenu.classList.add("disabled-click-hover");
-        mobileMenu.classList.add("disabled-click-hover");
-        notModal.style.opacity = "0.3";
-        
-        // make sure clicking outside closes the modal
-      } else if (!e.target.contains(".lineup-item")) {
-        lineupItemModal.style.display = "none";
-        notModal.style.opacity = "1";
-        notModal.classList.remove("disabled-click-hover");
-        headerContainer.classList.remove("disabled-click-hover");
-        desktopMenu.classList.remove("disabled-click-hover");
-        mobileMenu.classList.remove("disabled-click-hover");
-      }
-    });
+      setUpFilters();
+    }
+  }
+
+  if (currentOffset + resultsPerPage >= totalResults) {
+    loadMoreBtn.style.display = "none";
+  } else {
+    loadMoreBtn.style.display = "block";
   }
 }
 
 if (lineupSearchBar) {
-  searchStudios("");
+  searchDatabase("");
 }
 
 // supabase for home page
 
 async function loadStudios(category) {
   // pass the ID of each article card in as the category argument
-  const selectedScrollCards = document.querySelector(`#scroll-cards-${category}`)
+  const selectedScrollCards = document.querySelector(
+    `#scroll-cards-${category}`
+  );
 
-  const { data, error, count } = await supabase
-    .from(category)
-    .select("name,address,city,country", { count: "exact" })
-    .range(0, 8)
-    .order("name", { ascending: true });
-  if (error || count === 0) {
-    selectedScrollCards.textContent = "No results were found";
-  } else {
-    totalResults = count;
-    data.forEach((item) => {
-      selectedScrollCards.innerHTML += `<article class="lineup-item">
+  if (selectedScrollCards) {
+    const { data, error, count } = await supabase
+      .from(category)
+      .select("name,address,city,country", { count: "exact" })
+      .range(0, 8)
+      .order("name", { ascending: true });
+    if (error || count === 0) {
+      selectedScrollCards.textContent = "No results were found";
+    } else {
+      totalResults = count;
+      data.forEach((item) => {
+        selectedScrollCards.innerHTML += `<article class="lineup-item">
             <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
             <div class="card-info">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${item.city}, ${item.country}</p>
@@ -162,22 +188,63 @@ async function loadStudios(category) {
             </div>
             </div>
         </article>`;
-            
-    });
+      });
 
-    selectedScrollCards.innerHTML += `<div class="arrow-see-all-container">
+      selectedScrollCards.innerHTML += `<div class="arrow-see-all-container">
                 <a href="studios.html" aria-label="Aerial and pole studios">
                     <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
                 </a>
-            </div>`
+    </div>`;
+    }
   }
 }
 
 if (scrollCards) {
-  loadStudios("events");
+  // loadStudios("events");
   loadStudios("studios");
-  loadStudios("clothing");
+  // loadStudios("clothing");
 }
+
+// modal toggle
+
+document.addEventListener("click", (e) => {
+  if (e.target.matches(".lineup-title")) {
+    const modalItemName = e.target.dataset.name;
+    const modalItemCity = e.target.dataset.city;
+    const modalItemCountry = e.target.dataset.country;
+    const modalItemAddress = e.target.dataset.address;
+
+    lineupItemModal.style.display = "flex";
+    lineupItemModal.innerHTML = `<article class="lineup-item">
+          <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+          <div class="lineup-info-box">
+              <div class="lineup-title-icon">
+                  <h2 class="modal-title" id="modal-title">${modalItemName}</h2>
+                  <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
+              </div>
+              <p class="modal-info-text">${modalItemCity}, ${modalItemCountry}</p>
+              <p class="modal-info-text">${modalItemAddress}</p>
+          </div>
+    </article>`;
+
+    notModal.classList.add("disabled-click-hover");
+    headerContainer.classList.add("disabled-click-hover");
+    desktopMenu.classList.add("disabled-click-hover");
+    mobileMenu.classList.add("disabled-click-hover");
+    footer.classList.add("disabled-click-hover");
+    notModal.style.opacity = "0.3";
+    footer.style.opacity = "0.3";
+  } else if (!e.target.closest("#lineup-item-modal")) {
+    lineupItemModal.style.display = "none";
+    notModal.style.opacity = "1";
+    footer.style.opacity = "1";
+    notModal.classList.remove("disabled-click-hover");
+    headerContainer.classList.remove("disabled-click-hover");
+    desktopMenu.classList.remove("disabled-click-hover");
+    mobileMenu.classList.remove("disabled-click-hover");
+    footer.classList.remove("disabled-click-hover");
+  }
+});
 
 // toggle states
 
@@ -242,7 +309,7 @@ function toggleLikeState(icon) {
   }
 }
 
-// event listeners
+// click and keydown events
 
 document.addEventListener("click", (e) => {
   if (
@@ -268,20 +335,48 @@ document.addEventListener("click", (e) => {
     comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
   } else if (e.target.matches("#load-more-btn")) {
     currentOffset += resultsPerPage;
-    searchStudios(lineupSearchBar.value);
+    if (lineupSearchBar) {
+      searchDatabase(lineupSearchBar.value);
+    } else if (window.location.href.includes("results.html")) {
+      const params = new URLSearchParams(window.location.search);
+      const searchTerm = params.get("term") || "";
+      searchDatabase(searchTerm);
+    }
   } else if (e.target.matches("#lineup-search-icon")) {
     currentOffset = 0;
     featuredLineup.innerHTML = "";
     loadMoreBtn.style.display = "none";
     featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-    searchStudios(lineupSearchBar.value);
+    searchDatabase(lineupSearchBar.value);
     if (mapCardItemImg)
       mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
+  } else if (e.target.matches("#desktop-search-icon")) {
+    const searchTerm = encodeURIComponent(desktopSearchBar.value);
+    window.location.href = `results.html?term=${searchTerm}`;
+  } else if (e.target.matches("#nav-search-icon")) {
+    const searchTerm = encodeURIComponent(navSearchBar.value);
+    window.location.href = `results.html?term=${searchTerm}`;
   } else if (e.target.matches("#arrow-back > img")) {
     if (window.history.length > 1) {
       window.history.back();
     } else {
       window.location.href = "index.html";
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const pagePath = window.location.pathname;
+  const fileName = pagePath.split("/").pop();
+
+  if (fileName === "results.html") {
+    const params = new URLSearchParams(window.location.search);
+    const term = params.get("term") || "";
+    if (term) {
+      currentOffset = 0;
+      featuredLineup.innerHTML = "";
+      loadMoreBtn.style.display = "none";
+      searchDatabase(term);
     }
   }
 });
@@ -322,12 +417,18 @@ document.addEventListener("keydown", (e) => {
       featuredLineup.innerHTML = "";
       loadMoreBtn.style.display = "none";
       featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-      searchStudios(lineupSearchBar.value);
+      searchDatabase(lineupSearchBar.value);
       if (mapCardItemImg)
         mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
+    } else if (e.target.matches("#desktop-search-bar")) {
+      const searchTerm = encodeURIComponent(desktopSearchBar.value);
+      window.location.href = `results.html?term=${searchTerm}`;
+    } else if (e.target.matches("#nav-search-bar")) {
+      const searchTerm = encodeURIComponent(navSearchBar.value);
+      window.location.href = `results.html?term=${searchTerm}`;
     } else if (e.target === loadMoreBtn) {
       currentOffset += resultsPerPage;
-      searchStudios(lineupSearchBar.value);
+      searchDatabase(lineupSearchBar.value);
     } else if (e.target.matches("#arrow-back")) {
       if (window.history.length > 1) {
         window.history.back();
@@ -435,6 +536,8 @@ function determineFilterOptions() {
     return ["Resource type", null, null];
   } else if (pagePath.includes("events.html")) {
     return ["Event type", "When", "Location"];
+  } else if (pagePath.includes("results.html")) {
+    return ["I'm looking for...", null, null];
   } else {
     return ["Filter one", "Filter two", "Filter three"];
   }
@@ -541,6 +644,13 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Books",
         "Free",
         "Paid",
+      ],
+      "I'm looking for...": [
+        "Studios",
+        "Training resources",
+        "Brands",
+        "Events",
+        "Other resources",
       ],
     };
 
