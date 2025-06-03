@@ -39,19 +39,18 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 const resultsPerPage = 12;
 let currentOffset = 0;
 let totalResults = 0;
+let combinedAllResults = [];
+
+const rangeStart = currentOffset;
+const rangeEnd = rangeStart + resultsPerPage - 1;
+const pagePath = window.location.pathname;
+const fileName = pagePath.split("/").pop();
+const baseName = fileName.replace(/\.[^/.]+$/, "");
 
 async function searchDatabase(term) {
-  const rangeStart = currentOffset;
-  const rangeEnd = rangeStart + resultsPerPage - 1;
-  const pagePath = window.location.pathname;
-  const fileName = pagePath.split("/").pop();
-  const baseName = fileName.replace(/\.[^/.]+$/, "");
-
-  let combinedAllResults = [];
-
   if (baseName === "results") {
     if (combinedAllResults.length === 0) {
-      const tables = ["studios", "coaches", "events"];
+      const tables = ["studios"];
 
       for (const table of tables) {
         const { data, error } = await supabase
@@ -74,9 +73,9 @@ async function searchDatabase(term) {
           }))
         );
       }
-      totalResults = combinedAllResults.length;
     }
 
+    totalResults = combinedAllResults.length;
     const paginatedResults = combinedAllResults.slice(rangeStart, rangeEnd + 1);
 
     if (paginatedResults.length === 0) {
@@ -85,7 +84,7 @@ async function searchDatabase(term) {
     } else {
       paginatedResults.forEach((item) => {
         featuredLineup.innerHTML += `<article class="lineup-item">
-            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
                     <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
@@ -95,10 +94,7 @@ async function searchDatabase(term) {
             </div>
         </article>`;
       });
-
-      setUpFilters();
     }
-
   } else {
     const tableMap = {
       studios: "studios",
@@ -128,13 +124,18 @@ async function searchDatabase(term) {
       filterMenu.style.display = "flex";
       data.forEach((item) => {
         featuredLineup.innerHTML += `<article class="lineup-item">
-            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
                     <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <div class="item-tags-group">
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+            </div>
             </div>
         </article>`;
       });
@@ -174,7 +175,7 @@ async function loadStudios(category) {
       totalResults = count;
       data.forEach((item) => {
         selectedScrollCards.innerHTML += `<article class="lineup-item">
-            <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
             <div class="card-info">
                 <div class="lineup-title-icon">
                     <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
@@ -216,7 +217,7 @@ document.addEventListener("click", (e) => {
 
     lineupItemModal.style.display = "flex";
     lineupItemModal.innerHTML = `<article class="lineup-item">
-          <img class="lineup-item-img" src="assets/placeholder.jpg" alt="Placeholder for image">
+          <div class="lineup-item-img" alt=""><h2 class="image-text">${modalItemName}</h2></div>
           <div class="lineup-info-box">
               <div class="lineup-title-icon">
                   <h2 class="modal-title" id="modal-title">${modalItemName}</h2>
@@ -373,9 +374,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const term = params.get("term") || "";
     if (term) {
+      combinedAllResults = [];
       currentOffset = 0;
       featuredLineup.innerHTML = "";
-      loadMoreBtn.style.display = "none";
       searchDatabase(term);
     }
   }
@@ -536,8 +537,6 @@ function determineFilterOptions() {
     return ["Resource type", null, null];
   } else if (pagePath.includes("events.html")) {
     return ["Event type", "When", "Location"];
-  } else if (pagePath.includes("results.html")) {
-    return ["I'm looking for...", null, null];
   } else {
     return ["Filter one", "Filter two", "Filter three"];
   }
@@ -594,7 +593,14 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Sex work-positive",
         "Open training",
       ],
-      Location: ["Europe", "USA", "Latin America", "Asia", "Oceania", "Africa"],
+      Location: [
+        "Europe",
+        "North America",
+        "Latin America",
+        "Asia",
+        "Oceania",
+        "Africa",
+      ],
       When: [
         "This week",
         "This month",

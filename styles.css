@@ -869,12 +869,30 @@ footer {
 
 .lineup-item-img {
     border-radius: 10px;
-    height: min(40vh, 250px);
+    width: 100%;
+    height: min(40vh, 180px);
     flex-grow: 1;
+    background-color: #646881;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-text {
+    font-size: 0.8rem;
+    font-family: 'Garamond', Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    width: fit-content;
+    padding: 2rem;
+    text-align: center;
+}
+
+.lineup-item-modal .lineup-info-box {
+    box-shadow: 0 5px 10px rgba(78, 81, 95, 0.05), 0 15px 40px rgba(68, 72, 89, 0.2);
 }
 
 .lineup-info-box {
-    background-color: #C3D5F0;
+    background-color: #F2F2F2;
     padding: 1rem;
     border-radius: 10px;
 }
