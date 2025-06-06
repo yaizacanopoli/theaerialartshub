@@ -27,6 +27,7 @@ const notModal = document.querySelector("#not-modal");
 
 const filterMenu = document.querySelector("#filter-menu");
 const loadMoreBtn = document.querySelector("#load-more-btn");
+const allFilterCheckboxes = document.querySelectorAll('input[type="checkbox"]');
 
 // database
 
@@ -41,13 +42,14 @@ let currentOffset = 0;
 let totalResults = 0;
 let combinedAllResults = [];
 
-const rangeStart = currentOffset;
-const rangeEnd = rangeStart + resultsPerPage - 1;
 const pagePath = window.location.pathname;
 const fileName = pagePath.split("/").pop();
 const baseName = fileName.replace(/\.[^/.]+$/, "");
 
-async function searchDatabase(term) {
+async function searchWholeDatabase(term) {
+  const rangeStart = currentOffset;
+  const rangeEnd = rangeStart + resultsPerPage - 1;
+
   if (baseName === "results") {
     if (combinedAllResults.length === 0) {
       const tables = ["studios"];
@@ -55,9 +57,9 @@ async function searchDatabase(term) {
       for (const table of tables) {
         const { data, error } = await supabase
           .from(table)
-          .select("name,address,city,country", { count: "exact" })
+          .select("name,address,city,country,continent", { count: "exact" })
           .or(
-            `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
+            `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%,continent.ilike.%${term}%`
           )
           .order("name", { ascending: true });
 
@@ -69,7 +71,7 @@ async function searchDatabase(term) {
         combinedAllResults = combinedAllResults.concat(
           data.map((item) => ({
             ...item,
-            source: table, // optionally tag where it came from
+            source: table,
           }))
         );
       }
@@ -91,11 +93,40 @@ async function searchDatabase(term) {
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <div class="item-tags-group">
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+                <button class="item-tag">Tag</button>
+            </div>
             </div>
         </article>`;
       });
     }
+  }
+
+  if (currentOffset + resultsPerPage >= totalResults) {
+    loadMoreBtn.style.display = "none";
   } else {
+    loadMoreBtn.style.display = "block";
+  }
+
+}
+
+const allContinents = [
+  "Europe",
+  "North America",
+  "Latin America",
+  "Asia",
+  "Oceania",
+  "Africa"
+];
+
+async function searchFilteredDatabase(term, continents) {
+  const rangeStart = currentOffset;
+  const rangeEnd = rangeStart + resultsPerPage - 1;
+
+  console.log("Range Start:", rangeStart, "Range End:", rangeEnd);
+
     const tableMap = {
       studios: "studios",
       studiomap: "studios",
@@ -108,16 +139,16 @@ async function searchDatabase(term) {
 
     const { data, error, count } = await supabase
       .from(tableName)
-      .select("name,address,city,country", { count: "exact" })
+      .select("name,address,city,country,continent", { count: "exact" })
       .range(rangeStart, rangeEnd)
       .or(
-        `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%`
+        `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%,continent.ilike.%${term}%`
       )
+      .in('continent', continents)
       .order("name", { ascending: true });
     if (error || count === 0) {
       totalResults = 0;
       featuredLineup.textContent = "No results were found";
-      filterMenu.style.display = "none";
       loadMoreBtn.style.display = "none";
     } else {
       totalResults = count;
@@ -139,10 +170,7 @@ async function searchDatabase(term) {
             </div>
         </article>`;
       });
-
-      setUpFilters();
     }
-  }
 
   if (currentOffset + resultsPerPage >= totalResults) {
     loadMoreBtn.style.display = "none";
@@ -152,7 +180,8 @@ async function searchDatabase(term) {
 }
 
 if (lineupSearchBar) {
-  searchDatabase("");
+  searchFilteredDatabase("", allContinents);
+  setUpFilters();
 }
 
 // supabase for home page
@@ -336,19 +365,20 @@ document.addEventListener("click", (e) => {
     comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
   } else if (e.target.matches("#load-more-btn")) {
     currentOffset += resultsPerPage;
+    const { searchTerm, continentsToQuery } = getFilterCriteria();
     if (lineupSearchBar) {
-      searchDatabase(lineupSearchBar.value);
+      searchFilteredDatabase(searchTerm, continentsToQuery);
     } else if (window.location.href.includes("results.html")) {
       const params = new URLSearchParams(window.location.search);
       const searchTerm = params.get("term") || "";
-      searchDatabase(searchTerm);
+      searchWholeDatabase(searchTerm);
     }
   } else if (e.target.matches("#lineup-search-icon")) {
     currentOffset = 0;
     featuredLineup.innerHTML = "";
     loadMoreBtn.style.display = "none";
     featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-    searchDatabase(lineupSearchBar.value);
+    searchFilteredDatabase(lineupSearchBar.value, allContinents);
     if (mapCardItemImg)
       mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
   } else if (e.target.matches("#desktop-search-icon")) {
@@ -377,7 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
       combinedAllResults = [];
       currentOffset = 0;
       featuredLineup.innerHTML = "";
-      searchDatabase(term);
+      searchWholeDatabase(term);
     }
   }
 });
@@ -418,7 +448,8 @@ document.addEventListener("keydown", (e) => {
       featuredLineup.innerHTML = "";
       loadMoreBtn.style.display = "none";
       featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-      searchDatabase(lineupSearchBar.value);
+      searchFilteredDatabase(lineupSearchBar.value, allContinents);
+      setUpFilters();
       if (mapCardItemImg)
         mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
     } else if (e.target.matches("#desktop-search-bar")) {
@@ -427,9 +458,16 @@ document.addEventListener("keydown", (e) => {
     } else if (e.target.matches("#nav-search-bar")) {
       const searchTerm = encodeURIComponent(navSearchBar.value);
       window.location.href = `results.html?term=${searchTerm}`;
-    } else if (e.target === loadMoreBtn) {
+    } else if (e.target.matches("#load-more-btn")) {
       currentOffset += resultsPerPage;
-      searchDatabase(lineupSearchBar.value);
+      if (lineupSearchBar) {
+        const { searchTerm, continentsToQuery } = getFilterCriteria();
+        searchFilteredDatabase(searchTerm, continentsToQuery);
+      } else if (window.location.href.includes("results.html")) {
+        const params = new URLSearchParams(window.location.search);
+        const searchTerm = params.get("term") || "";
+        searchWholeDatabase(searchTerm);
+      }
     } else if (e.target.matches("#arrow-back")) {
       if (window.history.length > 1) {
         window.history.back();
@@ -554,6 +592,26 @@ function applyFilterOptions(filterOne, filterTwo, filterThree, options) {
   });
 }
 
+function getFilterCriteria() {
+  const locationCheckboxes = document.querySelectorAll('input[name="Location"]:checked');
+  const selectedContinents = Array.from(locationCheckboxes).map((checkbox) => checkbox.value);
+  const searchTerm = lineupSearchBar ? lineupSearchBar.value : "";
+  const continentsToQuery = selectedContinents.length > 0 ? selectedContinents : ["Europe", "North America", "Latin America", "Asia", "Oceania", "Africa"];
+
+  return { searchTerm, continentsToQuery };
+}
+
+function applyFilters() {
+  const { searchTerm, continentsToQuery } = getFilterCriteria();
+
+  currentOffset = 0;
+  featuredLineup.innerHTML = "";
+  
+  // const continentsArray = Array.isArray(continentsToQuery) ? continentsToQuery : [continentsToQuery];
+  console.log("Continents passed to searchFilteredDatabase:", continentsToQuery);
+  searchFilteredDatabase(searchTerm, continentsToQuery);
+}
+
 function toggleFilterMenu(arrow, filterExpanded, filterKey) {
   const allArrows = document.querySelectorAll("#filter-arrow");
   const allExpandedMenus = document.querySelectorAll("[id^=filter-expanded]");
@@ -661,6 +719,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
     };
 
     function generateFilterContent(filterKey, filterExpanded) {
+
       filterExpanded.innerHTML = "";
       const expandedFilterContainer = document.createElement("div");
       expandedFilterContainer.classList.add("filter-container");
@@ -674,6 +733,13 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
           checkbox.type = "checkbox";
           checkbox.value = option;
           checkbox.name = filterKey;
+
+          if (filterKey === "Location") {
+            checkbox.addEventListener("change", e => {
+              console.log("Location checkbox changed:", option);
+              applyFilters();
+            });
+          }
 
           label.appendChild(checkbox);
           label.appendChild(document.createTextNode(option));

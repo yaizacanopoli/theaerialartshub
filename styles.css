@@ -559,6 +559,11 @@ main {
     font-size: calc(1rem + 0.2vw);
 }
 
+.item-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .heart-icon {
     width: 1.5rem;
     height: 1.5rem;
