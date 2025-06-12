@@ -190,7 +190,7 @@ async function searchWholeDatabase(term) {
         };
 
         featuredLineup.innerHTML += `<article class="lineup-item">
-            ${item.image
+            ${item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
@@ -247,6 +247,7 @@ const tableColumnsMap = {
     "website",
     "apparatus",
     "exact",
+    "image",
   ],
   people: [
     "name",
@@ -256,6 +257,7 @@ const tableColumnsMap = {
     "instagram",
     "coach",
     "performer",
+    "image",
   ],
   clothing: [
     "name",
@@ -275,8 +277,8 @@ const tableColumnsMap = {
     "website",
     "image",
   ],
-  photography: ["name", "country", "continent", "type", "instagram", "website"],
-  physio: ["name", "country", "continent", "type", "instagram", "website"],
+  photography: ["name", "country", "continent", "type", "instagram", "website", "image"],
+  physio: ["name", "country", "continent", "type", "instagram", "website", "image"],
   troupes: [
     "name",
     "country",
@@ -284,6 +286,7 @@ const tableColumnsMap = {
     "apparatus",
     "instagram",
     "website",
+    "image",
   ],
   venues: [
     "name",
@@ -293,9 +296,10 @@ const tableColumnsMap = {
     "continent",
     "instagram",
     "website",
+    "image",
   ],
-  others: ["name", "type", "instagram", "website"],
-  pole: ["name", "type", "instagram", "website"],
+  others: ["name", "type", "instagram", "website", "image"],
+  pole: ["name", "type", "instagram", "website", "image"],
 };
 
 async function searchFilteredDatabase(filters) {
@@ -402,7 +406,7 @@ async function searchFilteredDatabase(filters) {
 
     data.forEach((item) => {
       featuredLineup.innerHTML += `<article class="lineup-item">
-            ${item.image
+            ${item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
@@ -501,7 +505,7 @@ async function loadData(category) {
       data.forEach((item) => {
         console.log(item.apparatus, item.type);
         selectedScrollCards.innerHTML += `<article class="scroll-item">
-            ${item.image
+            ${item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
@@ -596,7 +600,7 @@ document.addEventListener("click", (e) => {
     lineupItemModal.style.display = "flex";
     lineupItemModal.innerHTML = `<article class="lineup-item">
     ${
-      modalItemImage && modalItemImage !== "undefined"
+      modalItemImage && modalItemImage !== "undefined" && modalItemImage !== "null"
         ? `<img class="modal-item-img" src="${modalItemImage}" alt=""></div>`
         : `<div class="lineup-item-background" alt=""><h2 class="image-text">${modalItemName}</h2></div>`
     }
@@ -1130,7 +1134,6 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         filterContent[filterKey].forEach((option) => {
           const label = document.createElement("label");
           label.classList.add("filter-item");
-
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
           checkbox.value = option;
