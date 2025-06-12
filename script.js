@@ -46,23 +46,113 @@ const pagePath = window.location.pathname;
 const fileName = pagePath.split("/").pop();
 const baseName = fileName.replace(/\.[^/.]+$/, "");
 
+async function getTableColumns(tableName) {
+  if (tableColumnsMap[tableName]) {
+    return tableColumnsMap[tableName];
+  } else {
+    console.error(`No column map found for table ${tableName}`);
+    return [];
+  }
+}
+
 async function searchWholeDatabase(term) {
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
 
+  const tableMap = {
+    studios: "studios",
+    studiomap: "studios",
+    coaches: "people",
+    performers: "people",
+    clothing: "clothing",
+    collectives: "troupes",
+    equipment: "equipment",
+    health: "physio",
+    photography: "photography",
+    pole: "pole",
+    otherresources: "others",
+  };
+
+  const tableName = tableMap[baseName];
+
+  const columns = await getTableColumns(tableName);
+
+  const selectColumns = columns.filter((col) =>
+    [
+      "name",
+      "address",
+      "city",
+      "country",
+      "continent",
+      "instagram",
+      "website",
+      "type",
+      "apparatus",
+      "coach",
+      "performer",
+      "exact",
+      "image",
+    ].includes(col)
+  );
+
   if (baseName === "results") {
     if (combinedAllResults.length === 0) {
-      const tables = ["studios"];
+      const tables = [
+        "studios",
+        "people",
+        "clothing",
+        "equipment",
+        "photography",
+        "physio",
+        "troupes",
+        "venues",
+        "others",
+        "pole",
+      ];
 
       for (const table of tables) {
-        const { data, error } = await supabase
+        const tableColumns = await getTableColumns(table);
+
+        const tableSelectColumns = tableColumns.filter((col) =>
+          [
+            "name",
+            "address",
+            "city",
+            "country",
+            "continent",
+            "instagram",
+            "website",
+            "type",
+            "apparatus",
+            "coach",
+            "performer",
+            "exact",
+            "image",
+          ].includes(col)
+        );
+
+        const supabaseQuery = supabase
           .from(table)
-          .select("name,address,city,country,continent", { count: "exact" })
-          .or(
-            `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%,continent.ilike.%${term}%`
+          .select(tableSelectColumns.join(","), { count: "exact" })
+          .or(tableColumns
+            .filter((col) =>
+              [
+                "name",
+                "address",
+                "city",
+                "country",
+                "continent",
+                "instagram",
+                "type",
+                "apparatus",
+              ].includes(col)
+            )
+            .map((col) => `${col}.ilike.%${term}%`)
+            .join(",")
           )
           .order("name", { ascending: true });
 
+          const { data, error } = await supabaseQuery
         if (error) {
           console.error(`Error querying ${table}:`, error.message);
           continue;
@@ -85,18 +175,44 @@ async function searchWholeDatabase(term) {
       loadMoreBtn.style.display = "none";
     } else {
       paginatedResults.forEach((item) => {
+
+        const sourceMap = {
+          people: (item) => (item.coach === true ? "Coach" : "Performer"),
+          studios: () => "Studio",
+          clothing: () => "Clothing",
+          equipment: () => "Equipment",
+          photography: () => "Photo & video",
+          physio: () => "Physio & flexy",
+          troupes: () => "Collective",
+          venues: () => "Venue",
+          others: () => "Others",
+          pole: () => "Pole",
+        };
+
         featuredLineup.innerHTML += `<article class="lineup-item">
-            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
+            ${item.image
+                ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
+                : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
+            }
             <div class="lineup-info-box">
+                <p class="lineup-info-category">${sourceMap[item.source] ? sourceMap[item.source](item) : item.source}</p>
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <p class="lineup-info-text">${item.city
+                    ? `${item.city}, ${item.country}`
+                    : item.country
+                    ? item.country
+                    : ""
+                  }</p>
                 <div class="item-tags-group">
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
+                ${item.apparatus
+                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
+                    : item.type
+                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                    : `<button class="item-tag">Tag</button>`
+                }
             </div>
             </div>
         </article>`;
@@ -109,7 +225,6 @@ async function searchWholeDatabase(term) {
   } else {
     loadMoreBtn.style.display = "block";
   }
-
 }
 
 const allContinents = [
@@ -118,59 +233,202 @@ const allContinents = [
   "Latin America",
   "Asia",
   "Oceania",
-  "Africa"
+  "Africa",
 ];
 
-async function searchFilteredDatabase(term, continents) {
+const tableColumnsMap = {
+  studios: [
+    "name",
+    "address",
+    "city",
+    "country",
+    "continent",
+    "instagram",
+    "website",
+    "apparatus",
+    "exact",
+  ],
+  people: [
+    "name",
+    "country",
+    "continent",
+    "apparatus",
+    "instagram",
+    "coach",
+    "performer",
+  ],
+  clothing: [
+    "name",
+    "country",
+    "continent",
+    "type",
+    "instagram",
+    "website",
+    "image",
+  ],
+  equipment: [
+    "name",
+    "country",
+    "continent",
+    "type",
+    "instagram",
+    "website",
+    "image",
+  ],
+  photography: ["name", "country", "continent", "type", "instagram", "website"],
+  physio: ["name", "country", "continent", "type", "instagram", "website"],
+  troupes: [
+    "name",
+    "country",
+    "continent",
+    "apparatus",
+    "instagram",
+    "website",
+  ],
+  venues: [
+    "name",
+    "address",
+    "city",
+    "country",
+    "continent",
+    "instagram",
+    "website",
+  ],
+  others: ["name", "type", "instagram", "website"],
+  pole: ["name", "type", "instagram", "website"],
+};
+
+async function searchFilteredDatabase(filters) {
+  const { searchTerm, continents, apparatus, type } = filters;
+
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
 
-  console.log("Range Start:", rangeStart, "Range End:", rangeEnd);
+  const tableMap = {
+    studios: "studios",
+    studiomap: "studios",
+    coaches: "people",
+    performers: "people",
+    clothing: "clothing",
+    collectives: "troupes",
+    equipment: "equipment",
+    health: "physio",
+    photography: "photography",
+    pole: "pole",
+    otherresources: "others",
+  };
 
-    const tableMap = {
-      studios: "studios",
-      studiomap: "studios",
-      coaches: "coaches",
-      events: "events",
-      results: "studios",
-    };
+  const tableName = tableMap[baseName];
 
-    const tableName = tableMap[baseName];
+  const columns = await getTableColumns(tableName);
 
-    const { data, error, count } = await supabase
-      .from(tableName)
-      .select("name,address,city,country,continent", { count: "exact" })
-      .range(rangeStart, rangeEnd)
-      .or(
-        `name.ilike.%${term}%,address.ilike.%${term}%,city.ilike.%${term}%,country.ilike.%${term}%,continent.ilike.%${term}%`
+  const selectColumns = columns.filter((col) =>
+    [
+      "name",
+      "address",
+      "city",
+      "country",
+      "continent",
+      "instagram",
+      "website",
+      "type",
+      "apparatus",
+      "coach",
+      "performer",
+      "exact",
+      "image",
+    ].includes(col)
+  );
+
+  let orFilters = "";
+  if (searchTerm.trim() !== "") {
+    orFilters = columns
+      .filter((col) =>
+        [
+          "name",
+          "address",
+          "city",
+          "country",
+          "continent",
+          "instagram",
+          "type",
+          "apparatus",
+        ].includes(col)
       )
-      .in('continent', continents)
-      .order("name", { ascending: true });
-    if (error || count === 0) {
-      totalResults = 0;
-      featuredLineup.textContent = "No results were found";
-      loadMoreBtn.style.display = "none";
-    } else {
-      totalResults = count;
-      filterMenu.style.display = "flex";
-      data.forEach((item) => {
-        featuredLineup.innerHTML += `<article class="lineup-item">
-            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
+      .map((col) => `${col}.ilike.%${searchTerm}%`)
+      .join(",");
+  }
+
+  const supabaseQuery = supabase
+    .from(tableName)
+    .select(selectColumns.join(","), { count: "exact" })
+    .range(rangeStart, rangeEnd)
+    .in("continent", continents)
+    .order("name", { ascending: true });
+
+    if (apparatus.length > 0) {
+      const apparatusFilters = apparatus
+        .map((item) => `apparatus.ilike.%${item}%`)
+        .join(",");
+      supabaseQuery.or(apparatusFilters);
+    }
+
+    if (type.length > 0) {
+      const typeFilters = type
+        .map((item) => `type.ilike.%${item}%`)
+        .join(",");
+      supabaseQuery.or(typeFilters);
+    }
+
+  if (baseName === "coaches") {
+    supabaseQuery.eq("coach", true);
+  } else if (baseName === "performers") {
+    supabaseQuery.eq("performer", true);
+  }
+
+  if (orFilters) {
+    supabaseQuery.or(orFilters);
+  }
+
+  const { data, error, count } = await supabaseQuery;
+
+  if (error || count === 0) {
+    totalResults = 0;
+    featuredLineup.textContent = "No results were found";
+    loadMoreBtn.style.display = "none";
+  } else {
+    totalResults = count;
+    filterMenu.style.display = "flex";
+
+    data.forEach((item) => {
+      featuredLineup.innerHTML += `<article class="lineup-item">
+            ${item.image
+                ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
+                : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
+            }
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <p class="lineup-info-text">${item.city
+                    ? `${item.city}, ${item.country}`
+                    : item.country
+                    ? item.country
+                    : ""
+                  }</p>
                 <div class="item-tags-group">
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
+                ${item.apparatus
+                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
+                    : item.type
+                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                    : `<button class="item-tag">Tag</button>`
+                }
             </div>
             </div>
         </article>`;
-      });
-    }
+    });
+  }
 
   if (currentOffset + resultsPerPage >= totalResults) {
     loadMoreBtn.style.display = "none";
@@ -180,22 +438,60 @@ async function searchFilteredDatabase(term, continents) {
 }
 
 if (lineupSearchBar) {
-  searchFilteredDatabase("", allContinents);
+  const filters = getFilterCriteria();
+  const { searchTerm, continents, apparatus, type } = filters;
+  searchFilteredDatabase(filters);
   setUpFilters();
 }
 
 // supabase for home page
 
-async function loadStudios(category) {
-  // pass the ID of each article card in as the category argument
+async function loadData(category) {
   const selectedScrollCards = document.querySelector(
     `#scroll-cards-${category}`
+  );
+
+  const tableMap = {
+    studios: "studios",
+    studiomap: "studios",
+    coaches: "people",
+    performers: "people",
+    clothing: "clothing",
+    collectives: "troupes",
+    equipment: "equipment",
+    health: "physio",
+    photography: "photography",
+    pole: "pole",
+    otherresources: "others",
+  };
+
+  const tableName = tableMap[baseName];
+
+  const columns = await getTableColumns(tableName);
+
+  const selectColumns = columns.filter((col) =>
+    [
+      "name",
+      "address",
+      "city",
+      "country",
+      "continent",
+      "instagram",
+      "website",
+      "type",
+      "apparatus",
+      "coach",
+      "performer",
+      "exact",
+    ].includes(col)
   );
 
   if (selectedScrollCards) {
     const { data, error, count } = await supabase
       .from(category)
-      .select("name,address,city,country", { count: "exact" })
+      .select(selectColumns.join(","), {
+        count: "exact",
+      })
       .range(0, 8)
       .order("name", { ascending: true });
     if (error || count === 0) {
@@ -203,36 +499,61 @@ async function loadStudios(category) {
     } else {
       totalResults = count;
       data.forEach((item) => {
-        selectedScrollCards.innerHTML += `<article class="lineup-item">
-            <div class="lineup-item-img" alt=""><h2 class="image-text">${item.name}</h2></div>
-            <div class="card-info">
+        console.log(item.apparatus, item.type);
+        selectedScrollCards.innerHTML += `<article class="scroll-item">
+            ${item.image
+                ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
+                : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
+            }
+            <div class="lineup-info-box">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city}, ${item.country}</p>
+                <p class="lineup-info-text">${item.city
+                    ? `${item.city}, ${item.country}`
+                    : item.country
+                    ? item.country
+                    : ""
+                  }</p>
                 <div class="item-tags-group">
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
-                <button class="item-tag">Tag</button>
+                ${item.apparatus && typeof item.apparatus === "string" && item.apparatus.trim() !== ""
+                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
+                    : item.type && typeof item.type === "string" && item.type.trim() !== ""
+                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                    : `<button class="item-tag">Tag</button>`
+                }
             </div>
             </div>
         </article>`;
       });
 
       selectedScrollCards.innerHTML += `<div class="arrow-see-all-container">
-                <a href="studios.html" aria-label="Aerial and pole studios">
+                <a href="${category}.html" aria-label="Aerial and pole ${category}">
                     <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
                 </a>
-    </div>`;
+      </div>`;
     }
   }
 }
 
-if (scrollCards) {
-  // loadStudios("events");
-  loadStudios("studios");
-  // loadStudios("clothing");
+if (window.location.href.includes("index.html")) {
+  // loadData("events");
+  loadData("studios");
+  loadData("clothing");
+}
+
+if (window.location.href.includes("allresources.html")) {
+  loadData("studios");
+  loadData("people");
+  loadData("people");
+  loadData("collectives");
+  loadData("retreats");
+  loadData("competitions");
+  loadData("festivals");
+  loadData("health");
+  loadData("photography");
+  loadData("otherresources");
 }
 
 // modal toggle
@@ -240,20 +561,61 @@ if (scrollCards) {
 document.addEventListener("click", (e) => {
   if (e.target.matches(".lineup-title")) {
     const modalItemName = e.target.dataset.name;
+    const modalItemImage = e.target.dataset.image;
     const modalItemCity = e.target.dataset.city;
     const modalItemCountry = e.target.dataset.country;
     const modalItemAddress = e.target.dataset.address;
+    const modelItemInstagram = e.target.dataset.instagram;
+    const modelItemWebsite = e.target.dataset.website;
+
+    const instagramText =
+      modelItemInstagram &&
+      modelItemInstagram.split("/").filter(Boolean).pop() !== "null" &&
+      modelItemInstagram.split("/").filter(Boolean).pop() !== "undefined"
+        ? `<a href="${modelItemInstagram}" target="_blank" rel="noopener noreferrer">Instagram</a>`
+        : "";
+
+    const websiteText =
+      modelItemWebsite &&
+      modelItemWebsite.split("/").filter(Boolean).pop() !== "null" &&
+      modelItemWebsite.split("/").filter(Boolean).pop() !== "undefined"
+        ? `<a href="${modelItemWebsite}" target="_blank" rel="noopener noreferrer">Website</a>`
+        : "";
+
+    let modalLinksText;
+    if (instagramText && websiteText) {
+      modalLinksText = `${instagramText} | ${websiteText}`;
+    } else if (instagramText) {
+      modalLinksText = instagramText;
+    } else if (websiteText) {
+      modalLinksText = websiteText;
+    } else {
+      modalLinksText = "";
+    }
 
     lineupItemModal.style.display = "flex";
     lineupItemModal.innerHTML = `<article class="lineup-item">
-          <div class="lineup-item-img" alt=""><h2 class="image-text">${modalItemName}</h2></div>
+    ${
+      modalItemImage && modalItemImage !== "undefined"
+        ? `<img class="modal-item-img" src="${modalItemImage}" alt=""></div>`
+        : `<div class="lineup-item-background" alt=""><h2 class="image-text">${modalItemName}</h2></div>`
+    }
           <div class="lineup-info-box">
               <div class="lineup-title-icon">
                   <h2 class="modal-title" id="modal-title">${modalItemName}</h2>
                   <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
               </div>
-              <p class="modal-info-text">${modalItemCity}, ${modalItemCountry}</p>
-              <p class="modal-info-text">${modalItemAddress}</p>
+              <p class="modal-info-text">${
+                modalItemCity !== "undefined"
+                  ? `${modalItemCity}, ${modalItemCountry}`
+                  : modalItemCountry !== "undefined"
+                  ? modalItemCountry
+                  : ""
+              }</p>
+              <p class="modal-info-text">${
+                modalItemAddress !== "undefined" ? modalItemAddress : ""
+              }</p>
+              <p class="modal-info-text">${modalLinksText}</p>
           </div>
     </article>`;
 
@@ -365,9 +727,10 @@ document.addEventListener("click", (e) => {
     comingSoonText.innerHTML = "<h2>Coming soon!</h2>";
   } else if (e.target.matches("#load-more-btn")) {
     currentOffset += resultsPerPage;
-    const { searchTerm, continentsToQuery } = getFilterCriteria();
     if (lineupSearchBar) {
-      searchFilteredDatabase(searchTerm, continentsToQuery);
+      const filters = getFilterCriteria();
+      const { searchTerm, continents, apparatus, type } = filters;
+      searchFilteredDatabase(filters);
     } else if (window.location.href.includes("results.html")) {
       const params = new URLSearchParams(window.location.search);
       const searchTerm = params.get("term") || "";
@@ -378,7 +741,9 @@ document.addEventListener("click", (e) => {
     featuredLineup.innerHTML = "";
     loadMoreBtn.style.display = "none";
     featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-    searchFilteredDatabase(lineupSearchBar.value, allContinents);
+    const filters = getFilterCriteria();
+    const { searchTerm, continents, apparatus } = filters;
+    searchFilteredDatabase(filters);
     if (mapCardItemImg)
       mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
   } else if (e.target.matches("#desktop-search-icon")) {
@@ -448,7 +813,9 @@ document.addEventListener("keydown", (e) => {
       featuredLineup.innerHTML = "";
       loadMoreBtn.style.display = "none";
       featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-      searchFilteredDatabase(lineupSearchBar.value, allContinents);
+      const filters = getFilterCriteria();
+      const { searchTerm, continents, apparatus, type } = filters;
+      searchFilteredDatabase(filters);
       setUpFilters();
       if (mapCardItemImg)
         mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -461,8 +828,9 @@ document.addEventListener("keydown", (e) => {
     } else if (e.target.matches("#load-more-btn")) {
       currentOffset += resultsPerPage;
       if (lineupSearchBar) {
-        const { searchTerm, continentsToQuery } = getFilterCriteria();
-        searchFilteredDatabase(searchTerm, continentsToQuery);
+        const filters = getFilterCriteria();
+        const { searchTerm, continents, apparatus, type } = filters;
+        searchFilteredDatabase(filters);
       } else if (window.location.href.includes("results.html")) {
         const params = new URLSearchParams(window.location.search);
         const searchTerm = params.get("term") || "";
@@ -501,6 +869,8 @@ document.addEventListener("focusout", (e) => {
 
 // filter functionality
 
+const filterState = {};
+
 function setUpFilters() {
   filterMenu.innerHTML = generateFilters();
   configureFilterButtons();
@@ -530,15 +900,15 @@ function determineFilterOptions() {
   if (
     ["studios.html", "studiomap.html"].some((page) => pagePath.includes(page))
   ) {
-    return ["Apparatus", "Features", "Location"];
+    return ["Apparatus", "Location", null];
   } else if (pagePath.includes("coaches.html")) {
-    return ["Apparatus", "Details", "Style"];
+    return ["Apparatus", "Location", null];
   } else if (
     ["performers.html", "collectives.html"].some((page) =>
       pagePath.includes(page)
     )
   ) {
-    return ["Apparatus", "Identifiers", "Style"];
+    return ["Apparatus", "Location", null];
   } else if (
     ["competitions.html", "retreats.html"].some((page) =>
       pagePath.includes(page)
@@ -593,23 +963,55 @@ function applyFilterOptions(filterOne, filterTwo, filterThree, options) {
 }
 
 function getFilterCriteria() {
-  const locationCheckboxes = document.querySelectorAll('input[name="Location"]:checked');
-  const selectedContinents = Array.from(locationCheckboxes).map((checkbox) => checkbox.value);
-  const searchTerm = lineupSearchBar ? lineupSearchBar.value : "";
-  const continentsToQuery = selectedContinents.length > 0 ? selectedContinents : ["Europe", "North America", "Latin America", "Asia", "Oceania", "Africa"];
+  const locationCheckboxes = document.querySelectorAll(
+    'input[name="Location"]:checked'
+  );
+  const selectedContinents = Array.from(locationCheckboxes).map(
+    (checkbox) => checkbox.value
+  );
 
-  return { searchTerm, continentsToQuery };
+  const apparatusCheckboxes = document.querySelectorAll(
+    'input[name="Apparatus"]:checked'
+  );
+  const selectedApparatus = Array.from(apparatusCheckboxes).map(
+    (checkbox) => checkbox.value
+  );
+
+  const typeCheckboxes = [
+    ...document.querySelectorAll('input[name="Equipment type"]:checked'),
+    ...document.querySelectorAll('input[name="Clothing type"]:checked'),
+    ...document.querySelectorAll('input[name="Kind"]:checked'),
+    ...document.querySelectorAll('input[name="Type"]:checked'),
+    ...document.querySelectorAll('input[name="Category"]:checked'),
+    ...document.querySelectorAll('input[name="Resource type"]:checked'),
+  ];
+
+  const selectedType = typeCheckboxes.map((checkbox) => checkbox.value);
+
+  const searchTerm = lineupSearchBar ? lineupSearchBar.value : "";
+
+  const continentsToQuery =
+    selectedContinents.length > 0
+      ? selectedContinents
+      : [
+          "Europe",
+          "North America",
+          "Latin America",
+          "Asia",
+          "Oceania",
+          "Africa",
+        ];
+
+  return { searchTerm, continents: continentsToQuery, apparatus: selectedApparatus, type: selectedType };
 }
 
 function applyFilters() {
-  const { searchTerm, continentsToQuery } = getFilterCriteria();
+  const { searchTerm, continents, apparatus, type } = getFilterCriteria();
 
   currentOffset = 0;
   featuredLineup.innerHTML = "";
-  
-  // const continentsArray = Array.isArray(continentsToQuery) ? continentsToQuery : [continentsToQuery];
-  console.log("Continents passed to searchFilteredDatabase:", continentsToQuery);
-  searchFilteredDatabase(searchTerm, continentsToQuery);
+
+  searchFilteredDatabase({ searchTerm, continents, apparatus, type });
 }
 
 function toggleFilterMenu(arrow, filterExpanded, filterKey) {
@@ -634,14 +1036,15 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
 
     const filterContent = {
       Apparatus: [
-        "Hoop/lyra",
+        "Hoop",
         "Silks",
         "Trapeze",
-        "Hammock/sling",
+        "Hammock",
         "Pole",
         "Straps",
         "Rope",
-        "Specialty apparatus",
+        "Hair hang",
+        "Specialty",
       ],
       Features: [
         "Accessible",
@@ -719,7 +1122,6 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
     };
 
     function generateFilterContent(filterKey, filterExpanded) {
-
       filterExpanded.innerHTML = "";
       const expandedFilterContainer = document.createElement("div");
       expandedFilterContainer.classList.add("filter-container");
@@ -734,12 +1136,21 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
           checkbox.value = option;
           checkbox.name = filterKey;
 
-          if (filterKey === "Location") {
-            checkbox.addEventListener("change", e => {
-              console.log("Location checkbox changed:", option);
-              applyFilters();
-            });
-          }
+          checkbox.checked = filterState[filterKey]?.includes(option) || false;
+
+          checkbox.addEventListener("change", (e) => {
+            if (!filterState[filterKey]) {
+              filterState[filterKey] = [];
+            }
+            if (e.target.checked) {
+              filterState[filterKey].push(option);
+            } else {
+              filterState[filterKey] = filterState[filterKey].filter(
+                (item) => item !== option
+              );
+            }
+            applyFilters();
+          });
 
           label.appendChild(checkbox);
           label.appendChild(document.createTextNode(option));

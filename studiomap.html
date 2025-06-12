@@ -202,19 +202,24 @@
     </header>
 
     <main id="main map-main" class="map-main">
+        <section class="not-modal" id="not-modal">
         <h1 class="map-h1">Explore the studio map</h1>
-        <section class="lineup-search-items">
+        <div class="lineup-search-items">
             <input type="search" class="search-bar" id="lineup-search-bar" placeholder="Search...">
             <input type="image" src="assets/magnify.svg" class="search-icon" id="lineup-search-icon" alt="Search">
-        </section>
+        </div>
 
         <img class="map-card-item-img" id="map-card-item-img" src="assets/placeholder.jpg" alt="Placeholder image for embedded map">
+
         <section class="lineup-container" id="lineup-container">
             <h1>All studios</h1>
             <div class="filter-menu" id="filter-menu"></div>
             <div class="lineup-lineup" id="lineup-lineup"></div>
         </section>
+
         <button class="load-more-btn" id="load-more-btn">Load more</button>
+        </section>
+        <section class="lineup-item-modal" id="lineup-item-modal"></section>
     </main>
 
     <footer>
