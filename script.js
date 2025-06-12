@@ -932,7 +932,7 @@ function determineFilterOptions() {
   } else if (pagePath.includes("photography.html")) {
     return ["Kind", "Location", null];
   } else if (pagePath.includes("otherresources.html")) {
-    return ["Category", null, null];
+    return ["Category", "Location", null];
   } else if (
     [
       "hoop.html",
