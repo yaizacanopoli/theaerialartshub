@@ -541,7 +541,7 @@ async function loadData(category) {
   }
 }
 
-if (window.location.href.includes("index.html")) {
+if (window.location.href.endsWith("index.html") || window.location.href.endsWith("/")) {
   // loadData("events");
   loadData("studios");
   loadData("clothing");
