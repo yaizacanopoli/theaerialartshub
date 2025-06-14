@@ -482,10 +482,6 @@ async function searchFilteredDatabase(filters) {
   if (when.length > 0) {
     const today = new Date();
     const dateRanges = {
-      "This week": {
-        start: new Date(today.setDate(today.getDate() - today.getDay())), // Start of the week
-        end: new Date(today.setDate(today.getDate() + 6 - today.getDay())), // End of the week
-      },
       "This month": {
         start: new Date(today.getFullYear(), today.getMonth(), 1), // Start of the month
         end: new Date(today.getFullYear(), today.getMonth() + 1, 0), // End of the month
@@ -529,6 +525,7 @@ async function searchFilteredDatabase(filters) {
             .gte("end", startDate);
         }
       }
+
   }
 
   if (baseName === "coaches") {
@@ -1149,7 +1146,7 @@ function determineFilterOptions() {
       pagePath.includes(page)
     )
   ) {
-    return ["Apparatus", "When", "Location"];
+    return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("festivals.html")) {
     return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("health.html")) {
@@ -1310,7 +1307,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Oceania",
         "Africa",
       ],
-      When: ["This week", "This month", "This year", "Next year", "Past dates"],
+      When: ["This month", "This year", "Next year", "Past dates"],
       Identifiers: ["Queer", "POC", "Disabled", "Sex work-positive"],
       Details: [
         "Queer",
@@ -1328,7 +1325,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Other health resources",
       ],
       Kind: ["Photography", "Videography"],
-      Category: ["Art", "Games", "Music", "Community", "Service"],
+      Category: ["Art", "Games", "Music", "Magazine", "Community", "Service"],
       "Clothing type": ["Aerial", "Pole", "Performance", "Custom"],
       "Heel style": ["Sandals", "Boots", "Specialty", "Custom"],
       "Equipment type": ["Rigs", "Accessories", "Grip", "Custom"],
