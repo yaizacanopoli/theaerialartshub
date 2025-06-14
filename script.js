@@ -29,6 +29,18 @@ const filterMenu = document.querySelector("#filter-menu");
 const loadMoreBtn = document.querySelector("#load-more-btn");
 const allFilterCheckboxes = document.querySelectorAll('input[type="checkbox"]');
 
+// format date
+
+function formatDate(dateString) {
+  if (!dateString) return ""; // Handle cases where the date is null or undefined
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
+}
+
 // database
 
 const supabaseUrl = "https://rziqmzomrmxklxsrsnpx.supabase.co";
@@ -215,7 +227,7 @@ async function searchWholeDatabase(term) {
           item.country
         }" data-address="${item.address}" data-image="${
           item.image
-        }" data-instagram="${item.instagram}" data-website="${item.website}">${
+        }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
           item.name
         }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
@@ -227,6 +239,14 @@ async function searchWholeDatabase(term) {
                     ? item.country
                     : ""
                 }</p>
+                <p class="lineup-info-dates">${
+                  item.start && item.end
+                  ? formatDate(item.start) === formatDate(item.end)
+                  ? formatDate(item.start)
+                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                  : ""
+                }
+                </p>
                 <div class="item-tags-group">
                 ${
                   item.apparatus
@@ -358,6 +378,8 @@ const tableColumnsMap = {
     "instagram",
     "website",
     "image",
+    "start",
+    "end",
   ],
   festivals: [
     "name",
@@ -367,6 +389,9 @@ const tableColumnsMap = {
     "instagram",
     "website",
     "image",
+    "start",
+    "end",
+    "apparatus",
   ],
 };
 
@@ -411,6 +436,8 @@ async function searchFilteredDatabase(filters) {
       "performer",
       "exact",
       "image",
+      "start",
+      "end",
     ].includes(col)
   );
 
@@ -525,6 +552,7 @@ async function searchFilteredDatabase(filters) {
     filterMenu.style.display = "flex";
 
     data.forEach((item) => {
+      console.log(item);
       featuredLineup.innerHTML += `<article class="lineup-item">
             ${
               item.image && item.image !== "null" && item.image !== "undefined"
@@ -539,7 +567,7 @@ async function searchFilteredDatabase(filters) {
         item.country
       }" data-address="${item.address}" data-image="${
         item.image
-      }" data-instagram="${item.instagram}" data-website="${item.website}">${
+      }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
         item.name
       }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
@@ -551,6 +579,14 @@ async function searchFilteredDatabase(filters) {
                     ? item.country
                     : ""
                 }</p>
+                <p class="lineup-info-dates">${
+                  item.start && item.end
+                  ? formatDate(item.start) === formatDate(item.end)
+                  ? formatDate(item.start)
+                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                  : ""
+                }
+                </p>
                 <div class="item-tags-group">
                 ${
                   item.apparatus
@@ -663,7 +699,7 @@ async function loadData(category) {
           item.country
         }" data-address="${item.address}" data-image="${
           item.image
-        }" data-instagram="${item.instagram}" data-website="${item.website}">${
+        }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
           item.name
         }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
@@ -675,6 +711,14 @@ async function loadData(category) {
                     ? item.country
                     : ""
                 }</p>
+                <p class="lineup-info-dates">${
+                  item.start && item.end
+                  ? formatDate(item.start) === formatDate(item.end)
+                  ? formatDate(item.start)
+                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                  : ""
+                }
+                </p>
                 <div class="item-tags-group">
                 ${
                   item.apparatus &&
@@ -746,6 +790,8 @@ document.addEventListener("click", (e) => {
     const modalItemAddress = e.target.dataset.address;
     const modelItemInstagram = e.target.dataset.instagram;
     const modelItemWebsite = e.target.dataset.website;
+    const modalItemStart = e.target.dataset.start;
+    const modalItemEnd = e.target.dataset.end;
 
     const instagramText =
       modelItemInstagram &&
@@ -793,6 +839,14 @@ document.addEventListener("click", (e) => {
                   ? modalItemCountry
                   : ""
               }</p>
+              <p class="modal-info-dates">${
+                modalItemStart && modalItemEnd
+                  ? formatDate(modalItemStart) === formatDate(modalItemEnd)
+                  ? formatDate(modalItemStart)
+                  : `${formatDate(modalItemStart)} – ${formatDate(modalItemEnd)}`
+                  : ""
+                }
+                </p>
               <p class="modal-info-text">${
                 modalItemAddress !== "undefined" ? modalItemAddress : ""
               }</p>
@@ -1097,7 +1151,7 @@ function determineFilterOptions() {
   ) {
     return ["Apparatus", "When", "Location"];
   } else if (pagePath.includes("festivals.html")) {
-    return ["When", "Location", null];
+    return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("health.html")) {
     return ["Type", "Location", null];
   } else if (pagePath.includes("equipment.html")) {
