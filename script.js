@@ -1090,7 +1090,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Other health resources",
       ],
       Kind: ["Photography", "Videography"],
-      Category: ["Art", "Games", "Music", "Communities", "Services"],
+      Category: ["Art", "Games", "Music", "Community", "Service"],
       "Clothing type": ["Aerial", "Pole", "Performance", "Custom"],
       "Heel style": ["Sandals", "Boots", "Specialty", "Custom"],
       "Equipment type": ["Rigs", "Accessories", "Grip", "Custom"],
