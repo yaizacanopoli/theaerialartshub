@@ -71,6 +71,8 @@ async function searchWholeDatabase(term) {
     photography: "photography",
     pole: "pole",
     otherresources: "others",
+    retreats: "retreats",
+    festivals: "festivals",
   };
 
   const tableName = tableMap[baseName];
@@ -108,6 +110,9 @@ async function searchWholeDatabase(term) {
         "venues",
         "others",
         "pole",
+        "retreats",
+        "festivals",
+        "venues",
       ];
 
       for (const table of tables) {
@@ -134,25 +139,26 @@ async function searchWholeDatabase(term) {
         const supabaseQuery = supabase
           .from(table)
           .select(tableSelectColumns.join(","), { count: "exact" })
-          .or(tableColumns
-            .filter((col) =>
-              [
-                "name",
-                "address",
-                "city",
-                "country",
-                "continent",
-                "instagram",
-                "type",
-                "apparatus",
-              ].includes(col)
-            )
-            .map((col) => `${col}.ilike.%${term}%`)
-            .join(",")
+          .or(
+            tableColumns
+              .filter((col) =>
+                [
+                  "name",
+                  "address",
+                  "city",
+                  "country",
+                  "continent",
+                  "instagram",
+                  "type",
+                  "apparatus",
+                ].includes(col)
+              )
+              .map((col) => `${col}.ilike.%${term}%`)
+              .join(",")
           )
           .order("name", { ascending: true });
 
-          const { data, error } = await supabaseQuery
+        const { data, error } = await supabaseQuery;
         if (error) {
           console.error(`Error querying ${table}:`, error.message);
           continue;
@@ -175,7 +181,6 @@ async function searchWholeDatabase(term) {
       loadMoreBtn.style.display = "none";
     } else {
       paginatedResults.forEach((item) => {
-
         const sourceMap = {
           people: (item) => (item.coach === true ? "Coach" : "Performer"),
           studios: () => "Studio",
@@ -187,30 +192,59 @@ async function searchWholeDatabase(term) {
           venues: () => "Venue",
           others: () => "Others",
           pole: () => "Pole",
+          retreats: () => "Retreat",
+          festivals: () => "Festival",
         };
 
         featuredLineup.innerHTML += `<article class="lineup-item">
-            ${item.image && item.image !== "null" && item.image !== "undefined"
+            ${
+              item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
             <div class="lineup-info-box">
-                <p class="lineup-info-category">${sourceMap[item.source] ? sourceMap[item.source](item) : item.source}</p>
+                <p class="lineup-info-category">${
+                  sourceMap[item.source]
+                    ? sourceMap[item.source](item)
+                    : item.source
+                }</p>
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${
+                      item.name
+                    }" data-city="${item.city}" data-country="${
+          item.country
+        }" data-address="${item.address}" data-image="${
+          item.image
+        }" data-instagram="${item.instagram}" data-website="${item.website}">${
+          item.name
+        }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city
+                <p class="lineup-info-text">${
+                  item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
                     ? item.country
                     : ""
-                  }</p>
+                }</p>
                 <div class="item-tags-group">
-                ${item.apparatus
-                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
+                ${
+                  item.apparatus
+                    ? item.apparatus
+                        .split(",")
+                        .map(
+                          (apparatus) =>
+                            `<button class="item-tag">${apparatus.trim()}</button>`
+                        )
+                        .join("")
                     : item.type
-                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                    ? item.type
+                        .split(",")
+                        .map(
+                          (type) =>
+                            `<button class="item-tag">${type.trim()}</button>`
+                        )
+                        .join("")
                     : `<button class="item-tag">Tag</button>`
                 }
             </div>
@@ -277,8 +311,24 @@ const tableColumnsMap = {
     "website",
     "image",
   ],
-  photography: ["name", "country", "continent", "type", "instagram", "website", "image"],
-  physio: ["name", "country", "continent", "type", "instagram", "website", "image"],
+  photography: [
+    "name",
+    "country",
+    "continent",
+    "type",
+    "instagram",
+    "website",
+    "image",
+  ],
+  physio: [
+    "name",
+    "country",
+    "continent",
+    "type",
+    "instagram",
+    "website",
+    "image",
+  ],
   troupes: [
     "name",
     "country",
@@ -300,10 +350,28 @@ const tableColumnsMap = {
   ],
   others: ["name", "type", "instagram", "website", "image"],
   pole: ["name", "type", "instagram", "website", "image"],
+  retreats: [
+    "name",
+    "country",
+    "continent",
+    "apparatus",
+    "instagram",
+    "website",
+    "image",
+  ],
+  festivals: [
+    "name",
+    "city",
+    "country",
+    "continent",
+    "instagram",
+    "website",
+    "image",
+  ],
 };
 
 async function searchFilteredDatabase(filters) {
-  const { searchTerm, continents, apparatus, type } = filters;
+  const { searchTerm, continents, apparatus, type, when } = filters;
 
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
@@ -320,6 +388,8 @@ async function searchFilteredDatabase(filters) {
     photography: "photography",
     pole: "pole",
     otherresources: "others",
+    retreats: "retreats",
+    festivals: "festivals",
   };
 
   const tableName = tableMap[baseName];
@@ -370,19 +440,69 @@ async function searchFilteredDatabase(filters) {
     .in("continent", continents)
     .order("name", { ascending: true });
 
-    if (apparatus.length > 0) {
-      const apparatusFilters = apparatus
-        .map((item) => `apparatus.ilike.%${item}%`)
-        .join(",");
-      supabaseQuery.or(apparatusFilters);
-    }
+  if (apparatus.length > 0) {
+    const apparatusFilters = apparatus
+      .map((item) => `apparatus.ilike.%${item}%`)
+      .join(",");
+    supabaseQuery.or(apparatusFilters);
+  }
 
-    if (type.length > 0) {
-      const typeFilters = type
-        .map((item) => `type.ilike.%${item}%`)
-        .join(",");
-      supabaseQuery.or(typeFilters);
-    }
+  if (type.length > 0) {
+    const typeFilters = type.map((item) => `type.ilike.%${item}%`).join(",");
+    supabaseQuery.or(typeFilters);
+  }
+
+  if (when.length > 0) {
+    const today = new Date();
+    const dateRanges = {
+      "This week": {
+        start: new Date(today.setDate(today.getDate() - today.getDay())), // Start of the week
+        end: new Date(today.setDate(today.getDate() + 6 - today.getDay())), // End of the week
+      },
+      "This month": {
+        start: new Date(today.getFullYear(), today.getMonth(), 1), // Start of the month
+        end: new Date(today.getFullYear(), today.getMonth() + 1, 0), // End of the month
+      },
+      "This year": {
+        start: new Date(today.getFullYear(), 0, 1), // Start of the year
+        end: new Date(today.getFullYear(), 11, 31), // End of the year
+      },
+      "Next year": {
+        start: new Date(today.getFullYear() + 1, 0, 1), // Start of next year
+        end: new Date(today.getFullYear() + 1, 11, 31), // End of next year
+      },
+      "Past dates": {
+        start: new Date(0), // Arbitrary start date (e.g., epoch)
+        end: new Date(), // Current date
+      },
+    };
+
+    const whenFilters = when
+      .map((item) => {
+        const range = dateRanges[item];
+        if (range) {
+          const startDate = range.start.toISOString().split("T")[0];
+          const endDate = range.end.toISOString().split("T")[0];
+          const startFilter = `start.lte.${endDate}`;
+          const endFilter = `end.gte.${startDate}`;
+          return `(${startFilter}&${endFilter})`;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .join(",");
+
+      if (when.length === 1) {
+        const range = dateRanges[when[0]];
+        if (range) {
+          const startDate = range.start.toISOString().split("T")[0];
+          const endDate = range.end.toISOString().split("T")[0];
+          supabaseQuery
+            .lte("start", endDate)
+            .gte("end", startDate);
+        }
+      }
+  }
 
   if (baseName === "coaches") {
     supabaseQuery.eq("coach", true);
@@ -406,26 +526,49 @@ async function searchFilteredDatabase(filters) {
 
     data.forEach((item) => {
       featuredLineup.innerHTML += `<article class="lineup-item">
-            ${item.image && item.image !== "null" && item.image !== "undefined"
+            ${
+              item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${
+                      item.name
+                    }" data-city="${item.city}" data-country="${
+        item.country
+      }" data-address="${item.address}" data-image="${
+        item.image
+      }" data-instagram="${item.instagram}" data-website="${item.website}">${
+        item.name
+      }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city
+                <p class="lineup-info-text">${
+                  item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
                     ? item.country
                     : ""
-                  }</p>
+                }</p>
                 <div class="item-tags-group">
-                ${item.apparatus
-                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
+                ${
+                  item.apparatus
+                    ? item.apparatus
+                        .split(",")
+                        .map(
+                          (apparatus) =>
+                            `<button class="item-tag">${apparatus.trim()}</button>`
+                        )
+                        .join("")
                     : item.type
-                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                    ? item.type
+                        .split(",")
+                        .map(
+                          (type) =>
+                            `<button class="item-tag">${type.trim()}</button>`
+                        )
+                        .join("")
                     : `<button class="item-tag">Tag</button>`
                 }
             </div>
@@ -443,7 +586,7 @@ async function searchFilteredDatabase(filters) {
 
 if (lineupSearchBar) {
   const filters = getFilterCriteria();
-  const { searchTerm, continents, apparatus, type } = filters;
+  const { searchTerm, continents, apparatus, type, when } = filters;
   searchFilteredDatabase(filters);
   setUpFilters();
 }
@@ -467,6 +610,8 @@ async function loadData(category) {
     photography: "photography",
     pole: "pole",
     otherresources: "others",
+    retreats: "retreats",
+    festivals: "festivals",
   };
 
   const tableName = tableMap[baseName];
@@ -505,26 +650,53 @@ async function loadData(category) {
       data.forEach((item) => {
         console.log(item.apparatus, item.type);
         selectedScrollCards.innerHTML += `<article class="scroll-item">
-            ${item.image && item.image !== "null" && item.image !== "undefined"
+            ${
+              item.image && item.image !== "null" && item.image !== "undefined"
                 ? `<img class="lineup-item-img" src="${item.image}" alt=""></div>`
                 : `<div class="lineup-item-background" alt=""><h2 class="image-text">${item.name}</h2></div>`
             }
             <div class="lineup-info-box">
                 <div class="lineup-title-icon">
-                    <h2 class="lineup-title" id="lineup-title" data-name="${item.name}" data-city="${item.city}" data-country="${item.country}" data-address="${item.address}" data-image="${item.image}" data-instagram="${item.instagram}" data-website="${item.website}">${item.name}</h2>
+                    <h2 class="lineup-title" id="lineup-title" data-name="${
+                      item.name
+                    }" data-city="${item.city}" data-country="${
+          item.country
+        }" data-address="${item.address}" data-image="${
+          item.image
+        }" data-instagram="${item.instagram}" data-website="${item.website}">${
+          item.name
+        }</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
-                <p class="lineup-info-text">${item.city
+                <p class="lineup-info-text">${
+                  item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
                     ? item.country
                     : ""
-                  }</p>
+                }</p>
                 <div class="item-tags-group">
-                ${item.apparatus && typeof item.apparatus === "string" && item.apparatus.trim() !== ""
-                    ? item.apparatus.split(",").map((apparatus) => `<button class="item-tag">${apparatus.trim()}</button>`).join("")
-                    : item.type && typeof item.type === "string" && item.type.trim() !== ""
-                    ? item.type.split(",").map((type) => `<button class="item-tag">${type.trim()}</button>`).join("")
+                ${
+                  item.apparatus &&
+                  typeof item.apparatus === "string" &&
+                  item.apparatus.trim() !== ""
+                    ? item.apparatus
+                        .split(",")
+                        .map(
+                          (apparatus) =>
+                            `<button class="item-tag">${apparatus.trim()}</button>`
+                        )
+                        .join("")
+                    : item.type &&
+                      typeof item.type === "string" &&
+                      item.type.trim() !== ""
+                    ? item.type
+                        .split(",")
+                        .map(
+                          (type) =>
+                            `<button class="item-tag">${type.trim()}</button>`
+                        )
+                        .join("")
                     : `<button class="item-tag">Tag</button>`
                 }
             </div>
@@ -541,7 +713,10 @@ async function loadData(category) {
   }
 }
 
-if (window.location.href.endsWith("index.html") || window.location.href.endsWith("/")) {
+if (
+  window.location.href.endsWith("index.html") ||
+  window.location.href.endsWith("/")
+) {
   // loadData("events");
   loadData("studios");
   loadData("clothing");
@@ -600,7 +775,9 @@ document.addEventListener("click", (e) => {
     lineupItemModal.style.display = "flex";
     lineupItemModal.innerHTML = `<article class="lineup-item">
     ${
-      modalItemImage && modalItemImage !== "undefined" && modalItemImage !== "null"
+      modalItemImage &&
+      modalItemImage !== "undefined" &&
+      modalItemImage !== "null"
         ? `<img class="modal-item-img" src="${modalItemImage}" alt=""></div>`
         : `<div class="lineup-item-background" alt=""><h2 class="image-text">${modalItemName}</h2></div>`
     }
@@ -733,7 +910,7 @@ document.addEventListener("click", (e) => {
     currentOffset += resultsPerPage;
     if (lineupSearchBar) {
       const filters = getFilterCriteria();
-      const { searchTerm, continents, apparatus, type } = filters;
+      const { searchTerm, continents, apparatus, type, when } = filters;
       searchFilteredDatabase(filters);
     } else if (window.location.href.includes("results.html")) {
       const params = new URLSearchParams(window.location.search);
@@ -818,7 +995,7 @@ document.addEventListener("keydown", (e) => {
       loadMoreBtn.style.display = "none";
       featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
       const filters = getFilterCriteria();
-      const { searchTerm, continents, apparatus, type } = filters;
+      const { searchTerm, continents, apparatus, type, when } = filters;
       searchFilteredDatabase(filters);
       setUpFilters();
       if (mapCardItemImg)
@@ -833,7 +1010,7 @@ document.addEventListener("keydown", (e) => {
       currentOffset += resultsPerPage;
       if (lineupSearchBar) {
         const filters = getFilterCriteria();
-        const { searchTerm, continents, apparatus, type } = filters;
+        const { searchTerm, continents, apparatus, type, when } = filters;
         searchFilteredDatabase(filters);
       } else if (window.location.href.includes("results.html")) {
         const params = new URLSearchParams(window.location.search);
@@ -992,6 +1169,13 @@ function getFilterCriteria() {
 
   const selectedType = typeCheckboxes.map((checkbox) => checkbox.value);
 
+  const whenCheckboxes = document.querySelectorAll(
+    'input[name="When"]:checked'
+  );
+  const selectedWhen = Array.from(whenCheckboxes).map(
+    (checkbox) => checkbox.value
+  );
+
   const searchTerm = lineupSearchBar ? lineupSearchBar.value : "";
 
   const continentsToQuery =
@@ -1006,16 +1190,22 @@ function getFilterCriteria() {
           "Africa",
         ];
 
-  return { searchTerm, continents: continentsToQuery, apparatus: selectedApparatus, type: selectedType };
+  return {
+    searchTerm,
+    continents: continentsToQuery,
+    apparatus: selectedApparatus,
+    type: selectedType,
+    when: selectedWhen,
+  };
 }
 
 function applyFilters() {
-  const { searchTerm, continents, apparatus, type } = getFilterCriteria();
+  const { searchTerm, continents, apparatus, type, when } = getFilterCriteria();
 
   currentOffset = 0;
   featuredLineup.innerHTML = "";
 
-  searchFilteredDatabase({ searchTerm, continents, apparatus, type });
+  searchFilteredDatabase({ searchTerm, continents, apparatus, type, when });
 }
 
 function toggleFilterMenu(arrow, filterExpanded, filterKey) {
@@ -1066,13 +1256,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Oceania",
         "Africa",
       ],
-      When: [
-        "This week",
-        "This month",
-        "This year",
-        "Next year",
-        "Other dates",
-      ],
+      When: ["This week", "This month", "This year", "Next year", "Past dates"],
       Identifiers: ["Queer", "POC", "Disabled", "Sex work-positive"],
       Details: [
         "Queer",
@@ -1135,13 +1319,15 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
           const label = document.createElement("label");
           label.classList.add("filter-item");
           const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
+          checkbox.type = filterKey === "When" ? "radio" : "checkbox";
           checkbox.value = option;
           checkbox.name = filterKey;
-
           checkbox.checked = filterState[filterKey]?.includes(option) || false;
 
           checkbox.addEventListener("change", (e) => {
+            if (filterKey === "When") {
+              filterState[filterKey] = [option];
+            } else {
             if (!filterState[filterKey]) {
               filterState[filterKey] = [];
             }
@@ -1152,6 +1338,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
                 (item) => item !== option
               );
             }
+          }
             applyFilters();
           });
 
