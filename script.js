@@ -840,7 +840,7 @@ document.addEventListener("click", (e) => {
                   : ""
               }</p>
               <p class="modal-info-dates">${
-                modalItemStart && modalItemEnd
+                modalItemStart !== "undefined" && modalItemEnd !== "undefined"
                   ? formatDate(modalItemStart) === formatDate(modalItemEnd)
                   ? formatDate(modalItemStart)
                   : `${formatDate(modalItemStart)} – ${formatDate(modalItemEnd)}`
