@@ -8,6 +8,9 @@
     <title>Map of aerial and pole studios around the world | The Aerial Arts Hub</title>
     <link rel="stylesheet" href="styles.css">
     </link>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -209,7 +212,7 @@
             <input type="image" src="assets/magnify.svg" class="search-icon" id="lineup-search-icon" alt="Search">
         </div>
 
-        <img class="map-card-item-img" id="map-card-item-img" src="assets/placeholder.jpg" alt="Placeholder image for embedded map">
+        <div class="map-card-item" id="map-card-item" alt="Studios map"></div>
 
         <section class="lineup-container" id="lineup-container">
             <h1>All studios</h1>

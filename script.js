@@ -17,7 +17,7 @@ const footer = document.querySelector("footer");
 
 const scrollCards = document.querySelectorAll(".scroll-cards");
 const articleCard = document.querySelectorAll(".scroll-cards > .card");
-const mapCardItemImg = document.querySelector("#map-card-item-img");
+const mapCardItem = document.querySelector("#map-card-item");
 const lineupSearchBar = document.querySelector("#lineup-search-bar");
 const featuredLineupHeader = document.querySelector("#lineup-container > h1");
 const featuredLineup = document.querySelector("#lineup-lineup");
@@ -62,7 +62,6 @@ async function getTableColumns(tableName) {
   if (tableColumnsMap[tableName]) {
     return tableColumnsMap[tableName];
   } else {
-    console.error(`No column map found for table ${tableName}`);
     return [];
   }
 }
@@ -227,9 +226,9 @@ async function searchWholeDatabase(term) {
           item.country
         }" data-address="${item.address}" data-image="${
           item.image
-        }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
-          item.name
-        }</h2>
+        }" data-instagram="${item.instagram}" data-website="${
+          item.website
+        }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
@@ -241,10 +240,10 @@ async function searchWholeDatabase(term) {
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
-                  ? formatDate(item.start) === formatDate(item.end)
-                  ? formatDate(item.start)
-                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
-                  : ""
+                    ? formatDate(item.start) === formatDate(item.end)
+                      ? formatDate(item.start)
+                      : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                    : ""
                 }
                 </p>
                 <div class="item-tags-group">
@@ -515,17 +514,14 @@ async function searchFilteredDatabase(filters) {
       .filter(Boolean)
       .join(",");
 
-      if (when.length === 1) {
-        const range = dateRanges[when[0]];
-        if (range) {
-          const startDate = range.start.toISOString().split("T")[0];
-          const endDate = range.end.toISOString().split("T")[0];
-          supabaseQuery
-            .lte("start", endDate)
-            .gte("end", startDate);
-        }
+    if (when.length === 1) {
+      const range = dateRanges[when[0]];
+      if (range) {
+        const startDate = range.start.toISOString().split("T")[0];
+        const endDate = range.end.toISOString().split("T")[0];
+        supabaseQuery.lte("start", endDate).gte("end", startDate);
       }
-
+    }
   }
 
   if (baseName === "coaches") {
@@ -549,7 +545,6 @@ async function searchFilteredDatabase(filters) {
     filterMenu.style.display = "flex";
 
     data.forEach((item) => {
-      console.log(item);
       featuredLineup.innerHTML += `<article class="lineup-item">
             ${
               item.image && item.image !== "null" && item.image !== "undefined"
@@ -564,9 +559,9 @@ async function searchFilteredDatabase(filters) {
         item.country
       }" data-address="${item.address}" data-image="${
         item.image
-      }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
-        item.name
-      }</h2>
+      }" data-instagram="${item.instagram}" data-website="${
+        item.website
+      }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
@@ -578,10 +573,10 @@ async function searchFilteredDatabase(filters) {
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
-                  ? formatDate(item.start) === formatDate(item.end)
-                  ? formatDate(item.start)
-                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
-                  : ""
+                    ? formatDate(item.start) === formatDate(item.end)
+                      ? formatDate(item.start)
+                      : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                    : ""
                 }
                 </p>
                 <div class="item-tags-group">
@@ -618,9 +613,7 @@ async function searchFilteredDatabase(filters) {
 }
 
 if (lineupSearchBar) {
-  const filters = getFilterCriteria();
-  const { searchTerm, continents, apparatus, type, when } = filters;
-  searchFilteredDatabase(filters);
+  applyFilters();
   setUpFilters();
 }
 
@@ -681,7 +674,6 @@ async function loadData(category) {
     } else {
       totalResults = count;
       data.forEach((item) => {
-        console.log(item.apparatus, item.type);
         selectedScrollCards.innerHTML += `<article class="scroll-item">
             ${
               item.image && item.image !== "null" && item.image !== "undefined"
@@ -696,9 +688,9 @@ async function loadData(category) {
           item.country
         }" data-address="${item.address}" data-image="${
           item.image
-        }" data-instagram="${item.instagram}" data-website="${item.website}" data-start="${item.start}" data-end="${item.end}">${
-          item.name
-        }</h2>
+        }" data-instagram="${item.instagram}" data-website="${
+          item.website
+        }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
@@ -710,10 +702,10 @@ async function loadData(category) {
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
-                  ? formatDate(item.start) === formatDate(item.end)
-                  ? formatDate(item.start)
-                  : `${formatDate(item.start)} – ${formatDate(item.end)}`
-                  : ""
+                    ? formatDate(item.start) === formatDate(item.end)
+                      ? formatDate(item.start)
+                      : `${formatDate(item.start)} – ${formatDate(item.end)}`
+                    : ""
                 }
                 </p>
                 <div class="item-tags-group">
@@ -839,10 +831,12 @@ document.addEventListener("click", (e) => {
               <p class="modal-info-dates">${
                 modalItemStart !== "undefined" && modalItemEnd !== "undefined"
                   ? formatDate(modalItemStart) === formatDate(modalItemEnd)
-                  ? formatDate(modalItemStart)
-                  : `${formatDate(modalItemStart)} – ${formatDate(modalItemEnd)}`
+                    ? formatDate(modalItemStart)
+                    : `${formatDate(modalItemStart)} – ${formatDate(
+                        modalItemEnd
+                      )}`
                   : ""
-                }
+              }
                 </p>
               <p class="modal-info-text">${
                 modalItemAddress !== "undefined" ? modalItemAddress : ""
@@ -961,7 +955,7 @@ document.addEventListener("click", (e) => {
     currentOffset += resultsPerPage;
     if (lineupSearchBar) {
       const filters = getFilterCriteria();
-      const { searchTerm, continents, apparatus, type, when } = filters;
+      // const { searchTerm, continents, apparatus, type, when } = filters;
       searchFilteredDatabase(filters);
     } else if (window.location.href.includes("results.html")) {
       const params = new URLSearchParams(window.location.search);
@@ -976,8 +970,8 @@ document.addEventListener("click", (e) => {
     const filters = getFilterCriteria();
     const { searchTerm, continents, apparatus } = filters;
     searchFilteredDatabase(filters);
-    if (mapCardItemImg)
-      mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
+    if (mapCardItem)
+      mapCardItem.scrollIntoView({ behavior: "smooth", block: "end" });
   } else if (e.target.matches("#desktop-search-icon")) {
     const searchTerm = encodeURIComponent(desktopSearchBar.value);
     window.location.href = `results.html?term=${searchTerm}`;
@@ -1041,16 +1035,12 @@ document.addEventListener("keydown", (e) => {
     } else if (e.target.matches(".heart-icon")) {
       toggleLikeState(e.target.firstChild);
     } else if (e.target === lineupSearchBar) {
-      currentOffset = 0;
-      featuredLineup.innerHTML = "";
       loadMoreBtn.style.display = "none";
       featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
-      const filters = getFilterCriteria();
-      const { searchTerm, continents, apparatus, type, when } = filters;
-      searchFilteredDatabase(filters);
+      applyFilters();
       setUpFilters();
-      if (mapCardItemImg)
-        mapCardItemImg.scrollIntoView({ behavior: "smooth", block: "end" });
+      if (mapCardItem)
+        mapCardItem.scrollIntoView({ behavior: "smooth", block: "end" });
     } else if (e.target.matches("#desktop-search-bar")) {
       const searchTerm = encodeURIComponent(desktopSearchBar.value);
       window.location.href = `results.html?term=${searchTerm}`;
@@ -1061,7 +1051,7 @@ document.addEventListener("keydown", (e) => {
       currentOffset += resultsPerPage;
       if (lineupSearchBar) {
         const filters = getFilterCriteria();
-        const { searchTerm, continents, apparatus, type, when } = filters;
+        // const { searchTerm, continents, apparatus, type, when } = filters;
         searchFilteredDatabase(filters);
       } else if (window.location.href.includes("results.html")) {
         const params = new URLSearchParams(window.location.search);
@@ -1251,12 +1241,16 @@ function getFilterCriteria() {
 }
 
 function applyFilters() {
-  const { searchTerm, continents, apparatus, type, when } = getFilterCriteria();
+  const filters = getFilterCriteria();
 
   currentOffset = 0;
   featuredLineup.innerHTML = "";
 
-  searchFilteredDatabase({ searchTerm, continents, apparatus, type, when });
+  searchFilteredDatabase(filters);
+
+  if (baseName === "studiomap") {
+    loadMapWithFilteredStudios(filters);
+  }
 }
 
 function toggleFilterMenu(arrow, filterExpanded, filterKey) {
@@ -1379,17 +1373,17 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
             if (filterKey === "When") {
               filterState[filterKey] = [option];
             } else {
-            if (!filterState[filterKey]) {
-              filterState[filterKey] = [];
+              if (!filterState[filterKey]) {
+                filterState[filterKey] = [];
+              }
+              if (e.target.checked) {
+                filterState[filterKey].push(option);
+              } else {
+                filterState[filterKey] = filterState[filterKey].filter(
+                  (item) => item !== option
+                );
+              }
             }
-            if (e.target.checked) {
-              filterState[filterKey].push(option);
-            } else {
-              filterState[filterKey] = filterState[filterKey].filter(
-                (item) => item !== option
-              );
-            }
-          }
             applyFilters();
           });
 
@@ -1475,3 +1469,108 @@ window.addEventListener("pageshow", (e) => {
   );
   allDesktopArrows.forEach((arrow) => (arrow.src = "assets/triangle-down.svg"));
 });
+
+// map functionality
+
+let mapInstance;
+let mapBounds;
+let currentMarkers = [];
+
+async function loadMapWithFilteredStudios(filters) {
+
+  const { searchTerm, continents, apparatus } = filters;
+
+  const columns = await getTableColumns("studios");
+
+  let orFilters = "";
+  if (searchTerm.trim() !== "") {
+    orFilters = columns
+      .filter((col) =>
+        [
+          "name",
+          "address",
+          "city",
+          "country",
+          "continent",
+          "instagram",
+          "apparatus",
+        ].includes(col)
+      )
+      .map((col) => `${col}.ilike.%${searchTerm}%`)
+      .join(",");
+  }
+
+  let mapQuery = supabase
+    .from("studios")
+    .select("name, address, city, country, latitude, longitude, exact, apparatus")
+    .in("continent", continents);
+
+    if (apparatus.length > 0) {
+    const apparatusFilter = apparatus
+      .map((a) => `apparatus.ilike.%${a}%`)
+      .join(",");
+
+    mapQuery = mapQuery.or(apparatusFilter);
+  }
+
+  if (orFilters) {
+    mapQuery = mapQuery.or(orFilters);
+  }
+
+  const { data, error } = await mapQuery;
+
+  if (error) {
+    console.error("Error loading studios for map:", error.message);
+    return;
+  }
+
+  currentMarkers.forEach((m) => m.remove());
+  currentMarkers = [];
+
+  const bounds = L.latLngBounds();
+
+  data.forEach((studio) => {
+    const lat = Number(studio.latitude);
+    const lng = Number(studio.longitude);
+
+    if (isFinite(lat) && isFinite(lng) && lat !== 0 && lng !== 0) {
+      const marker = L.marker([lat, lng]).addTo(mapInstance);
+      marker.bindPopup(
+        `<strong>${studio.name}</strong><br>${studio.city || ""}, ${
+          studio.country || ""
+        }<br><span style="color: grey; font-size: 0.8rem">${studio.address || ""}</span>`
+      );
+      currentMarkers.push(marker);
+      bounds.extend([lat, lng]);
+    }
+  });
+
+  if (bounds.isValid()) {
+    mapInstance.fitBounds(bounds, { padding: [50, 50] });
+
+    setTimeout(() => mapInstance.invalidateSize(), 200);
+  }
+}
+
+if (mapCardItem) {
+  document.addEventListener("DOMContentLoaded", async () => {
+    mapInstance = L.map(mapCardItem, {
+      minZoom: 2,
+      maxBounds: [
+        [-90, -200],
+        [90, 200],
+      ],
+      maxBoundsViscosity: 1.0,
+    }).setView([20, 0], 2);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    }).addTo(mapInstance);
+
+    if (baseName === "studiomap") {
+      const initialFilters = getFilterCriteria();
+      loadMapWithFilteredStudios(initialFilters);
+    }
+  });
+}
