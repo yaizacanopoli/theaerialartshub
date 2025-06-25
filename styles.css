@@ -550,7 +550,7 @@ main {
   color: black;
   visibility: hidden;
   opacity: 0;
-  font-size: calc(1rem + 3vw);
+  font-size: min(3rem, 6vw);
   font-weight: 400;
   text-shadow: 1px 1px #949596;
   transition: opacity 0.2s, visibility 0.2s;

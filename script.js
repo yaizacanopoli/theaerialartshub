@@ -620,6 +620,7 @@ if (lineupSearchBar) {
 // supabase for home page
 
 async function loadData(category) {
+
   const selectedScrollCards = document.querySelector(
     `#scroll-cards-${category}`
   );
@@ -630,17 +631,20 @@ async function loadData(category) {
     coaches: "people",
     performers: "people",
     clothing: "clothing",
+    troupes: "troupes",
     collectives: "troupes",
     equipment: "equipment",
+    physio: "physio",
     health: "physio",
     photography: "photography",
     pole: "pole",
+    others: "others",
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
   };
 
-  const tableName = tableMap[baseName];
+  const tableName = tableMap[category];
 
   const columns = await getTableColumns(tableName);
 
@@ -658,17 +662,27 @@ async function loadData(category) {
       "coach",
       "performer",
       "exact",
+      "image"
     ].includes(col)
   );
 
   if (selectedScrollCards) {
-    const { data, error, count } = await supabase
-      .from(category)
-      .select(selectColumns.join(","), {
+    const loadDataQuery = supabase
+      .from(tableName)
+      .select(selectColumns.length ? selectColumns.join(",") : "*", {
         count: "exact",
       })
       .range(0, 8)
       .order("name", { ascending: true });
+
+      if (category === "coaches") {
+        loadDataQuery.eq("coach", true);
+      } else if (category === "performers") {
+        loadDataQuery.eq("performer", true);
+      }
+
+    const { data, error, count } = await loadDataQuery;
+
     if (error || count === 0) {
       selectedScrollCards.textContent = "No results were found";
     } else {
@@ -757,8 +771,8 @@ if (
 
 if (window.location.href.includes("allresources.html")) {
   loadData("studios");
-  loadData("people");
-  loadData("people");
+  loadData("coaches");
+  loadData("performers");
   loadData("collectives");
   loadData("retreats");
   loadData("competitions");
