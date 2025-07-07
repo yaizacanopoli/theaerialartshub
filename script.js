@@ -1531,19 +1531,23 @@ async function loadMapWithFilteredStudios(filters) {
     mapQuery = mapQuery.or(orFilters);
   }
 
-  const { data, error } = await mapQuery;
+  const { data: studios1 } = await mapQuery
+  .range(0, 999);
 
-  if (error) {
-    console.error("Error loading studios for map:", error.message);
-    return;
-  }
+  const { data: studios2 } = await mapQuery
+  .range(1000, 1999);
+
+  const { data: studios3 } = await mapQuery
+  .range(2000, 2999);
+
+  const allMapStudios = [...studios1, ...studios2, ...studios3];
 
   currentMarkers.forEach((m) => m.remove());
   currentMarkers = [];
 
   const bounds = L.latLngBounds();
 
-  data.forEach((studio) => {
+  allMapStudios.forEach((studio) => {
     const lat = Number(studio.latitude);
     const lng = Number(studio.longitude);
 
