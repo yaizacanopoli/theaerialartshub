@@ -1564,8 +1564,6 @@ async function loadMapWithFilteredStudios(filters) {
   });
 
   if (bounds.isValid()) {
-    mapInstance.fitBounds(bounds, { padding: [50, 50] });
-
     setTimeout(() => mapInstance.invalidateSize(), 200);
   }
 }
