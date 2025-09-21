@@ -285,10 +285,7 @@ async function searchWholeDatabase(term) {
 
 const allContinents = [
   "Europe",
-  "North America",
-  "Latin America",
   "Asia",
-  "Oceania",
   "Africa",
 ];
 
@@ -1253,10 +1250,7 @@ function getFilterCriteria() {
       ? selectedContinents
       : [
           "Europe",
-          "North America",
-          "Latin America",
           "Asia",
-          "Oceania",
           "Africa",
         ];
 
@@ -1324,10 +1318,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
       ],
       Location: [
         "Europe",
-        "North America",
-        "Latin America",
         "Asia",
-        "Oceania",
         "Africa",
       ],
       When: ["This month", "This year", "Next year", "Past dates"],
@@ -1592,7 +1583,7 @@ if (mapCardItem) {
         [90, 200],
       ],
       maxBoundsViscosity: 1.0,
-    }).setView([20, 0], 2);
+    }).setView([40, 50], 2.5);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
