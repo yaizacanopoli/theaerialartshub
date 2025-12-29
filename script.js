@@ -47,7 +47,7 @@ const supabaseUrl = "https://rziqmzomrmxklxsrsnpx.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6aXFtem9tcm14a2x4c3JzbnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk1MTQyNTQsImV4cCI6MjA1NTA5MDI1NH0.Iw9CPRmNSzoANbIuTAp4RoZAaq9M3BSxIreuqTBpKMc";
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 const resultsPerPage = 12;
 let currentOffset = 0;
@@ -149,7 +149,7 @@ async function searchWholeDatabase(term) {
           ].includes(col)
         );
 
-        const supabaseQuery = supabase
+        const supabaseQuery = supabaseClient
           .from(table)
           .select(tableSelectColumns.join(","), { count: "exact" })
           .or(
@@ -469,7 +469,7 @@ async function searchFilteredDatabase(filters) {
       .join(",");
   }
 
-  const supabaseQuery = supabase
+  const supabaseQuery = supabaseClient
     .from(tableName)
     .select(selectColumns.join(","), { count: "exact" })
     .range(rangeStart, rangeEnd)
@@ -678,7 +678,7 @@ async function loadData(category) {
   );
 
   if (selectedScrollCards) {
-    const loadDataQuery = supabase
+    const loadDataQuery = supabaseClient
       .from(tableName)
       .select(selectColumns.length ? selectColumns.join(",") : "*", {
         count: "exact",
@@ -1520,7 +1520,7 @@ async function loadMapWithFilteredStudios(filters) {
       .join(",");
   }
 
-  let mapQuery = supabase
+  let mapQuery = supabaseClient
     .from("studios")
     .select("name, address, city, country, latitude, longitude, exact, apparatus")
     .in("continent", continents);
