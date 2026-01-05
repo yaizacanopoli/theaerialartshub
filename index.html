@@ -44,32 +44,41 @@
             
             <ul class="nav-links">
                 <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="studiomap.html" aria-label="Map of studios">Studio map</a></h2>
+                    <button class="nav-item" id="nav-item">
+                        <h2>Studios</h2>
+                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    </button>
+                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
+                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Browse the list</a></li>
+                        <li class="dropdown-item"><a href="studiomap.html" aria-label="Studio map">Explore the map</a></li>
+                    </ul>
                 </li>
+                
+                <li class="nav-item-div">
+                    <button class="nav-item" id="nav-item">
+                        <h2>What's on</h2>
+                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    </button>
+                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
+                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
+                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
+                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item-div">
                     <button class="nav-item" id="nav-item">
                         <h2>Resources</h2>
                         <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     </button>
                     <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
-                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Studios</a></li>
-                        <li class="dropdown-item"><a href="coaches.html" aria-label="Coaches">Coaches</a></li>
-                        <li class="dropdown-item"><a href="performers.html" aria-label="Performers">Performers</a></li>
-                        <li class="dropdown-item"><a href="collectives.html"
-                                aria-label="Troupes and collectives">Troupes
-                                and collectives</a></li>
-                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
-                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
-                        </li>
-                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
                         <li class="dropdown-item"><a href="health.html"
                                 aria-label="Physios and flexibility resources">Physio and flexy</a></li>
                         <li class="dropdown-item"><a href="photography.html"
                                 aria-label="Photographers and videographers">Photography and video</a></li>
                         <li class="dropdown-item"><a href="otherresources.html" aria-label="Other resources">Other
                                 resources</a></li>
-                        <li class="dropdown-item"><a href="allresources.html" aria-label="See all resources">See all</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item-div">
@@ -83,32 +92,6 @@
                         <li class="dropdown-item"><a href="heels.html" aria-label="Pole heels">Heels</a></li>
                         <li class="dropdown-item"><a href="equipment.html" aria-label="Equipment">Equipment</a></li>
                     </ul>
-                </li>
-                <li class="nav-item-div">
-                    <button class="nav-item" id="nav-item">
-                        <h2>Training</h2>
-                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
-                    </button>
-                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
-                        <li class="dropdown-item"><a href="hoop.html" aria-label="Hoop or lyra resources">Hoop/lyra</a>
-                        </li>
-                        <li class="dropdown-item"><a href="silks.html" aria-label="Silks resources">Silks</a></li>
-                        <li class="dropdown-item"><a href="trapeze.html" aria-label="Trapeze resources">Trapeze</a></li>
-                        <li class="dropdown-item"><a href="hammock.html"
-                                aria-label="Hammock or sling resources">Hammock/sling</a></li>
-                        <li class="dropdown-item"><a href="pole.html" aria-label="Pole resources">Pole</a></li>
-                        <li class="dropdown-item"><a href="straps.html" aria-label="Straps resources">Straps</a></li>
-                        <li class="dropdown-item"><a href="rope.html" aria-label="Rope resources">Rope</a></li>
-                        <li class="dropdown-item"><a href="hairhang.html" aria-label="Hair hang resources">Hair hang</a></li>
-                        <li class="dropdown-item"><a href="otherskills.html"
-                                aria-label="Specialty aerial resources">Specialty</a></li>
-                        <li class="dropdown-item"><a href="allskills.html"
-                                aria-label="See all aerial and pole resources">See all</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="events.html" aria-label="Aerial, pole and circus events">What's on</a>
-                    </h2>
                 </li>
                 <li class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html" aria-label="About page">About</a></h2>
@@ -121,34 +104,44 @@
 
         <nav class="mobile-menu" id="mobile-menu">
             <button class="closing-x" id="closing-x"><img src="assets/close.svg" alt="Close the menu"></button>
+
             <ul class="nav-links">
                 <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="studiomap.html" aria-label="Map of studios">Studio map</a></h2>
+                    <button class="nav-item" id="nav-item">
+                        <h2>Studios</h2>
+                    </button>
+                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <ul class="dropdown-container" id="dropdown-container">
+                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Browse the list</a></li>
+                        <li class="dropdown-item"><a href="studiomap.html" aria-label="Studio map">Explore the map</a></li>
+                    </ul>
                 </li>
+                
+                <li class="nav-item-div">
+                    <button class="nav-item" id="nav-item">
+                        <h2>What's on</h2>
+                    </button>
+                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <ul class="dropdown-container" id="dropdown-container">
+                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
+                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
+                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item-div">
                     <button class="nav-item" id="nav-item">
                         <h2>Resources</h2>
                     </button>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     <ul class="dropdown-container" id="dropdown-container">
-                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Studios</a></li>
-                        <li class="dropdown-item"><a href="coaches.html" aria-label="Coaches">Coaches</a></li>
-                        <li class="dropdown-item"><a href="performers.html" aria-label="Performers">Performers</a></li>
-                        <li class="dropdown-item"><a href="collectives.html"
-                                aria-label="Troupes and collectives">Troupes
-                                and collectives</a></li>
-                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
-                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
-                        </li>
-                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
                         <li class="dropdown-item"><a href="health.html"
                                 aria-label="Physios and flexibility resources">Physio and flexy</a></li>
                         <li class="dropdown-item"><a href="photography.html"
                                 aria-label="Photographers and videographers">Photography and video</a></li>
                         <li class="dropdown-item"><a href="otherresources.html" aria-label="Other resources">Other
                                 resources</a></li>
-                        <li class="dropdown-item"><a href="allresources.html" aria-label="See all resources">See all</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item-div">
@@ -164,37 +157,14 @@
                     </ul>
                 </li>
                 <li class="nav-item-div">
-                    <button class="nav-item" id="nav-item">
-                        <h2>Training</h2>
-                    </button>
-                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
-                    <ul class="dropdown-container" id="dropdown-container">
-                        <li class="dropdown-item"><a href="hoop.html" aria-label="Hoop or lyra resources">Hoop/lyra</a>
-                        </li>
-                        <li class="dropdown-item"><a href="silks.html" aria-label="Silks resources">Silks</a></li>
-                        <li class="dropdown-item"><a href="trapeze.html" aria-label="Trapeze resources">Trapeze</a></li>
-                        <li class="dropdown-item"><a href="hammock.html"
-                                aria-label="Hammock or sling resources">Hammock/sling</a></li>
-                        <li class="dropdown-item"><a href="pole.html" aria-label="Pole resources">Pole</a></li>
-                        <li class="dropdown-item"><a href="straps.html" aria-label="Straps resources">Straps</a></li>
-                        <li class="dropdown-item"><a href="rope.html" aria-label="Rope resources">Rope</a></li>
-                        <li class="dropdown-item"><a href="hairhang.html" aria-label="Hair hang resources">Hair hang</a></li>
-                        <li class="dropdown-item"><a href="otherskills.html"
-                                aria-label="Specialty aerial resources">Specialty</a></li>
-                        <li class="dropdown-item"><a href="allskills.html"
-                                aria-label="See all aerial and pole resources">See all</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="events.html" aria-label="Aerial, pole and circus events">What's on</a>
-                    </h2>
-                </li>
-                <li class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html" aria-label="About page">About</a></h2>
                 </li>
+                <!-- <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a> -->
             </ul>
+
+
             <div class="nav-input">
-                <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a>
+                <!-- <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a> -->
                 <div class="search-items">
                     <input type="search" class="search-bar" id="nav-search-bar" placeholder="Search...">
                     <input type="image" src="assets/magnify.svg" class="search-icon" id="nav-search-icon" alt="Search">
@@ -217,234 +187,15 @@
         
         <section id="not-modal">
 
-        <!-- <h1 class="cards-category"><a href="events.html" aria-label="Aerial and pole events">What's on</a></h1>
-        <section class="scroll-cards" id="scroll-cards-events"></section> -->
-
         <h1 class="cards-category"><a href="studios.html" aria-label="Aerial and pole studios">Find a studio</a></h1>
         <section class="scroll-cards" id="scroll-cards-studios"></section>
+
+        <h1 class="cards-category"><a href="festivals.html" aria-label="Aerial and pole festivals">Attend a festival</a></h1>
+        <section class="scroll-cards" id="scroll-cards-festivals"></section>
 
         <h1 class="cards-category"><a href="clothing.html" aria-label="Aerial and polewear">Discover pole & aerial
                 wear</a></h1>
         <section class="scroll-cards" id="scroll-cards-clothing"></section>
-
-        <h1 class="cards-category"><a href="allskills.html" aria-label="Aerial and pole resources">Find training
-                resources</a></h1>
-        <section class="scroll-cards">
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/hoop.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="hoop.html" aria-label="Hoop or lyra resources">Hoop/lyra</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/silks.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="silks.html" aria-label="Silks resources">Silks</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/trapeze.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="trapeze.html" aria-label="Trapeze resources">Trapeze</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/hammock.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="hammock.html"
-                                aria-label="Hammock or sling resources">Hammock/sling</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/pole.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="pole.html" aria-label="Pole resources">Pole</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/straps.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="straps.html" aria-label="Straps resources">Straps</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/rope.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="rope.html" aria-label="Rope resources">Rope</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/hairhang.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="hairhang.html" aria-label="Hair hang resources">Hair hang</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <img class="lineup-item-img" src="assets/specialty.png" alt="">
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="otherskills.html"
-                                aria-label="Specialty aerial resources">Specialty</a></h2>
-                        <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg"
-                                alt="Like"></button>
-                    </div>
-                    <p class="item-text">Description</p>
-                </div>
-            </article>
-
-            <div class="arrow-see-all-container">
-                <a href="allskills.html" aria-label="Aerial and pole resources">
-                    <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
-                </a>
-            </div>
-        </section>
-
-        <!-- Scroll cards category 5 -->
-
-        <h1 class="cards-category"><a href="allresources.html" aria-label="See all resources">Discover more
-                resources</a></h1>
-        <section class="scroll-cards">
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Coaches</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="coaches.html" aria-label="Coaches">Find a coach</a></h2>
-                    </div>
-                    <p class="item-text">Near you or online</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Performers</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="performers.html" aria-label="Performers">Discover performers</a>
-                        </h2>
-                    </div>
-                    <p class="item-text">Around the world</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Troupes and collectives</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="collectives.html" aria-label="Troupes and collectives">Explore
-                                collectives</a></h2>
-                    </div>
-                    <p class="item-text">Around the world</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Retreats</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="retreats.html" aria-label="Retreats">Find a retreat</a></h2>
-                    </div>
-                    <p class="item-text">Around the world</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Competitions</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="competitions.html" aria-label="Competitions">Join a
-                                competition</a></h2>
-                    </div>
-                    <p class="item-text">In your area</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Festivals</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="festivals.html" aria-label="Festivals">Find festivals</a></h2>
-                    </div>
-                    <p class="item-text">Around the world</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Physio and flexy</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="health.html" aria-label="Physios and flexibility resources">Find
-                                a physio</a></h2>
-                    </div>
-                    <p class="item-text">Near you or online</p>
-                </div>
-            </article>
-
-            <article class="scroll-item">
-                <div class="lineup-item-background" alt=""><h2 class="image-text">Photography and video</h2></div>
-                <div class="card-info">
-                    <div class="name-and-icon">
-                        <h2 class="item-name"><a href="photography.html"
-                                aria-label="Photographers and videographers">Find a photographer</a></h2>
-                    </div>
-                    <p class="item-text">In your area</p>
-                </div>
-            </article>
-
-            <div class="arrow-see-all-container">
-                <a href="allresources.html" aria-label="See all resources">
-                    <img class="arrow-see-all" src="assets/chevron-right.svg" alt="See all">
-                </a>
-            </div>
-        </section>
 
         <h1 class="cards-category map-h1"><a href="studiomap.html" aria-label="Map of studios">Studios around the world</a>
         </h1>

@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The Aerial Arts Hub is a platform for the aerial and pole community
-    to discover studios, coaches, performers, brands, and other useful resources across Europe, Asia, and Africa">
+    to discover studios, retreats, festivals, brands, and other useful resources across Europe, Asia, and Africa">
     <title>About | The Aerial Arts Hub</title>
     <link rel="stylesheet" href="styles.css">
     </link>
@@ -48,32 +48,41 @@
             
             <ul class="nav-links">
                 <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="studiomap.html" aria-label="Map of studios">Studio map</a></h2>
+                    <button class="nav-item" id="nav-item">
+                        <h2>Studios</h2>
+                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    </button>
+                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
+                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Browse the list</a></li>
+                        <li class="dropdown-item"><a href="studiomap.html" aria-label="Studio map">Explore the map</a></li>
+                    </ul>
                 </li>
+                
+                <li class="nav-item-div">
+                    <button class="nav-item" id="nav-item">
+                        <h2>What's on</h2>
+                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    </button>
+                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
+                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
+                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
+                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item-div">
                     <button class="nav-item" id="nav-item">
                         <h2>Resources</h2>
                         <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     </button>
                     <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
-                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Studios</a></li>
-                        <li class="dropdown-item"><a href="coaches.html" aria-label="Coaches">Coaches</a></li>
-                        <li class="dropdown-item"><a href="performers.html" aria-label="Performers">Performers</a></li>
-                        <li class="dropdown-item"><a href="collectives.html"
-                                aria-label="Troupes and collectives">Troupes
-                                and collectives</a></li>
-                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
-                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
-                        </li>
-                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
                         <li class="dropdown-item"><a href="health.html"
                                 aria-label="Physios and flexibility resources">Physio and flexy</a></li>
                         <li class="dropdown-item"><a href="photography.html"
                                 aria-label="Photographers and videographers">Photography and video</a></li>
                         <li class="dropdown-item"><a href="otherresources.html" aria-label="Other resources">Other
                                 resources</a></li>
-                        <li class="dropdown-item"><a href="allresources.html" aria-label="See all resources">See all</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item-div">
@@ -87,32 +96,6 @@
                         <li class="dropdown-item"><a href="heels.html" aria-label="Pole heels">Heels</a></li>
                         <li class="dropdown-item"><a href="equipment.html" aria-label="Equipment">Equipment</a></li>
                     </ul>
-                </li>
-                <li class="nav-item-div">
-                    <button class="nav-item" id="nav-item">
-                        <h2>Training</h2>
-                        <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
-                    </button>
-                    <ul class="desktop-dropdown-container" id="desktop-dropdown-container">
-                        <li class="dropdown-item"><a href="hoop.html" aria-label="Hoop or lyra resources">Hoop/lyra</a>
-                        </li>
-                        <li class="dropdown-item"><a href="silks.html" aria-label="Silks resources">Silks</a></li>
-                        <li class="dropdown-item"><a href="trapeze.html" aria-label="Trapeze resources">Trapeze</a></li>
-                        <li class="dropdown-item"><a href="hammock.html"
-                                aria-label="Hammock or sling resources">Hammock/sling</a></li>
-                        <li class="dropdown-item"><a href="pole.html" aria-label="Pole resources">Pole</a></li>
-                        <li class="dropdown-item"><a href="straps.html" aria-label="Straps resources">Straps</a></li>
-                        <li class="dropdown-item"><a href="rope.html" aria-label="Rope resources">Rope</a></li>
-                        <li class="dropdown-item"><a href="hairhang.html" aria-label="Hair hang resources">Hair hang</a></li>
-                        <li class="dropdown-item"><a href="otherskills.html"
-                                aria-label="Specialty aerial resources">Specialty</a></li>
-                        <li class="dropdown-item"><a href="allskills.html"
-                                aria-label="See all aerial and pole resources">See all</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="events.html" aria-label="Aerial, pole and circus events">What's on</a>
-                    </h2>
                 </li>
                 <li class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html" aria-label="About page">About</a></h2>
@@ -125,34 +108,44 @@
 
         <nav class="mobile-menu" id="mobile-menu">
             <button class="closing-x" id="closing-x"><img src="assets/close.svg" alt="Close the menu"></button>
+
             <ul class="nav-links">
                 <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="studiomap.html" aria-label="Map of studios">Studio map</a></h2>
+                    <button class="nav-item" id="nav-item">
+                        <h2>Studios</h2>
+                    </button>
+                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <ul class="dropdown-container" id="dropdown-container">
+                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Browse the list</a></li>
+                        <li class="dropdown-item"><a href="studiomap.html" aria-label="Studio map">Explore the map</a></li>
+                    </ul>
                 </li>
+                
+                <li class="nav-item-div">
+                    <button class="nav-item" id="nav-item">
+                        <h2>What's on</h2>
+                    </button>
+                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
+                    <ul class="dropdown-container" id="dropdown-container">
+                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
+                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
+                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item-div">
                     <button class="nav-item" id="nav-item">
                         <h2>Resources</h2>
                     </button>
                     <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
                     <ul class="dropdown-container" id="dropdown-container">
-                        <li class="dropdown-item"><a href="studios.html" aria-label="Studios">Studios</a></li>
-                        <li class="dropdown-item"><a href="coaches.html" aria-label="Coaches">Coaches</a></li>
-                        <li class="dropdown-item"><a href="performers.html" aria-label="Performers">Performers</a></li>
-                        <li class="dropdown-item"><a href="collectives.html"
-                                aria-label="Troupes and collectives">Troupes
-                                and collectives</a></li>
-                        <li class="dropdown-item"><a href="retreats.html" aria-label="Retreats">Retreats</a></li>
-                        <li class="dropdown-item"><a href="competitions.html" aria-label="Competitions">Competitions</a>
-                        </li>
-                        <li class="dropdown-item"><a href="festivals.html" aria-label="Festivals">Festivals</a></li>
                         <li class="dropdown-item"><a href="health.html"
                                 aria-label="Physios and flexibility resources">Physio and flexy</a></li>
                         <li class="dropdown-item"><a href="photography.html"
                                 aria-label="Photographers and videographers">Photography and video</a></li>
                         <li class="dropdown-item"><a href="otherresources.html" aria-label="Other resources">Other
                                 resources</a></li>
-                        <li class="dropdown-item"><a href="allresources.html" aria-label="See all resources">See all</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item-div">
@@ -168,37 +161,14 @@
                     </ul>
                 </li>
                 <li class="nav-item-div">
-                    <button class="nav-item" id="nav-item">
-                        <h2>Training</h2>
-                    </button>
-                    <img class="nav-link-arrow" id="nav-link-arrow" src="assets/triangle-down.svg" alt="Expand">
-                    <ul class="dropdown-container" id="dropdown-container">
-                        <li class="dropdown-item"><a href="hoop.html" aria-label="Hoop or lyra resources">Hoop/lyra</a>
-                        </li>
-                        <li class="dropdown-item"><a href="silks.html" aria-label="Silks resources">Silks</a></li>
-                        <li class="dropdown-item"><a href="trapeze.html" aria-label="Trapeze resources">Trapeze</a></li>
-                        <li class="dropdown-item"><a href="hammock.html"
-                                aria-label="Hammock or sling resources">Hammock/sling</a></li>
-                        <li class="dropdown-item"><a href="pole.html" aria-label="Pole resources">Pole</a></li>
-                        <li class="dropdown-item"><a href="straps.html" aria-label="Straps resources">Straps</a></li>
-                        <li class="dropdown-item"><a href="rope.html" aria-label="Rope resources">Rope</a></li>
-                        <li class="dropdown-item"><a href="hairhang.html" aria-label="Hair hang resources">Hair hang</a></li>
-                        <li class="dropdown-item"><a href="otherskills.html"
-                                aria-label="Specialty aerial resources">Specialty</a></li>
-                        <li class="dropdown-item"><a href="allskills.html"
-                                aria-label="See all aerial and pole resources">See all</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-div">
-                    <h2 class="nav-item"><a href="events.html" aria-label="Aerial, pole and circus events">What's on</a>
-                    </h2>
-                </li>
-                <li class="nav-item-div">
                     <h2 class="nav-item"><a href="about.html" aria-label="About page">About</a></h2>
                 </li>
+                <!-- <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a> -->
             </ul>
+
+
             <div class="nav-input">
-                <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a>
+                <!-- <a href="signin.html" aria-label="Sign in" class="sign-in-btn">Sign in</a> -->
                 <div class="search-items">
                     <input type="search" class="search-bar" id="nav-search-bar" placeholder="Search...">
                     <input type="image" src="assets/magnify.svg" class="search-icon" id="nav-search-icon" alt="Search">
@@ -219,7 +189,7 @@
         <section class="about-text">
             <h2 class="about-h2">The Aerial Arts Hub</h2>
             <p class="about-p">The Aerial Arts Hub is a platform for the aerial and pole community
-                to discover studios, coaches, performers, brands, and other useful resources across Europe, Asia, and Africa.
+                to discover studios, retreats, festivals, clothing brands, and other useful resources across Europe, Asia, and Africa.
                 It was created with the aim to be up-to-date, inclusive, accessible, and completely free.
             </p>
             <p class="about-p">Disclaimer: If you use the platform, please be aware that featured studios, brands and events are not
@@ -250,7 +220,7 @@
             <h2 class="about-h2">#FreePalestine</h2>
             <p class="about-p">At The Aerial Arts Hub, we stand against genocide and occupation, and in solidarity
                 with the people of Palestine. We therefore do not feature, endorse or otherwise support any
-                studios, coaches, performers, brands or other aerial and pole entities associated with Israel.
+                studios, brands or other aerial and pole entities associated with Israel.
             </p>
             <h2 class="about-h2">Sex work positivity</h2>
             <p class="about-p">We acknowledge the roots of pole dance in strip, the impact that sex workers have

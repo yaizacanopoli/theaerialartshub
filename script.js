@@ -73,11 +73,8 @@ async function searchWholeDatabase(term) {
   const tableMap = {
     studios: "studios",
     studiomap: "studios",
-    coaches: "people",
-    performers: "people",
     clothing: "clothing",
     heels: "heels",
-    collectives: "troupes",
     equipment: "equipment",
     health: "physio",
     photography: "photography",
@@ -113,13 +110,11 @@ async function searchWholeDatabase(term) {
     if (combinedAllResults.length === 0) {
       const tables = [
         "studios",
-        "people",
         "clothing",
         "heels",
         "equipment",
         "photography",
         "physio",
-        "troupes",
         "venues",
         "others",
         "pole",
@@ -195,14 +190,12 @@ async function searchWholeDatabase(term) {
     } else {
       paginatedResults.forEach((item) => {
         const sourceMap = {
-          people: (item) => (item.coach === true ? "Coach" : "Performer"),
           studios: () => "Studio",
           clothing: () => "Clothing",
           heels: () => "Heels",
           equipment: () => "Equipment",
           photography: () => "Photo & video",
           physio: () => "Physio & flexy",
-          troupes: () => "Collective",
           venues: () => "Venue",
           others: () => "Others",
           pole: () => "Pole",
@@ -267,7 +260,7 @@ async function searchWholeDatabase(term) {
                             `<button class="item-tag">${type.trim()}</button>`
                         )
                         .join("")
-                    : `<button class="item-tag">Tag</button>`
+                    : ``
                 }
             </div>
             </div>
@@ -283,11 +276,11 @@ async function searchWholeDatabase(term) {
   }
 }
 
-const allContinents = [
-  "Europe",
-  "Asia",
-  "Africa",
-];
+// const allContinents = [
+//   "Europe",
+//   "Asia",
+//   "Africa",
+// ];
 
 const tableColumnsMap = {
   studios: [
@@ -300,16 +293,6 @@ const tableColumnsMap = {
     "website",
     "apparatus",
     "exact",
-    "image",
-  ],
-  people: [
-    "name",
-    "country",
-    "continent",
-    "apparatus",
-    "instagram",
-    "coach",
-    "performer",
     "image",
   ],
   clothing: [
@@ -353,15 +336,6 @@ const tableColumnsMap = {
     "country",
     "continent",
     "type",
-    "instagram",
-    "website",
-    "image",
-  ],
-  troupes: [
-    "name",
-    "country",
-    "continent",
-    "apparatus",
     "instagram",
     "website",
     "image",
@@ -412,11 +386,8 @@ async function searchFilteredDatabase(filters) {
   const tableMap = {
     studios: "studios",
     studiomap: "studios",
-    coaches: "people",
-    performers: "people",
     clothing: "clothing",
     heels: "heels",
-    collectives: "troupes",
     equipment: "equipment",
     health: "physio",
     photography: "photography",
@@ -534,12 +505,6 @@ async function searchFilteredDatabase(filters) {
     }
   }
 
-  if (baseName === "coaches") {
-    supabaseQuery.eq("coach", true);
-  } else if (baseName === "performers") {
-    supabaseQuery.eq("performer", true);
-  }
-
   if (orFilters) {
     supabaseQuery.or(orFilters);
   }
@@ -607,7 +572,7 @@ async function searchFilteredDatabase(filters) {
                             `<button class="item-tag">${type.trim()}</button>`
                         )
                         .join("")
-                    : `<button class="item-tag">Tag</button>`
+                    : ``
                 }
             </div>
             </div>
@@ -638,12 +603,8 @@ async function loadData(category) {
   const tableMap = {
     studios: "studios",
     studiomap: "studios",
-    coaches: "people",
-    performers: "people",
     clothing: "clothing",
     heels: "heels",
-    troupes: "troupes",
-    collectives: "troupes",
     equipment: "equipment",
     physio: "physio",
     health: "physio",
@@ -685,12 +646,6 @@ async function loadData(category) {
       })
       .range(0, 8)
       .order("name", { ascending: true });
-
-      if (category === "coaches") {
-        loadDataQuery.eq("coach", true);
-      } else if (category === "performers") {
-        loadDataQuery.eq("performer", true);
-      }
 
     const { data, error, count } = await loadDataQuery;
 
@@ -755,7 +710,7 @@ async function loadData(category) {
                             `<button class="item-tag">${type.trim()}</button>`
                         )
                         .join("")
-                    : `<button class="item-tag">Tag</button>`
+                    : ``
                 }
             </div>
             </div>
@@ -775,22 +730,9 @@ if (
   window.location.href.endsWith("index.html") ||
   window.location.href.endsWith("/")
 ) {
-  // loadData("events");
   loadData("studios");
-  loadData("clothing");
-}
-
-if (window.location.href.includes("allresources.html")) {
-  loadData("studios");
-  loadData("coaches");
-  loadData("performers");
-  loadData("collectives");
-  loadData("retreats");
-  loadData("competitions");
   loadData("festivals");
-  loadData("health");
-  loadData("photography");
-  loadData("otherresources");
+  loadData("clothing");
 }
 
 // modal toggle
@@ -1146,14 +1088,6 @@ function determineFilterOptions() {
   const pagePath = window.location.pathname;
   if (
     ["studios.html", "studiomap.html"].some((page) => pagePath.includes(page))
-  ) {
-    return ["Apparatus", "Location", null];
-  } else if (pagePath.includes("coaches.html")) {
-    return ["Apparatus", "Location", null];
-  } else if (
-    ["performers.html", "collectives.html"].some((page) =>
-      pagePath.includes(page)
-    )
   ) {
     return ["Apparatus", "Location", null];
   } else if (
