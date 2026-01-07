@@ -82,6 +82,7 @@ async function searchWholeDatabase(term) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
+    competitions: "competitions"
   };
 
   const tableName = tableMap[baseName];
@@ -121,6 +122,7 @@ async function searchWholeDatabase(term) {
         "retreats",
         "festivals",
         "venues",
+        "competitions"
       ];
 
       for (const table of tables) {
@@ -201,6 +203,7 @@ async function searchWholeDatabase(term) {
           pole: () => "Pole",
           retreats: () => "Retreat",
           festivals: () => "Festival",
+          competitions: () => "Competition"
         };
 
         featuredLineup.innerHTML += `<article class="lineup-item">
@@ -375,6 +378,18 @@ const tableColumnsMap = {
     "end",
     "apparatus",
   ],
+  competitions: [
+    "name",
+    "city",
+    "country",
+    "continent",
+    "instagram",
+    "website",
+    "image",
+    "start",
+    "end",
+    "apparatus",
+  ]
 };
 
 async function searchFilteredDatabase(filters) {
@@ -395,6 +410,7 @@ async function searchFilteredDatabase(filters) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
+    competitions: "competitions"
   };
 
   const tableName = tableMap[baseName];
@@ -614,6 +630,7 @@ async function loadData(category) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
+    competitions: "competitions"
   };
 
   const tableName = tableMap[category];
