@@ -32,7 +32,7 @@ const allFilterCheckboxes = document.querySelectorAll('input[type="checkbox"]');
 // format date
 
 function formatDate(dateString) {
-  if (!dateString) return ""; // Handle cases where the date is null or undefined
+  if (!dateString) return "";
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -82,7 +82,7 @@ async function searchWholeDatabase(term) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions"
+    competitions: "competitions",
   };
 
   const tableName = tableMap[baseName];
@@ -104,6 +104,8 @@ async function searchWholeDatabase(term) {
       "performer",
       "exact",
       "image",
+      "start",
+      "end",
     ].includes(col)
   );
 
@@ -122,7 +124,7 @@ async function searchWholeDatabase(term) {
         "retreats",
         "festivals",
         "venues",
-        "competitions"
+        "competitions",
       ];
 
       for (const table of tables) {
@@ -143,10 +145,12 @@ async function searchWholeDatabase(term) {
             "performer",
             "exact",
             "image",
+            "start",
+            "end",
           ].includes(col)
         );
 
-        const supabaseQuery = supabaseClient
+        let supabaseQuery = supabaseClient
           .from(table)
           .select(tableSelectColumns.join(","), { count: "exact" })
           .or(
@@ -166,7 +170,9 @@ async function searchWholeDatabase(term) {
               .map((col) => `${col}.ilike.%${term}%`)
               .join(",")
           )
-          .order("name", { ascending: true });
+          .order("created_at", {
+            ascending: false,
+          });
 
         const { data, error } = await supabaseQuery;
         if (error) {
@@ -203,7 +209,7 @@ async function searchWholeDatabase(term) {
           pole: () => "Pole",
           retreats: () => "Retreat",
           festivals: () => "Festival",
-          competitions: () => "Competition"
+          competitions: () => "Competition",
         };
 
         featuredLineup.innerHTML += `<article class="lineup-item">
@@ -278,12 +284,6 @@ async function searchWholeDatabase(term) {
     loadMoreBtn.style.display = "block";
   }
 }
-
-// const allContinents = [
-//   "Europe",
-//   "Asia",
-//   "Africa",
-// ];
 
 const tableColumnsMap = {
   studios: [
@@ -376,7 +376,6 @@ const tableColumnsMap = {
     "image",
     "start",
     "end",
-    "apparatus",
   ],
   competitions: [
     "name",
@@ -389,11 +388,14 @@ const tableColumnsMap = {
     "start",
     "end",
     "apparatus",
-  ]
+  ],
 };
 
 async function searchFilteredDatabase(filters) {
   const { searchTerm, continents, apparatus, type, when } = filters;
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const isPastDatesFilter = when.includes("Past dates");
 
   const rangeStart = currentOffset;
   const rangeEnd = rangeStart + resultsPerPage - 1;
@@ -410,7 +412,7 @@ async function searchFilteredDatabase(filters) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions"
+    competitions: "competitions",
   };
 
   const tableName = tableMap[baseName];
@@ -456,12 +458,40 @@ async function searchFilteredDatabase(filters) {
       .join(",");
   }
 
-  const supabaseQuery = supabaseClient
-    .from(tableName)
-    .select(selectColumns.join(","), { count: "exact" })
-    .range(rangeStart, rangeEnd)
-    .in("continent", continents)
-    .order("name", { ascending: true });
+  let supabaseQuery;
+
+  if (columns.includes("start")) {
+    supabaseQuery = supabaseClient
+      .from(tableName)
+      .select(selectColumns.join(","), { count: "exact" })
+      .range(rangeStart, rangeEnd)
+      .in("continent", continents);
+
+    if (isPastDatesFilter) {
+      supabaseQuery = supabaseClient
+        .from(tableName)
+        .select(selectColumns.join(","), { count: "exact" })
+        .range(rangeStart, rangeEnd)
+        .in("continent", continents)
+        .lt("start", todayStr)
+        .order("start", { ascending: false });
+    } else {
+      supabaseQuery = supabaseClient
+        .from(tableName)
+        .select(selectColumns.join(","), { count: "exact" })
+        .range(rangeStart, rangeEnd)
+        .in("continent", continents)
+        .gte("start", todayStr)
+        .order("start", { ascending: true });
+    }
+  } else {
+    supabaseQuery = supabaseClient
+      .from(tableName)
+      .select(selectColumns.join(","), { count: "exact" })
+      .range(rangeStart, rangeEnd)
+      .in("continent", continents)
+      .order("created_at", { ascending: false});
+  }
 
   if (apparatus.length > 0) {
     const apparatusFilters = apparatus
@@ -490,9 +520,9 @@ async function searchFilteredDatabase(filters) {
         start: new Date(today.getFullYear() + 1, 0, 1), // Start of next year
         end: new Date(today.getFullYear() + 1, 11, 31), // End of next year
       },
-      "Past dates": {
-        start: new Date(0), // Arbitrary start date (e.g., epoch)
-        end: new Date(), // Current date
+      "All upcoming": {
+        start: new Date(), // Today
+        end: new Date(9999, 11, 31), // Future
       },
     };
 
@@ -610,8 +640,7 @@ if (lineupSearchBar) {
 
 // supabase for home page
 
-async function loadData(category) {
-
+async function loadData(category, when = []) {
   const selectedScrollCards = document.querySelector(
     `#scroll-cards-${category}`
   );
@@ -630,7 +659,7 @@ async function loadData(category) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions"
+    competitions: "competitions",
   };
 
   const tableName = tableMap[category];
@@ -651,18 +680,66 @@ async function loadData(category) {
       "coach",
       "performer",
       "exact",
-      "image"
+      "image",
+      "start",
+      "end",
     ].includes(col)
   );
 
   if (selectedScrollCards) {
-    const loadDataQuery = supabaseClient
+    let loadDataQuery = supabaseClient
       .from(tableName)
       .select(selectColumns.length ? selectColumns.join(",") : "*", {
         count: "exact",
       })
-      .range(0, 8)
-      .order("name", { ascending: true });
+      .range(0, 8);
+
+    if (columns.includes("start") && when.length > 0) {
+      const today = new Date();
+      const dateRanges = {
+        "This month": {
+          start: new Date(today.getFullYear(), today.getMonth(), 1),
+          end: new Date(today.getFullYear(), today.getMonth() + 1, 0),
+        },
+        "This year": {
+          start: new Date(today.getFullYear(), 0, 1),
+          end: new Date(today.getFullYear(), 11, 31),
+        },
+        "Next year": {
+          start: new Date(today.getFullYear() + 1, 0, 1),
+          end: new Date(today.getFullYear() + 1, 11, 31),
+        },
+        "All upcoming": {
+          start: new Date(),
+          end: new Date(9999, 11, 31),
+        },
+        "Past dates": {
+          start: new Date(0),
+          end: today,
+        },
+      };
+
+      const dateFilters = when
+        .map((item) => {
+          const range = dateRanges[item];
+          if (!range) return null;
+          const startDate = range.start.toISOString().split("T")[0];
+          const endDate = range.end.toISOString().split("T")[0];
+          return `(start.lte.${endDate}&end.gte.${startDate})`;
+        })
+        .filter(Boolean)
+        .join(",");
+
+      if (dateFilters) loadDataQuery.or(dateFilters);
+
+      loadDataQuery = loadDataQuery.order("start", { ascending: true });
+    } else if (columns.includes("start")) {
+      loadDataQuery = loadDataQuery
+        .gte("start", new Date().toISOString().split("T")[0])
+        .order("start", { ascending: true });
+    } else {
+      loadDataQuery = loadDataQuery.order("created_at", { ascending: false });
+    }
 
     const { data, error, count } = await loadDataQuery;
 
@@ -939,7 +1016,6 @@ document.addEventListener("click", (e) => {
     currentOffset += resultsPerPage;
     if (lineupSearchBar) {
       const filters = getFilterCriteria();
-      // const { searchTerm, continents, apparatus, type, when } = filters;
       searchFilteredDatabase(filters);
     } else if (window.location.href.includes("results.html")) {
       const params = new URLSearchParams(window.location.search);
@@ -1035,7 +1111,6 @@ document.addEventListener("keydown", (e) => {
       currentOffset += resultsPerPage;
       if (lineupSearchBar) {
         const filters = getFilterCriteria();
-        // const { searchTerm, continents, apparatus, type, when } = filters;
         searchFilteredDatabase(filters);
       } else if (window.location.href.includes("results.html")) {
         const params = new URLSearchParams(window.location.search);
@@ -1114,7 +1189,7 @@ function determineFilterOptions() {
   ) {
     return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("festivals.html")) {
-    return ["When", "Location", "Apparatus"];
+    return ["When", "Location"];
   } else if (pagePath.includes("health.html")) {
     return ["Type", "Location", null];
   } else if (pagePath.includes("equipment.html")) {
@@ -1199,11 +1274,7 @@ function getFilterCriteria() {
   const continentsToQuery =
     selectedContinents.length > 0
       ? selectedContinents
-      : [
-          "Europe",
-          "Asia",
-          "Africa",
-        ];
+      : ["Europe", "Asia", "Africa"];
 
   return {
     searchTerm,
@@ -1267,12 +1338,14 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Sex work-positive",
         "Open training",
       ],
-      Location: [
-        "Europe",
-        "Asia",
-        "Africa",
+      Location: ["Europe", "Asia", "Africa"],
+      When: [
+        "This month",
+        "This year",
+        "Next year",
+        "All upcoming",
+        "Past dates",
       ],
-      When: ["This month", "This year", "Next year", "Past dates"],
       Identifiers: ["Queer", "POC", "Disabled", "Sex work-positive"],
       Details: [
         "Queer",
@@ -1448,7 +1521,6 @@ let mapBounds;
 let currentMarkers = [];
 
 async function loadMapWithFilteredStudios(filters) {
-
   const { searchTerm, continents, apparatus } = filters;
 
   const columns = await getTableColumns("studios");
@@ -1473,10 +1545,12 @@ async function loadMapWithFilteredStudios(filters) {
 
   let mapQuery = supabaseClient
     .from("studios")
-    .select("name, address, city, country, latitude, longitude, exact, apparatus")
+    .select(
+      "name, address, city, country, latitude, longitude, exact, apparatus"
+    )
     .in("continent", continents);
 
-    if (apparatus.length > 0) {
+  if (apparatus.length > 0) {
     const apparatusFilter = apparatus
       .map((a) => `apparatus.ilike.%${a}%`)
       .join(",");
@@ -1488,14 +1562,11 @@ async function loadMapWithFilteredStudios(filters) {
     mapQuery = mapQuery.or(orFilters);
   }
 
-  const { data: studios1 } = await mapQuery
-  .range(0, 999);
+  const { data: studios1 } = await mapQuery.range(0, 999);
 
-  const { data: studios2 } = await mapQuery
-  .range(1000, 1999);
+  const { data: studios2 } = await mapQuery.range(1000, 1999);
 
-  const { data: studios3 } = await mapQuery
-  .range(2000, 2999);
+  const { data: studios3 } = await mapQuery.range(2000, 2999);
 
   const allMapStudios = [...studios1, ...studios2, ...studios3];
 
@@ -1513,7 +1584,9 @@ async function loadMapWithFilteredStudios(filters) {
       marker.bindPopup(
         `<strong>${studio.name}</strong><br>${studio.city || ""}, ${
           studio.country || ""
-        }<br><span style="color: grey; font-size: 0.8rem">${studio.address || ""}</span>`
+        }<br><span style="color: grey; font-size: 0.8rem">${
+          studio.address || ""
+        }</span>`
       );
       currentMarkers.push(marker);
       bounds.extend([lat, lng]);
