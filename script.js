@@ -1323,6 +1323,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Hoop",
         "Silks",
         "Trapeze",
+        "Flying trapeze",
         "Hammock",
         "Pole",
         "Straps",
