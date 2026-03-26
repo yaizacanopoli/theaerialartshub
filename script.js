@@ -82,7 +82,6 @@ async function searchWholeDatabase(term) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions",
   };
 
   const tableName = tableMap[baseName];
@@ -124,7 +123,6 @@ async function searchWholeDatabase(term) {
         "retreats",
         "festivals",
         "venues",
-        "competitions",
       ];
 
       for (const table of tables) {
@@ -209,7 +207,6 @@ async function searchWholeDatabase(term) {
           pole: () => "Pole",
           retreats: () => "Retreat",
           festivals: () => "Festival",
-          competitions: () => "Competition",
         };
 
         featuredLineup.innerHTML += `<article class="lineup-item">
@@ -377,18 +374,6 @@ const tableColumnsMap = {
     "start",
     "end",
   ],
-  competitions: [
-    "name",
-    "city",
-    "country",
-    "continent",
-    "instagram",
-    "website",
-    "image",
-    "start",
-    "end",
-    "apparatus",
-  ],
 };
 
 async function searchFilteredDatabase(filters) {
@@ -412,7 +397,6 @@ async function searchFilteredDatabase(filters) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions",
   };
 
   const tableName = tableMap[baseName];
@@ -659,7 +643,6 @@ async function loadData(category, when = []) {
     otherresources: "others",
     retreats: "retreats",
     festivals: "festivals",
-    competitions: "competitions",
   };
 
   const tableName = tableMap[category];
@@ -1183,7 +1166,7 @@ function determineFilterOptions() {
   ) {
     return ["Apparatus", "Location", null];
   } else if (
-    ["competitions.html", "retreats.html"].some((page) =>
+    ["retreats.html"].some((page) =>
       pagePath.includes(page)
     )
   ) {
