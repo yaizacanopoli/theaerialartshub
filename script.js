@@ -105,7 +105,7 @@ async function searchWholeDatabase(term) {
       "image",
       "start",
       "end",
-    ].includes(col)
+    ].includes(col),
   );
 
   if (baseName === "results") {
@@ -145,7 +145,7 @@ async function searchWholeDatabase(term) {
             "image",
             "start",
             "end",
-          ].includes(col)
+          ].includes(col),
         );
 
         let supabaseQuery = supabaseClient
@@ -163,10 +163,10 @@ async function searchWholeDatabase(term) {
                   "instagram",
                   "type",
                   "apparatus",
-                ].includes(col)
+                ].includes(col),
               )
               .map((col) => `${col}.ilike.%${term}%`)
-              .join(",")
+              .join(","),
           )
           .order("created_at", {
             ascending: false,
@@ -182,7 +182,7 @@ async function searchWholeDatabase(term) {
           data.map((item) => ({
             ...item,
             source: table,
-          }))
+          })),
         );
       }
     }
@@ -225,20 +225,20 @@ async function searchWholeDatabase(term) {
                     <h2 class="lineup-title" id="lineup-title" data-name="${
                       item.name
                     }" data-city="${item.city}" data-country="${
-          item.country
-        }" data-address="${item.address}" data-image="${
-          item.image
-        }" data-instagram="${item.instagram}" data-website="${
-          item.website
-        }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
+                      item.country
+                    }" data-address="${item.address}" data-image="${
+                      item.image
+                    }" data-instagram="${item.instagram}" data-website="${
+                      item.website
+                    }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
                   item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
-                    ? item.country
-                    : ""
+                      ? item.country
+                      : ""
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
@@ -255,18 +255,18 @@ async function searchWholeDatabase(term) {
                         .split(",")
                         .map(
                           (apparatus) =>
-                            `<button class="item-tag">${apparatus.trim()}</button>`
+                            `<button class="item-tag">${apparatus.trim()}</button>`,
                         )
                         .join("")
                     : item.type
-                    ? item.type
-                        .split(",")
-                        .map(
-                          (type) =>
-                            `<button class="item-tag">${type.trim()}</button>`
-                        )
-                        .join("")
-                    : ``
+                      ? item.type
+                          .split(",")
+                          .map(
+                            (type) =>
+                              `<button class="item-tag">${type.trim()}</button>`,
+                          )
+                          .join("")
+                      : ``
                 }
             </div>
             </div>
@@ -420,7 +420,7 @@ async function searchFilteredDatabase(filters) {
       "image",
       "start",
       "end",
-    ].includes(col)
+    ].includes(col),
   );
 
   let orFilters = "";
@@ -436,7 +436,7 @@ async function searchFilteredDatabase(filters) {
           "instagram",
           "type",
           "apparatus",
-        ].includes(col)
+        ].includes(col),
       )
       .map((col) => `${col}.ilike.%${searchTerm}%`)
       .join(",");
@@ -474,7 +474,7 @@ async function searchFilteredDatabase(filters) {
       .select(selectColumns.join(","), { count: "exact" })
       .range(rangeStart, rangeEnd)
       .in("continent", continents)
-      .order("created_at", { ascending: false});
+      .order("created_at", { ascending: false });
   }
 
   if (apparatus.length > 0) {
@@ -561,20 +561,20 @@ async function searchFilteredDatabase(filters) {
                     <h2 class="lineup-title" id="lineup-title" data-name="${
                       item.name
                     }" data-city="${item.city}" data-country="${
-        item.country
-      }" data-address="${item.address}" data-image="${
-        item.image
-      }" data-instagram="${item.instagram}" data-website="${
-        item.website
-      }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
+                      item.country
+                    }" data-address="${item.address}" data-image="${
+                      item.image
+                    }" data-instagram="${item.instagram}" data-website="${
+                      item.website
+                    }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
                   item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
-                    ? item.country
-                    : ""
+                      ? item.country
+                      : ""
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
@@ -591,18 +591,18 @@ async function searchFilteredDatabase(filters) {
                         .split(",")
                         .map(
                           (apparatus) =>
-                            `<button class="item-tag">${apparatus.trim()}</button>`
+                            `<button class="item-tag">${apparatus.trim()}</button>`,
                         )
                         .join("")
                     : item.type
-                    ? item.type
-                        .split(",")
-                        .map(
-                          (type) =>
-                            `<button class="item-tag">${type.trim()}</button>`
-                        )
-                        .join("")
-                    : ``
+                      ? item.type
+                          .split(",")
+                          .map(
+                            (type) =>
+                              `<button class="item-tag">${type.trim()}</button>`,
+                          )
+                          .join("")
+                      : ``
                 }
             </div>
             </div>
@@ -626,7 +626,7 @@ if (lineupSearchBar) {
 
 async function loadData(category, when = []) {
   const selectedScrollCards = document.querySelector(
-    `#scroll-cards-${category}`
+    `#scroll-cards-${category}`,
   );
 
   const tableMap = {
@@ -666,7 +666,7 @@ async function loadData(category, when = []) {
       "image",
       "start",
       "end",
-    ].includes(col)
+    ].includes(col),
   );
 
   if (selectedScrollCards) {
@@ -742,20 +742,20 @@ async function loadData(category, when = []) {
                     <h2 class="lineup-title" id="lineup-title" data-name="${
                       item.name
                     }" data-city="${item.city}" data-country="${
-          item.country
-        }" data-address="${item.address}" data-image="${
-          item.image
-        }" data-instagram="${item.instagram}" data-website="${
-          item.website
-        }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
+                      item.country
+                    }" data-address="${item.address}" data-image="${
+                      item.image
+                    }" data-instagram="${item.instagram}" data-website="${
+                      item.website
+                    }" data-start="${item.start}" data-end="${item.end}">${item.name}</h2>
                     <button class="heart-icon" id="heart-icon"><img src="assets/heart-outline.svg" alt="Like"></button>
                 </div>
                 <p class="lineup-info-text">${
                   item.city
                     ? `${item.city}, ${item.country}`
                     : item.country
-                    ? item.country
-                    : ""
+                      ? item.country
+                      : ""
                 }</p>
                 <p class="lineup-info-dates">${
                   item.start && item.end
@@ -774,20 +774,20 @@ async function loadData(category, when = []) {
                         .split(",")
                         .map(
                           (apparatus) =>
-                            `<button class="item-tag">${apparatus.trim()}</button>`
+                            `<button class="item-tag">${apparatus.trim()}</button>`,
                         )
                         .join("")
                     : item.type &&
-                      typeof item.type === "string" &&
-                      item.type.trim() !== ""
-                    ? item.type
-                        .split(",")
-                        .map(
-                          (type) =>
-                            `<button class="item-tag">${type.trim()}</button>`
-                        )
-                        .join("")
-                    : ``
+                        typeof item.type === "string" &&
+                        item.type.trim() !== ""
+                      ? item.type
+                          .split(",")
+                          .map(
+                            (type) =>
+                              `<button class="item-tag">${type.trim()}</button>`,
+                          )
+                          .join("")
+                      : ``
                 }
             </div>
             </div>
@@ -869,15 +869,15 @@ document.addEventListener("click", (e) => {
                 modalItemCity !== "undefined"
                   ? `${modalItemCity}, ${modalItemCountry}`
                   : modalItemCountry !== "undefined"
-                  ? modalItemCountry
-                  : ""
+                    ? modalItemCountry
+                    : ""
               }</p>
               <p class="modal-info-dates">${
                 modalItemStart !== "undefined" && modalItemEnd !== "undefined"
                   ? formatDate(modalItemStart) === formatDate(modalItemEnd)
                     ? formatDate(modalItemStart)
                     : `${formatDate(modalItemStart)} – ${formatDate(
-                        modalItemEnd
+                        modalItemEnd,
                       )}`
                   : ""
               }
@@ -1165,11 +1165,7 @@ function determineFilterOptions() {
     ["studios.html", "studiomap.html"].some((page) => pagePath.includes(page))
   ) {
     return ["Apparatus", "Location", null];
-  } else if (
-    ["retreats.html"].some((page) =>
-      pagePath.includes(page)
-    )
-  ) {
+  } else if (["retreats.html"].some((page) => pagePath.includes(page))) {
     return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("festivals.html")) {
     return ["When", "Location"];
@@ -1220,17 +1216,17 @@ function applyFilterOptions(filterOne, filterTwo, filterThree, options) {
 
 function getFilterCriteria() {
   const locationCheckboxes = document.querySelectorAll(
-    'input[name="Location"]:checked'
+    'input[name="Location"]:checked',
   );
   const selectedContinents = Array.from(locationCheckboxes).map(
-    (checkbox) => checkbox.value
+    (checkbox) => checkbox.value,
   );
 
   const apparatusCheckboxes = document.querySelectorAll(
-    'input[name="Apparatus"]:checked'
+    'input[name="Apparatus"]:checked',
   );
   const selectedApparatus = Array.from(apparatusCheckboxes).map(
-    (checkbox) => checkbox.value
+    (checkbox) => checkbox.value,
   );
 
   const typeCheckboxes = [
@@ -1246,10 +1242,10 @@ function getFilterCriteria() {
   const selectedType = typeCheckboxes.map((checkbox) => checkbox.value);
 
   const whenCheckboxes = document.querySelectorAll(
-    'input[name="When"]:checked'
+    'input[name="When"]:checked',
   );
   const selectedWhen = Array.from(whenCheckboxes).map(
-    (checkbox) => checkbox.value
+    (checkbox) => checkbox.value,
   );
 
   const searchTerm = lineupSearchBar ? lineupSearchBar.value : "";
@@ -1347,7 +1343,14 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Other health resources",
       ],
       Kind: ["Photography", "Videography"],
-      Category: ["Art", "Game", "Jewellery", "Magazine", "Community", "Rigging"],
+      Category: [
+        "Art",
+        "Game",
+        "Jewellery",
+        "Magazine",
+        "Community",
+        "Rigging",
+      ],
       "Clothing type": ["Aerial", "Pole", "Performance", "Custom"],
       "Heel style": ["Sandals", "Boots", "Specialty", "Custom"],
       "Equipment type": ["Rigs", "Accessories", "Grip", "Custom"],
@@ -1408,7 +1411,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
                 filterState[filterKey].push(option);
               } else {
                 filterState[filterKey] = filterState[filterKey].filter(
-                  (item) => item !== option
+                  (item) => item !== option,
                 );
               }
             }
@@ -1437,10 +1440,10 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
 function setupFilterToggle(filterButton, filterExpanded, filterKey) {
   const arrow = filterButton.nextElementSibling;
   filterButton.addEventListener("click", () =>
-    toggleFilterMenu(arrow, filterExpanded, filterKey)
+    toggleFilterMenu(arrow, filterExpanded, filterKey),
   );
   arrow.addEventListener("click", () =>
-    toggleFilterMenu(arrow, filterExpanded, filterKey)
+    toggleFilterMenu(arrow, filterExpanded, filterKey),
   );
 }
 
@@ -1477,10 +1480,10 @@ window.addEventListener("pageshow", (e) => {
   footer.style.display = "flex";
 
   const mobileArrows = document.querySelectorAll(
-    "#mobile-menu #nav-link-arrow"
+    "#mobile-menu #nav-link-arrow",
   );
   const mobileDropDowns = document.querySelectorAll(
-    "#mobile-menu #dropdown-container"
+    "#mobile-menu #dropdown-container",
   );
   mobileArrows.forEach((arrow) => (arrow.src = "assets/triangle-down.svg"));
   mobileDropDowns.forEach((dropdown) => (dropdown.style.visibility = "hidden"));
@@ -1488,12 +1491,12 @@ window.addEventListener("pageshow", (e) => {
   mobileDropDowns.forEach((dropdown) => (dropdown.style.margin = "0"));
 
   const allDesktopDropdowns = document.querySelectorAll(
-    "#desktop-dropdown-container"
+    "#desktop-dropdown-container",
   );
   allDesktopDropdowns.forEach((dropdown) => (dropdown.style.display = "none"));
 
   const allDesktopArrows = document.querySelectorAll(
-    "#desktop-menu #nav-link-arrow"
+    "#desktop-menu #nav-link-arrow",
   );
   allDesktopArrows.forEach((arrow) => (arrow.src = "assets/triangle-down.svg"));
 });
@@ -1521,7 +1524,7 @@ async function loadMapWithFilteredStudios(filters) {
           "continent",
           "instagram",
           "apparatus",
-        ].includes(col)
+        ].includes(col),
       )
       .map((col) => `${col}.ilike.%${searchTerm}%`)
       .join(",");
@@ -1530,7 +1533,7 @@ async function loadMapWithFilteredStudios(filters) {
   let mapQuery = supabaseClient
     .from("studios")
     .select(
-      "name, address, city, country, latitude, longitude, exact, apparatus"
+      "name, address, city, country, latitude, longitude, exact, apparatus",
     )
     .in("continent", continents);
 
@@ -1570,7 +1573,7 @@ async function loadMapWithFilteredStudios(filters) {
           studio.country || ""
         }<br><span style="color: grey; font-size: 0.8rem">${
           studio.address || ""
-        }</span>`
+        }</span>`,
       );
       currentMarkers.push(marker);
       bounds.extend([lat, lng]);

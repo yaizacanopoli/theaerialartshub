@@ -635,21 +635,26 @@ main {
   margin-top: 0.5rem;
 }
 
+.tags-divider {
+  opacity: 0.5;
+  margin-bottom: 0.9rem;
+}
+
 .item-tag {
-  background-color: #c3d5f0;
+  background-color: #CCD7E8;
   border: none;
   border-radius: 6px;
   font-size: calc(0.5rem + 0.1vw);
-  padding: 0.3rem 0.7rem;
+  padding: 0.3rem 0.5rem;
   text-align: center;
-  transition: 0.2s ease-in-out 0s;
-  box-shadow: 1.5px 1.5px #949596;
+  /* transition: 0.2s ease-in-out 0s; */
+  /* box-shadow: 1.5px 1.5px #949596; */
 }
 
-.item-tag:hover {
+/* .item-tag:hover {
   cursor: pointer;
   transform: scale(1.1);
-}
+} */
 
 .arrow-see-all-container {
   display: flex;
