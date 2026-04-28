@@ -105,6 +105,7 @@ async function searchWholeDatabase(term) {
       "image",
       "start",
       "end",
+      "training"
     ].includes(col),
   );
 
@@ -145,6 +146,7 @@ async function searchWholeDatabase(term) {
             "image",
             "start",
             "end",
+            "training"
           ].includes(col),
         );
 
@@ -163,6 +165,7 @@ async function searchWholeDatabase(term) {
                   "instagram",
                   "type",
                   "apparatus",
+                  "training"
                 ].includes(col),
               )
               .map((col) => `${col}.ilike.%${term}%`)
@@ -294,6 +297,7 @@ const tableColumnsMap = {
     "apparatus",
     "exact",
     "image",
+    "training"
   ],
   clothing: [
     "name",
@@ -377,7 +381,7 @@ const tableColumnsMap = {
 };
 
 async function searchFilteredDatabase(filters) {
-  const { searchTerm, continents, apparatus, type, when } = filters;
+  const { searchTerm, continents, apparatus, training, type, when } = filters;
 
   const todayStr = new Date().toISOString().split("T")[0];
   const isPastDatesFilter = when.includes("Past dates");
@@ -420,6 +424,7 @@ async function searchFilteredDatabase(filters) {
       "image",
       "start",
       "end",
+      "training"
     ].includes(col),
   );
 
@@ -436,6 +441,7 @@ async function searchFilteredDatabase(filters) {
           "instagram",
           "type",
           "apparatus",
+          "training"
         ].includes(col),
       )
       .map((col) => `${col}.ilike.%${searchTerm}%`)
@@ -487,6 +493,11 @@ async function searchFilteredDatabase(filters) {
   if (type.length > 0) {
     const typeFilters = type.map((item) => `type.ilike.%${item}%`).join(",");
     supabaseQuery.or(typeFilters);
+  }
+
+  if (training.length > 0) {
+    const trainingFilters = training.map((item) => `training.ilike.%${item}%`).join(",");
+    supabaseQuery.or(trainingFilters);
   }
 
   if (when.length > 0) {
@@ -666,6 +677,7 @@ async function loadData(category, when = []) {
       "image",
       "start",
       "end",
+      "training"
     ].includes(col),
   );
 
@@ -1011,7 +1023,7 @@ document.addEventListener("click", (e) => {
     loadMoreBtn.style.display = "none";
     featuredLineupHeader.innerHTML = "<h1>Search results</h1>";
     const filters = getFilterCriteria();
-    const { searchTerm, continents, apparatus } = filters;
+    const { searchTerm, continents, apparatus, training } = filters;
     searchFilteredDatabase(filters);
     if (mapCardItem)
       mapCardItem.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -1164,7 +1176,7 @@ function determineFilterOptions() {
   if (
     ["studios.html", "studiomap.html"].some((page) => pagePath.includes(page))
   ) {
-    return ["Apparatus", "Location", null];
+    return ["Apparatus", "Training", "Location", null];
   } else if (["retreats.html"].some((page) => pagePath.includes(page))) {
     return ["When", "Location", "Apparatus"];
   } else if (pagePath.includes("festivals.html")) {
@@ -1178,7 +1190,7 @@ function determineFilterOptions() {
   } else if (pagePath.includes("heels.html")) {
     return ["Heel style", "Location", null];
   } else if (pagePath.includes("photography.html")) {
-    return ["Kind", "Location", null];
+    return ["Format", "Location", null];
   } else if (pagePath.includes("otherresources.html")) {
     return ["Category", "Location", null];
   } else if (
@@ -1229,11 +1241,18 @@ function getFilterCriteria() {
     (checkbox) => checkbox.value,
   );
 
+  const trainingCheckboxes = document.querySelectorAll(
+    'input[name="Training"]:checked',
+  );
+  const selectedTraining = Array.from(trainingCheckboxes).map(
+    (checkbox) => checkbox.value,
+  );
+
   const typeCheckboxes = [
     ...document.querySelectorAll('input[name="Equipment type"]:checked'),
     ...document.querySelectorAll('input[name="Clothing type"]:checked'),
     ...document.querySelectorAll('input[name="Heel style"]:checked'),
-    ...document.querySelectorAll('input[name="Kind"]:checked'),
+    ...document.querySelectorAll('input[name="Format"]:checked'),
     ...document.querySelectorAll('input[name="Type"]:checked'),
     ...document.querySelectorAll('input[name="Category"]:checked'),
     ...document.querySelectorAll('input[name="Resource type"]:checked'),
@@ -1261,6 +1280,7 @@ function getFilterCriteria() {
     apparatus: selectedApparatus,
     type: selectedType,
     when: selectedWhen,
+    training: selectedTraining
   };
 }
 
@@ -1311,6 +1331,10 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Specialty",
         "Bring your own"
       ],
+      Training: [
+        "Hobby",
+        "Professional"
+      ],
       Features: [
         "Accessible",
         "Gender-inclusive",
@@ -1343,7 +1367,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Mental health",
         "Other health resources",
       ],
-      Kind: ["Photography", "Videography"],
+      Format: ["Photography", "Videography"],
       Category: [
         "Art",
         "Game",
@@ -1525,6 +1549,7 @@ async function loadMapWithFilteredStudios(filters) {
           "continent",
           "instagram",
           "apparatus",
+          "training"
         ].includes(col),
       )
       .map((col) => `${col}.ilike.%${searchTerm}%`)
