@@ -1309,6 +1309,7 @@ function toggleFilterMenu(arrow, filterExpanded, filterKey) {
         "Rope",
         "Hair hang",
         "Specialty",
+        "Bring your own"
       ],
       Features: [
         "Accessible",
