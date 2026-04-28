@@ -7,6 +7,7 @@ const navItemH2 = document.querySelectorAll("#nav-item > h2");
 const navLinkArrow = document.querySelectorAll("#nav-link-arrow");
 const navSearchBar = document.querySelector("#nav-search-bar");
 const desktopSearchBar = document.querySelector("#desktop-search-bar");
+const hello = null;
 
 const headerContainer = document.querySelector("#header-container");
 const main = document.querySelector("main");
